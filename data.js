@@ -4,75 +4,75 @@
 const ACCOMMODATIONS = [
   {
     id: "edimburgo1",
-    name: "Edimburgo (Old Town)",
+    name: "Edimburgo — Haymarket",
     dates: "Notte del 13 agosto",
     day: 13,
-    lat: 55.9486, lng: -3.1999,
-    note: "Prima notte, vicino alla Old Town: si parte a piedi per Royal Mile, Castello e Grassmarket.",
-    airbnb: ""
+    lat: 55.9446, lng: -3.2216,
+    note: "13 Rosebery Crescent, Haymarket. Host: Joivy Scotland. Camera familiare, a piedi da Royal Mile e Castello.",
+    airbnb: "https://www.airbnb.it/trips/v1/1729198868187407096/ro/RESERVATION2_CHECKIN/HMQMSDFBAF"
   },
   {
     id: "aviemore",
-    name: "Aviemore",
+    name: "Aviemore — Cairn View",
     dates: "Notti del 14-15 agosto",
     day: 14,
-    lat: 57.1938, lng: -3.8267,
-    note: "Base per Loch Morlich, Cairngorm Mountain e Loch an Eilein.",
-    airbnb: ""
+    lat: 57.1865, lng: -3.8170,
+    note: "Holiday Park, 53 Dalfaber Road. Host: Daniel - Interhome (Cairn View by Interhome). Base per Loch Morlich, Cairngorm Mountain e Loch an Eilein.",
+    airbnb: "https://www.airbnb.it/trips/v1/1729234312995742072/ro/RESERVATION2_CHECKIN/HMZ4T2DHB5"
   },
   {
     id: "bettyhill",
     name: "Bettyhill",
     dates: "Notti del 16-17 agosto",
     day: 16,
-    lat: 58.5262, lng: -4.2166,
-    note: "Base sulla costa nord per Dunrobin Castle e la giornata Tongue-Durness-Smoo Cave.",
-    airbnb: ""
+    lat: 58.5258, lng: -4.2170,
+    note: "Munro Place. Host: Angela and Ian (Cozy Bettyhill Bungalow, NC500). Base per Dunrobin Castle e la giornata Tongue-Durness-Smoo Cave.",
+    airbnb: "https://www.airbnb.it/trips/v1/1729608329082324464/ro/RESERVATION2_CHECKIN/HME3CYE43X"
   },
   {
     id: "inchbae",
     name: "Inchbae Lodge (Garve)",
     dates: "Notte del 18 agosto",
     day: 18,
-    lat: 57.6640, lng: -4.7120,
-    note: "Lodge isolato sulla A835 vicino al fiume Black Water, dopo Ullapool.",
-    airbnb: ""
+    lat: 57.6642, lng: -4.7115,
+    note: "A835. Host: Rita. Lodge isolato vicino al fiume Black Water, dopo Ullapool.",
+    airbnb: "https://www.airbnb.it/trips/v1/1729947386199202589/ro/RESERVATION2_CHECKIN/HM8DTEBE4C"
   },
   {
     id: "fortwilliam",
     name: "Fort William",
     dates: "Notti del 19-20 agosto",
     day: 19,
-    lat: 56.8198, lng: -5.1052,
-    note: "Base per Loch Ness/Urquhart Castle e per Glenfinnan/Glen Nevis.",
-    airbnb: ""
+    lat: 56.8220, lng: -5.0995,
+    note: "4 Caledonian Road. Host: West. Base per Loch Ness/Urquhart Castle e per Glenfinnan/Glen Nevis.",
+    airbnb: "https://www.airbnb.it/trips/v1/1731669783519089166/ro/RESERVATION2_CHECKIN/HM43HTTBFC"
   },
   {
     id: "oban",
     name: "Oban",
     dates: "Notti del 21-22 agosto",
     day: 21,
-    lat: 56.4152, lng: -5.4719,
-    note: "Base per Glencoe, Castle Stalker e la gita all'isola di Mull.",
-    airbnb: ""
+    lat: 56.4180, lng: -5.4740,
+    note: "2A Castle Road. Host: Lynne (OBAN Modern 2 Bed Flat, Private Parking & Garden). Base per Glencoe, Castle Stalker e la gita a Mull.",
+    airbnb: "https://www.airbnb.it/trips/v1/1731416287238703071/ro/RESERVATION2_CHECKIN/HMXTB5FHYZ"
   },
   {
     id: "stirling",
-    name: "Stirling",
+    name: "Stirling — Raploch",
     dates: "Notte del 23 agosto",
     day: 23,
-    lat: 56.1165, lng: -3.9369,
-    note: "Tappa dopo Loch Awe, Inveraray e Loch Lomond, prima del ritorno a Edimburgo.",
-    airbnb: ""
+    lat: 56.1230, lng: -3.9520,
+    note: "Raploch Road. Host: Anna (Sunny Flat Close to Stirling Castle - Free Parking). Tappa dopo Loch Awe, Inveraray e Loch Lomond.",
+    airbnb: "https://www.airbnb.it/trips/v1/1734652449716443747/ro/RESERVATION2_CHECKIN/HMXYCEMKC2"
   },
   {
     id: "leith",
-    name: "Leith (Edimburgo)",
+    name: "Edimburgo — Leith",
     dates: "Notte del 24 agosto",
     day: 24,
-    lat: 55.9750, lng: -3.1706,
-    note: "Ultima notte, vicino al porto e al Royal Yacht Britannia, prima della partenza del 25.",
-    airbnb: ""
+    lat: 55.9760, lng: -3.1665,
+    note: "4 Salamander Court, Leith. Host: Kamila (Spacious 2 bed Apartment with Free Parking). Ultima notte prima della partenza del 25.",
+    airbnb: "https://www.airbnb.it/trips/v1/1731398423639421145/ro/RESERVATION2_CHECKIN/HMCYEY9BJM"
   }
 ];
 

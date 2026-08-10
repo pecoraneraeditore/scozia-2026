@@ -97,19 +97,19 @@
   .nav-btn:hover{background:#e2ebee;}
   .popup-nav-label{font-size:.72rem;color:#8a7a5c;text-transform:uppercase;letter-spacing:.04em;margin:8px 0 4px;width:100%;}
 
-  /* Documents modal */
-  #docModal{
-    display:none;position:fixed;inset:0;background:rgba(20,25,30,.55);z-index:2000;
+  /* Modali (Documenti, Numeri utili): sfondo scuro pieno dietro, pannello bianco piatto e opaco sopra */
+  #docModal, #numbersModal{
+    display:none;position:fixed;inset:0;background:#1c2733;z-index:2000;
     align-items:center;justify-content:center;padding:20px;
   }
-  #docModal.open{display:flex;}
-  #docModal .panel{
-    background:#fff;border-radius:14px;max-width:440px;width:100%;padding:22px 24px 26px;
-    box-shadow:0 12px 40px rgba(0,0,0,.35);max-height:85vh;overflow-y:auto;
+  #docModal.open, #numbersModal.open{display:flex;}
+  .panel{
+    background:#ffffff;border-radius:14px;max-width:440px;width:100%;padding:22px 24px 26px;
+    box-shadow:0 12px 40px rgba(0,0,0,.45);max-height:85vh;overflow-y:auto;
   }
-  #docModal h2{margin:0 0 4px;font-size:1.1rem;color:var(--blue-dark);}
-  #docModal .sub{font-size:.82rem;color:#8a7a5c;margin:0 0 16px;}
-  #docModal .close-x{float:right;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999;line-height:1;}
+  .panel h2{margin:0 0 4px;font-size:1.1rem;color:var(--blue-dark);}
+  .panel .sub{font-size:.82rem;color:#8a7a5c;margin:0 0 16px;}
+  .panel .close-x{float:right;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999;line-height:1;}
   .doc-list{list-style:none;margin:0;padding:0;}
   .doc-list li{margin-bottom:8px;}
   .doc-list a{
@@ -120,11 +120,6 @@
   .doc-list a:hover{background:#f0e6d0;}
   .doc-list .ic{font-size:1.1rem;}
 
-  #numbersModal{
-    display:none;position:fixed;inset:0;background:rgba(20,25,30,.55);z-index:2000;
-    align-items:center;justify-content:center;padding:20px;
-  }
-  #numbersModal.open{display:flex;}
   .panel-wide{max-width:560px;}
   .num-group{margin-bottom:18px;}
   .num-group:last-child{margin-bottom:0;}
@@ -161,14 +156,16 @@
 
 <div class="layout">
   <aside id="sidebar">
-    <h2>Legenda</h2>
-    <div class="legend-item"><span class="dot dot-stay"></span> Alloggio (AirBnB)</div>
-    <div class="legend-item"><span class="dot dot-poi"></span> Cosa vedere</div>
+    <h2>Filtra per tipo</h2>
+    <div id="typeFilters">
+      <label class="day-chip"><input type="checkbox" checked data-type="stay"> <span class="dot dot-stay"></span> Alloggio (AirBnB)</label>
+      <label class="day-chip"><input type="checkbox" checked data-type="poi"> <span class="dot dot-poi"></span> Cosa vedere</label>
+    </div>
 
     <h2>Filtra per giorno</h2>
     <div id="dayFilters"></div>
     <div style="margin-top:10px;">
-      <button class="btn" style="background:#eee6d5;color:#26343d;" id="showAll">Mostra tutti i giorni</button>
+      <button class="btn" style="background:#eee6d5;color:#26343d;" id="showAll">Mostra tutto</button>
     </div>
   </aside>
   <div id="map"></div>
@@ -240,7 +237,7 @@
        <div class="popup-actions">${linkHtml}</div>
        ${navButtons(a.lat, a.lng)}`
     );
-    allMarkers.push({ marker: m, day: a.day });
+    allMarkers.push({ marker: m, day: a.day, type: 'stay' });
   });
 
   // POI markers
@@ -252,12 +249,8 @@
        <p class="popup-desc">${p.desc || ''}</p>
        ${navButtons(p.lat, p.lng)}`
     );
-    allMarkers.push({ marker: m, day: p.day });
+    allMarkers.push({ marker: m, day: p.day, type: 'poi' });
   });
-
-  // Route line connecting accommodations in chronological order
-  const routeCoords = ACCOMMODATIONS.map(a => [a.lat, a.lng]);
-  L.polyline(routeCoords, { color: '#1d4e6b', weight: 2, dashArray: '6 6', opacity: 0.55 }).addTo(map);
 
   // Day filter UI
   const days = [13,14,15,16,17,18,19,20,21,22,23,24,25];
@@ -271,9 +264,14 @@
     dayFiltersEl.appendChild(label);
   });
 
+  // Type filter (Alloggio / Cosa vedere)
+  const typeFiltersEl = document.getElementById('typeFilters');
+  const activeTypes = new Set(['stay', 'poi']);
+
   function applyFilter(){
-    allMarkers.forEach(({marker, day}) => {
-      if (activeDays.has(day)) {
+    allMarkers.forEach(({marker, day, type}) => {
+      const visible = activeDays.has(day) && activeTypes.has(type);
+      if (visible) {
         if (!map.hasLayer(marker)) marker.addTo(map);
       } else {
         if (map.hasLayer(marker)) map.removeLayer(marker);
@@ -287,8 +285,15 @@
     applyFilter();
   });
 
+  typeFiltersEl.addEventListener('change', (e) => {
+    const type = e.target.getAttribute('data-type');
+    if (e.target.checked) activeTypes.add(type); else activeTypes.delete(type);
+    applyFilter();
+  });
+
   document.getElementById('showAll').addEventListener('click', () => {
     document.querySelectorAll('#dayFilters input').forEach(cb => { cb.checked = true; activeDays.add(Number(cb.getAttribute('data-day'))); });
+    document.querySelectorAll('#typeFilters input').forEach(cb => { cb.checked = true; activeTypes.add(cb.getAttribute('data-type')); });
     applyFilter();
   });
 
