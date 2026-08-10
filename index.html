@@ -88,6 +88,14 @@
     font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:14px;
   }
   .popup-link.placeholder{background:#ccc0aa;color:#5c5140;cursor:default;}
+  .popup-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .nav-btn{
+    display:inline-flex;align-items:center;gap:4px;background:#eef3f5;color:var(--blue-dark);
+    text-decoration:none;font-size:.76rem;font-weight:600;padding:6px 10px;border-radius:14px;
+    border:1px solid #d9e2e6;
+  }
+  .nav-btn:hover{background:#e2ebee;}
+  .popup-nav-label{font-size:.72rem;color:#8a7a5c;text-transform:uppercase;letter-spacing:.04em;margin:8px 0 4px;width:100%;}
 
   /* Documents modal */
   #docModal{
@@ -208,6 +216,17 @@
 
   const allMarkers = []; // {marker, day}
 
+  // Genera i pulsanti "Naviga con" verso Google Maps e Waze per una coppia di coordinate.
+  function navButtons(lat, lng){
+    const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`;
+    const waze = `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
+    return `<div class="popup-nav-label">Naviga con</div>
+      <div class="popup-actions">
+        <a class="nav-btn" href="${gmaps}" target="_blank" rel="noopener">🗺️ Google Maps</a>
+        <a class="nav-btn" href="${waze}" target="_blank" rel="noopener">🚗 Waze</a>
+      </div>`;
+  }
+
   // Accommodation markers
   ACCOMMODATIONS.forEach(a => {
     const m = L.marker([a.lat, a.lng], { icon: stayIcon }).addTo(map);
@@ -218,7 +237,8 @@
       `<div class="popup-meta">Alloggio · ${a.dates}</div>
        <div class="popup-title">${a.name}</div>
        <p class="popup-desc">${a.note || ''}</p>
-       ${linkHtml}`
+       <div class="popup-actions">${linkHtml}</div>
+       ${navButtons(a.lat, a.lng)}`
     );
     allMarkers.push({ marker: m, day: a.day });
   });
@@ -229,7 +249,8 @@
     m.bindPopup(
       `<div class="popup-meta">Da vedere · ${p.date}</div>
        <div class="popup-title">${p.name}</div>
-       <p class="popup-desc">${p.desc || ''}</p>`
+       <p class="popup-desc">${p.desc || ''}</p>
+       ${navButtons(p.lat, p.lng)}`
     );
     allMarkers.push({ marker: m, day: p.day });
   });
