@@ -9,7 +9,10 @@ const ACCOMMODATIONS = [
     day: 13,
     lat: 55.9446, lng: -3.2216,
     note: "13 Rosebery Crescent, Haymarket. Host: Joivy Scotland. Camera familiare, a piedi da Royal Mile e Castello.",
-    airbnb: "https://www.airbnb.it/trips/v1/1729198868187407096/ro/RESERVATION2_CHECKIN/HMQMSDFBAF"
+    airbnb: "https://www.airbnb.it/trips/v1/1729198868187407096/ro/RESERVATION2_CHECKIN/HMQMSDFBAF",
+    checkin: "15:00", checkout: "11:00",
+    checkinMethod: "Smart lock. Contatta l'host per le istruzioni di accesso.",
+    rules: ["Self check-in con smart lock", "Massimo 4 ospiti", "Nessun animale domestico"]
   },
   {
     id: "aviemore",
@@ -18,7 +21,10 @@ const ACCOMMODATIONS = [
     day: 14,
     lat: 57.1865, lng: -3.8170,
     note: "Holiday Park, 53 Dalfaber Road. Host: Daniel - Interhome (Cairn View by Interhome). Base per Loch Morlich, Cairngorm Mountain e Loch an Eilein.",
-    airbnb: "https://www.airbnb.it/trips/v1/1729234312995742072/ro/RESERVATION2_CHECKIN/HMZ4T2DHB5"
+    airbnb: "https://www.airbnb.it/trips/v1/1729234312995742072/ro/RESERVATION2_CHECKIN/HMZ4T2DHB5",
+    checkin: "16:00", checkout: "10:00",
+    checkinMethod: "Contatta l'host (Daniel - Interhome) per sapere come effettuare il check-in.",
+    rules: ["Massimo 4 ospiti", "Nessun animale domestico", "Vietato organizzare feste o eventi"]
   },
   {
     id: "bettyhill",
@@ -27,7 +33,11 @@ const ACCOMMODATIONS = [
     day: 16,
     lat: 58.5258, lng: -4.2170,
     note: "Munro Place. Host: Angela and Ian (Cozy Bettyhill Bungalow, NC500). Base per Dunrobin Castle e la giornata Tongue-Durness-Smoo Cave.",
-    airbnb: "https://www.airbnb.it/trips/v1/1729608329082324464/ro/RESERVATION2_CHECKIN/HME3CYE43X"
+    airbnb: "https://www.airbnb.it/trips/v1/1729608329082324464/ro/RESERVATION2_CHECKIN/HME3CYE43X",
+    checkin: "16:00", checkout: "11:00",
+    checkinMethod: "Self check-in con cassetta di sicurezza. Le istruzioni per accedere arrivano 48 ore prima del check-in.",
+    rules: ["Self check-in con cassetta di sicurezza", "Massimo 5 ospiti", "Nessun animale domestico"],
+    directions: "4 Munro Place, Bettyhill KW14 7TD. Svolta su Munro Place di fronte al Bettyhill Hotel: la casa è la 4ª sulla sinistra. Parcheggio sul lato della casa."
   },
   {
     id: "inchbae",
@@ -36,7 +46,12 @@ const ACCOMMODATIONS = [
     day: 18,
     lat: 57.6642, lng: -4.7115,
     note: "A835. Host: Rita. Lodge isolato vicino al fiume Black Water, dopo Ullapool.",
-    airbnb: "https://www.airbnb.it/trips/v1/1729947386199202589/ro/RESERVATION2_CHECKIN/HM8DTEBE4C"
+    airbnb: "https://www.airbnb.it/trips/v1/1729947386199202589/ro/RESERVATION2_CHECKIN/HM8DTEBE4C",
+    checkin: "16:00", checkout: "10:00",
+    checkinMethod: "Self check-in con cassetta di sicurezza, codice inviato prima dell'arrivo.",
+    rules: ["Self check-in con cassetta di sicurezza", "Massimo 4 ospiti", "Animali domestici ammessi"],
+    directions: "ATTENZIONE: non svoltare per Inchbae Farm. Percorri la A9 oltre Keswick Bridge; alla rotonda di Tore 2ª uscita su A835; alla rotonda di Dingwall dritto; attraverso Contin; dopo 6 miglia attraverso Garve; dopo altre 6 miglia svolta a sinistra all'ingresso segnalato del River Black Water Inn, Cafe & Bar. Segui il vialetto a destra (Mountain View) e parcheggia nello spazio a sinistra dell'hotel; attraversa il cancello all'angolo e segui il sentiero fino alla porta d'ingresso.",
+    contact: "Amanda (in loco): 07342 458332"
   },
   {
     id: "fortwilliam",
@@ -45,7 +60,10 @@ const ACCOMMODATIONS = [
     day: 19,
     lat: 56.8220, lng: -5.0995,
     note: "4 Caledonian Road. Host: West. Base per Loch Ness/Urquhart Castle e per Glenfinnan/Glen Nevis.",
-    airbnb: "https://www.airbnb.it/trips/v1/1731669783519089166/ro/RESERVATION2_CHECKIN/HM43HTTBFC"
+    airbnb: "https://www.airbnb.it/trips/v1/1731669783519089166/ro/RESERVATION2_CHECKIN/HM43HTTBFC",
+    checkin: "16:00", checkout: "10:00",
+    checkinMethod: "Self check-in con cassetta di sicurezza.",
+    rules: ["Self check-in con cassetta di sicurezza", "Massimo 4 ospiti", "Animali domestici ammessi"]
   },
   {
     id: "oban",
@@ -54,7 +72,11 @@ const ACCOMMODATIONS = [
     day: 21,
     lat: 56.4180, lng: -5.4740,
     note: "2A Castle Road. Host: Lynne (OBAN Modern 2 Bed Flat, Private Parking & Garden). Base per Glencoe, Castle Stalker e la gita a Mull.",
-    airbnb: "https://www.airbnb.it/trips/v1/1731416287238703071/ro/RESERVATION2_CHECKIN/HMXTB5FHYZ"
+    airbnb: "https://www.airbnb.it/trips/v1/1731416287238703071/ro/RESERVATION2_CHECKIN/HMXTB5FHYZ",
+    checkin: "15:00", checkout: "10:00",
+    checkinMethod: "Self check-in con cassetta di sicurezza. Check-in dalle 15:00, check-out entro le 10:00.",
+    rules: ["Self check-in con cassetta di sicurezza", "Massimo 4 ospiti", "Nessun animale domestico"],
+    directions: "Al 1° roundabout prendi la 2ª uscita restando su A85; al 2° roundabout 1ª uscita su Corran Esplanade; prosegui fino alla chiesa in pietra marrone, svolta a destra e sali la collina; in cima trovi una fermata bus sulla destra, prendi la 1ª a sinistra su Castle Road; la destinazione (2A Castle Road) è sulla destra, con parcheggio privato."
   },
   {
     id: "stirling",
@@ -63,7 +85,10 @@ const ACCOMMODATIONS = [
     day: 23,
     lat: 56.1230, lng: -3.9520,
     note: "Raploch Road. Host: Anna (Sunny Flat Close to Stirling Castle - Free Parking). Tappa dopo Loch Awe, Inveraray e Loch Lomond.",
-    airbnb: "https://www.airbnb.it/trips/v1/1734652449716443747/ro/RESERVATION2_CHECKIN/HMXYCEMKC2"
+    airbnb: "https://www.airbnb.it/trips/v1/1734652449716443747/ro/RESERVATION2_CHECKIN/HMXYCEMKC2",
+    checkin: "14:00", checkout: "11:00",
+    checkinMethod: "Self check-in con cassetta di sicurezza.",
+    rules: ["Self check-in con cassetta di sicurezza", "Animali domestici ammessi"]
   },
   {
     id: "leith",
@@ -72,7 +97,12 @@ const ACCOMMODATIONS = [
     day: 24,
     lat: 55.9760, lng: -3.1665,
     note: "4 Salamander Court, Leith. Host: Kamila (Spacious 2 bed Apartment with Free Parking). Ultima notte prima della partenza del 25.",
-    airbnb: "https://www.airbnb.it/trips/v1/1731398423639421145/ro/RESERVATION2_CHECKIN/HMCYEY9BJM"
+    airbnb: "https://www.airbnb.it/trips/v1/1731398423639421145/ro/RESERVATION2_CHECKIN/HMCYEY9BJM",
+    checkin: "15:00", checkout: "11:00",
+    checkinMethod: "Self check-in con cassetta di sicurezza.",
+    rules: ["Self check-in con cassetta di sicurezza", "Massimo 4 ospiti", "Nessun animale domestico"],
+    directions: "4 Salamander Court, Edinburgh EH6 7HY. Dall'aeroporto (EDI): in tram verso Newhaven, scendi a The Shore, poi 10 minuti a piedi (oppure taxi/Uber 30-40 minuti). In auto: naviga verso \"Salamander Court, Edinburgh\", parcheggio privato gratuito incluso.",
+    nearby: "The Shore ~10 min a piedi · Fermata tram The Shore ~5 min a piedi · Ocean Terminal ~15 min a piedi · Centro di Edimburgo ~15 min in tram · Portobello Beach ~15 min in auto"
   }
 ];
 

@@ -1,12 +1,28 @@
 # Scozia 2026 — sito del viaggio
 
-Pagina web statica con mappa interattiva del viaggio (13–25 agosto 2026): marker distinti per alloggi (🏠) e cose da vedere (📍), filtro per giorno, e un pulsante "Documenti di viaggio" con i PDF scaricabili (biglietti, ETA, assicurazione, voucher auto).
+Pagina web statica con mappa interattiva del viaggio (13–25 agosto 2026): marker distinti per alloggi (🏠) e cose da vedere (📍), filtro per giorno, pulsanti "Documenti di viaggio" e "Numeri utili", una scheda "Check-in & regole" per ogni alloggio, e una galleria foto/video condivisa.
 
 ## File
 
 - `index.html` — la pagina (mappa Leaflet/OpenStreetMap, nessuna chiave API richiesta)
-- `data.js` — tutti i dati: alloggi, luoghi da vedere, documenti. **Modifica solo questo file** per aggiornare contenuti.
+- `data.js` — tutti i dati: alloggi (con orari di check-in/out e regole della casa), luoghi da vedere, documenti, numeri utili. **Modifica solo questo file** per aggiornare i contenuti testuali.
 - `documenti/` — i PDF scaricabili dalla pagina.
+- `favicon.svg` — l'icona del sito (bandiera scozzese, il saltire).
+- `gallery.js` — logica della galleria foto (upload, riconoscimento doppioni, visualizzazione).
+- `supabase-config.js` — **da configurare** perché la galleria funzioni: contiene le istruzioni passo-passo per collegare un progetto Supabase gratuito (nessuna carta di credito richiesta). Finché non è configurato, il pulsante "Galleria" mostra solo un avviso.
+- `firebase-config.js` — non più usato (la galleria non usa più Firebase), lasciato solo come nota.
+
+## Check-in, check-out e regole della casa
+
+Nel popup di ogni alloggio sulla mappa c'è ora un pulsante "📋 Check-in & regole" che apre una scheda con orari, metodo di accesso, regole della casa e indicazioni per arrivare. Per modificarli, cerca l'alloggio in `data.js` e aggiorna i campi `checkin`, `checkout`, `checkinMethod`, `rules`, `directions`, `contact`, `nearby`.
+
+## Galleria foto
+
+Il pulsante "📷 Galleria foto" in alto apre la galleria condivisa (solo foto, non video). Da telefono, "Aggiungi foto" apre direttamente il selettore di foto del dispositivo con selezione multipla. Prima di caricare un file, il sito ne calcola un'impronta digitale e — se una foto identica è già presente — chiede "Foto già presente, vuoi caricarla lo stesso?".
+
+Poiché il sito è statico (pubblicato su GitHub Pages, senza un server proprio), la galleria si appoggia a **Supabase** (piano gratuito, nessuna carta di credito richiesta) per salvare i file e renderli visibili a tutti, su ogni dispositivo. Va configurata una sola volta: apri `supabase-config.js` e segui le istruzioni scritte lì dentro.
+
+Limiti del piano gratuito Supabase da tenere a mente: 1 GB di spazio per le foto, e il progetto va "in pausa" se resta inattivo per 7 giorni di fila (si riattiva con un clic nella dashboard Supabase).
 
 ## Come aggiungere i link AirBnB
 

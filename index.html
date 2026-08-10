@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scozia 2026 — Mappa del viaggio</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <style>
   :root{
@@ -30,7 +31,8 @@
     position:relative;
     z-index:1000;
   }
-  header h1{margin:0;font-size:1.25rem;letter-spacing:.02em;}
+  header h1{margin:0;font-size:1.25rem;letter-spacing:.02em;display:flex;align-items:center;gap:10px;}
+  .flag-icon{width:28px;height:auto;flex-shrink:0;border-radius:3px;box-shadow:0 0 0 1px rgba(255,255,255,.45);}
   header p{margin:2px 0 0;font-size:.82rem;opacity:.85;}
   .header-actions{display:flex;gap:8px;flex-wrap:wrap;}
   .btn{
@@ -84,10 +86,12 @@
   .popup-meta{font-size:.75rem;color:#8a7a5c;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
   .popup-desc{font-size:.86rem;line-height:1.35;margin:0 0 8px;}
   .popup-link{
-    display:inline-block;background:var(--accent-stay);color:#fff;text-decoration:none;
-    font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:14px;
+    display:inline-block;background:#fff;color:var(--accent-stay);text-decoration:none;
+    font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:14px;
+    border:2px solid var(--accent-stay);
   }
-  .popup-link.placeholder{background:#ccc0aa;color:#5c5140;cursor:default;}
+  .popup-link.placeholder{background:#f2ede0;color:#8a7a5c;border-color:#ccc0aa;cursor:default;}
+  .rules-btn{background:var(--blue);color:#fff;border:2px solid var(--blue);font:inherit;cursor:pointer;}
   .popup-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
   .nav-btn{
     display:inline-flex;align-items:center;gap:4px;background:#eef3f5;color:var(--blue-dark);
@@ -98,11 +102,11 @@
   .popup-nav-label{font-size:.72rem;color:#8a7a5c;text-transform:uppercase;letter-spacing:.04em;margin:8px 0 4px;width:100%;}
 
   /* Modali (Documenti, Numeri utili): sfondo scuro pieno dietro, pannello bianco piatto e opaco sopra */
-  #docModal, #numbersModal{
+  #docModal, #numbersModal, #rulesModal, #galleryModal{
     display:none;position:fixed;inset:0;background:#1c2733;z-index:2000;
     align-items:center;justify-content:center;padding:20px;
   }
-  #docModal.open, #numbersModal.open{display:flex;}
+  #docModal.open, #numbersModal.open, #rulesModal.open, #galleryModal.open{display:flex;}
   .panel{
     background:#ffffff;border-radius:14px;max-width:440px;width:100%;padding:22px 24px 26px;
     box-shadow:0 12px 40px rgba(0,0,0,.45);max-height:85vh;overflow-y:auto;
@@ -133,6 +137,28 @@
   .num-value{font-weight:700;color:var(--blue-dark);white-space:nowrap;text-decoration:none;}
   .num-value.linkable{color:var(--accent-stay);}
 
+  .rules-block{margin-bottom:14px;}
+  .rules-block:last-of-type{margin-bottom:10px;}
+  .rules-h3{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:0 0 4px;}
+  .rules-text{font-size:.86rem;line-height:1.4;margin:0 0 4px;color:#3c332a;white-space:pre-line;}
+  .rules-list{margin:0;padding-left:18px;font-size:.86rem;line-height:1.5;}
+  .rules-list li{margin-bottom:2px;}
+
+  /* Galleria */
+  .panel-gallery{max-width:900px;width:94%;max-height:90vh;}
+  .gallery-warning{background:#fdeee0;border:1px solid #eccba3;color:#7a4a12;padding:10px 12px;border-radius:8px;font-size:.85rem;margin-bottom:14px;}
+  .gallery-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .upload-status{font-size:.8rem;color:#7a6a52;}
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;max-height:55vh;overflow-y:auto;padding-bottom:6px;}
+  .gallery-item{position:relative;aspect-ratio:1/1;border-radius:8px;overflow:hidden;cursor:pointer;background:#eee6d5;border:none;padding:0;}
+  .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;}
+  .gallery-empty{grid-column:1/-1;font-size:.85rem;color:#8a7a5c;text-align:center;padding:20px;}
+
+  #lightbox{display:none;position:fixed;inset:0;background:rgba(10,15,20,.92);z-index:3000;align-items:center;justify-content:center;padding:20px;}
+  #lightbox.open{display:flex;}
+  #lightbox img{max-width:100%;max-height:90vh;border-radius:6px;}
+  .lightbox-close{position:absolute;top:16px;right:20px;color:#fff;font-size:2rem;background:none;border:none;cursor:pointer;}
+
   @media (max-width:720px){
     .layout{flex-direction:column;}
     #sidebar{width:100%;max-height:38vh;border-right:none;border-bottom:1px solid #e3d9c6;}
@@ -145,12 +171,20 @@
 
 <header>
   <div>
-    <h1>🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scozia 2026</h1>
+    <h1>
+      <svg class="flag-icon" viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bandiera della Scozia">
+        <rect width="60" height="36" fill="#0065BD"/>
+        <line x1="0" y1="0" x2="60" y2="36" stroke="#FFFFFF" stroke-width="9"/>
+        <line x1="60" y1="0" x2="0" y2="36" stroke="#FFFFFF" stroke-width="9"/>
+      </svg>
+      Scozia 2026
+    </h1>
     <p>13 – 25 agosto · Edimburgo → Highlands → Isole → ritorno</p>
   </div>
   <div class="header-actions">
     <button class="btn" id="openDocs">📄 Documenti di viaggio</button>
     <button class="btn" id="openNumbers">📞 Numeri utili</button>
+    <button class="btn" id="openGallery">📷 Galleria foto</button>
   </div>
 </header>
 
@@ -187,6 +221,60 @@
     <p class="sub">Emergenze, consolato italiano e blocco carte. Controllati ad agosto 2026: prima di partire vale la pena ricontrollare i numeri sul retro delle carte.</p>
     <div id="numbersEl"></div>
   </div>
+</div>
+
+<div id="rulesModal">
+  <div class="panel panel-wide">
+    <button class="close-x" id="closeRules">&times;</button>
+    <h2 id="rulesTitle">Regole della casa</h2>
+    <p class="sub" id="rulesSub"></p>
+
+    <div class="rules-block">
+      <h3 class="rules-h3">Check-in</h3>
+      <p id="rulesMethod" class="rules-text"></p>
+    </div>
+    <div class="rules-block">
+      <h3 class="rules-h3">Regole</h3>
+      <ul class="rules-list" id="rulesListEl"></ul>
+    </div>
+    <div class="rules-block">
+      <h3 class="rules-h3">Come arrivare</h3>
+      <p id="rulesDirections" class="rules-text"></p>
+      <p id="rulesContact" class="rules-text"></p>
+    </div>
+    <div class="rules-block">
+      <h3 class="rules-h3">Nelle vicinanze</h3>
+      <p id="rulesNearby" class="rules-text"></p>
+    </div>
+    <a id="rulesAirbnbLink" class="popup-link" href="#" target="_blank" rel="noopener">Vedi annuncio completo su AirBnB →</a>
+  </div>
+</div>
+
+<div id="galleryModal">
+  <div class="panel panel-gallery">
+    <button class="close-x" id="closeGallery">&times;</button>
+    <h2>Galleria foto</h2>
+    <p class="sub">Le foto del viaggio, condivise tra tutti.</p>
+
+    <div id="galleryNotConfigured" class="gallery-warning">
+      La galleria non è ancora collegata. Apri il file <code>supabase-config.js</code> nella cartella del sito e segui le istruzioni per collegare un progetto Supabase gratuito.
+    </div>
+
+    <div id="galleryBody" style="display:none;">
+      <div class="gallery-toolbar">
+        <button class="btn" id="addPhotosBtn" type="button" style="background:#eee6d5;color:#26343d;">➕ Aggiungi foto</button>
+        <span id="uploadStatus" class="upload-status"></span>
+      </div>
+      <input type="file" id="inputPhotos" accept="image/*" multiple hidden>
+
+      <div class="gallery-grid" id="gridPhotos"></div>
+    </div>
+  </div>
+</div>
+
+<div id="lightbox">
+  <button class="close-x lightbox-close" id="closeLightbox" type="button">&times;</button>
+  <div id="lightboxContent"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -230,11 +318,12 @@
     const linkHtml = a.airbnb
       ? `<a class="popup-link" href="${a.airbnb}" target="_blank" rel="noopener">Vedi su AirBnB →</a>`
       : `<span class="popup-link placeholder">Link AirBnB in arrivo</span>`;
+    const rulesHtml = `<button class="popup-link rules-btn" type="button" data-rules-id="${a.id}">📋 Check-in & regole</button>`;
     m.bindPopup(
       `<div class="popup-meta">Alloggio · ${a.dates}</div>
        <div class="popup-title">${a.name}</div>
        <p class="popup-desc">${a.note || ''}</p>
-       <div class="popup-actions">${linkHtml}</div>
+       <div class="popup-actions">${linkHtml}${rulesHtml}</div>
        ${navButtons(a.lat, a.lng)}`
     );
     allMarkers.push({ marker: m, day: a.day, type: 'stay' });
@@ -327,6 +416,57 @@
   document.getElementById('openNumbers').addEventListener('click', () => numbersModal.classList.add('open'));
   document.getElementById('closeNumbers').addEventListener('click', () => numbersModal.classList.remove('open'));
   numbersModal.addEventListener('click', (e) => { if (e.target === numbersModal) numbersModal.classList.remove('open'); });
+
+  // Modale "Regole della casa" — aperta dal pulsante nel popup di ogni alloggio
+  const rulesModal = document.getElementById('rulesModal');
+  document.getElementById('closeRules').addEventListener('click', () => rulesModal.classList.remove('open'));
+  rulesModal.addEventListener('click', (e) => { if (e.target === rulesModal) rulesModal.classList.remove('open'); });
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-rules-id]');
+    if (!btn) return;
+    const acc = ACCOMMODATIONS.find(a => a.id === btn.getAttribute('data-rules-id'));
+    if (!acc) return;
+
+    document.getElementById('rulesTitle').textContent = acc.name;
+    document.getElementById('rulesSub').textContent =
+      `Check-in ${acc.checkin || '—'} · Check-out ${acc.checkout || '—'}`;
+
+    const rulesListEl = document.getElementById('rulesListEl');
+    rulesListEl.innerHTML = '';
+    (acc.rules || []).forEach(r => {
+      const li = document.createElement('li');
+      li.textContent = r;
+      rulesListEl.appendChild(li);
+    });
+
+    const methodEl = document.getElementById('rulesMethod');
+    methodEl.textContent = acc.checkinMethod || '';
+    methodEl.style.display = acc.checkinMethod ? '' : 'none';
+    methodEl.previousElementSibling.style.display = acc.checkinMethod ? '' : 'none';
+
+    const dirEl = document.getElementById('rulesDirections');
+    dirEl.textContent = acc.directions || '';
+    dirEl.style.display = acc.directions ? '' : 'none';
+
+    const contactEl = document.getElementById('rulesContact');
+    contactEl.textContent = acc.contact ? `Contatto in loco: ${acc.contact}` : '';
+    contactEl.style.display = acc.contact ? '' : 'none';
+
+    const dirBlock = dirEl.closest('.rules-block');
+    dirBlock.style.display = (acc.directions || acc.contact) ? '' : 'none';
+
+    const nearbyEl = document.getElementById('rulesNearby');
+    nearbyEl.textContent = acc.nearby || '';
+    nearbyEl.closest('.rules-block').style.display = acc.nearby ? '' : 'none';
+
+    const linkEl = document.getElementById('rulesAirbnbLink');
+    if (acc.airbnb) { linkEl.href = acc.airbnb; linkEl.style.display = ''; }
+    else { linkEl.style.display = 'none'; }
+
+    rulesModal.classList.add('open');
+  });
 </script>
+<script type="module" src="gallery.js"></script>
 </body>
 </html>
