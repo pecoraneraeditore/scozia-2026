@@ -142,22 +142,59 @@ function renderGrid(rows) {
     return;
   }
   rows.forEach(row => {
-    const item = document.createElement('button');
-    item.type = 'button';
+    const item = document.createElement('div');
     item.className = 'gallery-item';
-    item.innerHTML = `<img src="${row.url}" alt="${row.name || ''}" loading="lazy">`;
-    item.addEventListener('click', () => openLightbox(row));
+    item.innerHTML = `
+      <button type="button" class="gallery-thumb-btn"><img src="${row.url}" alt="${row.name || ''}" loading="lazy"></button>
+      <button type="button" class="gallery-delete-btn" title="Elimina foto">🗑</button>
+    `;
+    item.querySelector('.gallery-thumb-btn').addEventListener('click', () => openLightbox(row));
+    item.querySelector('.gallery-delete-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      confirmAndDelete(row);
+    });
     gridPhotos.appendChild(item);
   });
 }
 
+async function confirmAndDelete(row) {
+  const label = row.name ? `"${row.name}"` : 'questa foto';
+  if (!confirm(`Eliminare ${label}? Non si può annullare.`)) return;
+  try {
+    if (row.path) {
+      const { error: rmErr } = await supabase.storage.from(BUCKET).remove([row.path]);
+      if (rmErr) console.error('Errore nella rimozione del file:', rmErr);
+    }
+    const { error: delErr } = await supabase.from(TABLE).delete().eq('id', row.id);
+    if (delErr) throw delErr;
+    uploadStatus.textContent = 'Foto eliminata.';
+    setTimeout(() => { uploadStatus.textContent = ''; }, 3000);
+    if (currentLightboxRow && currentLightboxRow.id === row.id) closeLightbox();
+    await loadPhotos();
+  } catch (err) {
+    console.error(err);
+    alert("Errore durante l'eliminazione. Riprova.");
+  }
+}
+
+let currentLightboxRow = null;
+
 function openLightbox(row) {
+  currentLightboxRow = row;
   lightboxContent.innerHTML = `<img src="${row.url}" alt="${row.name || ''}">`;
   lightbox.classList.add('open');
 }
 function closeLightbox() {
   lightbox.classList.remove('open');
   lightboxContent.innerHTML = '';
+  currentLightboxRow = null;
 }
 closeLightboxBtn.addEventListener('click', closeLightbox);
 lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+const deleteLightboxBtn = document.getElementById('deleteLightboxBtn');
+if (deleteLightboxBtn) {
+  deleteLightboxBtn.addEventListener('click', () => {
+    if (currentLightboxRow) confirmAndDelete(currentLightboxRow);
+  });
+}

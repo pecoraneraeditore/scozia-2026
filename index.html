@@ -150,14 +150,26 @@
   .gallery-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
   .upload-status{font-size:.8rem;color:#7a6a52;}
   .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;max-height:55vh;overflow-y:auto;padding-bottom:6px;}
-  .gallery-item{position:relative;aspect-ratio:1/1;border-radius:8px;overflow:hidden;cursor:pointer;background:#eee6d5;border:none;padding:0;}
+  .gallery-item{position:relative;aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:#eee6d5;}
+  .gallery-thumb-btn{all:unset;display:block;width:100%;height:100%;cursor:pointer;}
   .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;}
+  .gallery-delete-btn{
+    position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;
+    background:rgba(20,20,20,.6);color:#fff;border:none;font-size:.8rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;padding:0;
+  }
+  .gallery-delete-btn:hover{background:rgba(180,40,30,.85);}
   .gallery-empty{grid-column:1/-1;font-size:.85rem;color:#8a7a5c;text-align:center;padding:20px;}
 
   #lightbox{display:none;position:fixed;inset:0;background:rgba(10,15,20,.92);z-index:3000;align-items:center;justify-content:center;padding:20px;}
   #lightbox.open{display:flex;}
   #lightbox img{max-width:100%;max-height:90vh;border-radius:6px;}
   .lightbox-close{position:absolute;top:16px;right:20px;color:#fff;font-size:2rem;background:none;border:none;cursor:pointer;}
+  .lightbox-delete{
+    position:absolute;top:20px;left:20px;background:rgba(193,68,14,.9);color:#fff;border:none;
+    padding:8px 16px;border-radius:20px;font-size:.85rem;font-weight:600;cursor:pointer;
+  }
+  .lightbox-delete:hover{background:rgba(160,50,0,.95);}
 
   @media (max-width:720px){
     .layout{flex-direction:column;}
@@ -274,6 +286,7 @@
 
 <div id="lightbox">
   <button class="close-x lightbox-close" id="closeLightbox" type="button">&times;</button>
+  <button class="lightbox-delete" id="deleteLightboxBtn" type="button">🗑 Elimina</button>
   <div id="lightboxContent"></div>
 </div>
 
