@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scozia 2026 — Programma completo</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icona_scozia.png">
+<meta name="apple-mobile-web-app-title" content="Scozia 2026">
+<style>
+  :root{
+    --blue:#1d4e6b;
+    --blue-dark:#123449;
+    --sand:#f4ede1;
+    --accent-stay:#c1440e;
+    --accent-poi:#1f7a5c;
+    --paper:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;font-family:"Segoe UI",Helvetica,Arial,sans-serif;color:#26343d;background:var(--sand);}
+
+  header{
+    background:linear-gradient(120deg,var(--blue-dark),var(--blue));
+    color:#fff;
+    padding:14px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.25);
+    position:relative;
+    z-index:10;
+  }
+  header h1{margin:0;font-size:1.25rem;letter-spacing:.02em;display:flex;align-items:center;gap:10px;}
+  .flag-icon{width:28px;height:auto;flex-shrink:0;border-radius:3px;box-shadow:0 0 0 1px rgba(255,255,255,.45);}
+  header p{margin:2px 0 0;font-size:.82rem;opacity:.85;}
+  .header-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .btn{
+    background:#fff;color:var(--blue-dark);border:none;border-radius:20px;
+    padding:9px 16px;font-size:.85rem;font-weight:600;cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;text-decoration:none;
+    box-shadow:0 1px 3px rgba(0,0,0,.25);
+    transition:transform .12s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+
+  #dayNav{
+    position:sticky;top:0;z-index:9;
+    background:var(--paper);border-bottom:1px solid #e3d9c6;
+    padding:10px 20px;display:flex;gap:6px;flex-wrap:wrap;
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
+  }
+  .day-nav-chip{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:34px;height:30px;padding:0 8px;border-radius:15px;
+    background:#eef3f5;color:var(--blue-dark);font-size:.82rem;font-weight:700;
+    text-decoration:none;border:1px solid #d9e2e6;
+  }
+  .day-nav-chip:hover{background:var(--blue);color:#fff;}
+
+  main{max-width:820px;margin:0 auto;padding:22px 18px 60px;}
+
+  .overview-card{
+    background:var(--paper);border-radius:14px;padding:18px 20px;margin-bottom:24px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+  }
+  .overview-card h2{margin:0 0 4px;color:var(--blue-dark);font-size:1.05rem;}
+  .overview-card .sub{margin:0 0 14px;font-size:.82rem;color:#8a7a5c;}
+
+  .day-card{
+    background:var(--paper);border-radius:14px;padding:20px 22px 24px;margin-bottom:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);scroll-margin-top:64px;
+  }
+  .day-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px;
+    border-bottom:2px solid var(--sand);padding-bottom:10px;}
+  .day-date{
+    background:var(--accent-stay);color:#fff;font-weight:700;font-size:.8rem;
+    padding:4px 10px;border-radius:12px;flex-shrink:0;white-space:nowrap;
+  }
+  .day-head h2{margin:0;font-size:1.15rem;color:var(--blue-dark);line-height:1.3;}
+
+  .day-intro p{font-size:.92rem;line-height:1.5;color:#3c332a;margin:0 0 14px;}
+
+  .day-block{margin-bottom:16px;}
+  .day-block:last-child{margin-bottom:0;}
+  .day-block h3{
+    font-size:.86rem;color:var(--blue);margin:0 0 6px;
+    text-transform:uppercase;letter-spacing:.03em;
+    border-left:3px solid var(--accent-poi);padding-left:8px;
+  }
+  .day-block p{font-size:.9rem;line-height:1.5;color:#3c332a;margin:0 0 8px;}
+  .day-block ul{margin:0 0 8px;padding-left:20px;font-size:.9rem;line-height:1.5;color:#3c332a;}
+  .day-block li{margin-bottom:2px;}
+
+  .table-wrap{overflow-x:auto;margin:0 0 10px;}
+  table{border-collapse:collapse;width:100%;font-size:.82rem;}
+  thead th{
+    background:var(--blue);color:#fff;text-align:left;padding:7px 10px;
+    font-weight:600;white-space:nowrap;
+  }
+  tbody td{padding:6px 10px;border-bottom:1px solid #ece2cc;color:#3c332a;}
+  tbody tr:nth-child(even){background:#faf6ee;}
+
+  .back-top{
+    position:fixed;bottom:18px;right:18px;
+    background:var(--blue);color:#fff;border:none;border-radius:50%;
+    width:44px;height:44px;font-size:1.2rem;cursor:pointer;
+    box-shadow:0 3px 10px rgba(0,0,0,.3);text-decoration:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  @media (max-width:720px){
+    header h1{font-size:1.05rem;}
+    #dayNav{padding:8px 10px;gap:4px;}
+    main{padding:16px 12px 60px;}
+    .day-card{padding:16px 16px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>
+      <svg class="flag-icon" viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bandiera della Scozia">
+        <rect width="60" height="36" fill="#0065BD"/>
+        <line x1="0" y1="0" x2="60" y2="36" stroke="#FFFFFF" stroke-width="9"/>
+        <line x1="60" y1="0" x2="0" y2="36" stroke="#FFFFFF" stroke-width="9"/>
+      </svg>
+      Programma completo
+    </h1>
+    <p>13 – 25 agosto · giorno per giorno, con orari indicativi</p>
+  </div>
+  <div class="header-actions">
+    <a class="btn" href="index.html">🗺️ Torna alla mappa</a>
+  </div>
+</header>
+
+<nav id="dayNav" aria-label="Vai al giorno">
+<a class="day-nav-chip" href="#day-13">13</a><a class="day-nav-chip" href="#day-14">14</a><a class="day-nav-chip" href="#day-15">15</a><a class="day-nav-chip" href="#day-16">16</a><a class="day-nav-chip" href="#day-17">17</a><a class="day-nav-chip" href="#day-18">18</a><a class="day-nav-chip" href="#day-19">19</a><a class="day-nav-chip" href="#day-20">20</a><a class="day-nav-chip" href="#day-21">21</a><a class="day-nav-chip" href="#day-22">22</a><a class="day-nav-chip" href="#day-23">23</a><a class="day-nav-chip" href="#day-24">24</a><a class="day-nav-chip" href="#day-25">25</a>
+</nav>
+
+<main>
+  <div class="overview-card">
+    <h2>Riepilogo trasferimenti principali</h2>
+    <p class="sub">Distanze e tempi di guida stimati per i giorni con cambio alloggio.</p>
+    <div class="table-wrap"><table><thead><tr><th>Data</th><th>Trasferimento</th><th>Distanza</th><th>Guida senza soste</th><th>Tempo realistico</th></tr></thead><tbody><tr><td>14 agosto</td><td>Edimburgo → Aviemore</td><td>circa 204 km</td><td>2 h 30 min</td><td>3–4 h con sosta</td></tr><tr><td>16 agosto</td><td>Aviemore → Bettyhill</td><td>circa 196 km</td><td>2 h 35 min</td><td>3–3 h 30 min</td></tr><tr><td>18 agosto</td><td>Bettyhill → Inchbae Lodge</td><td>circa 170 km</td><td>3 h</td><td>3 h 30–4 h</td></tr><tr><td>19 agosto</td><td>Inchbae Lodge → Fort William</td><td>circa 160 km</td><td>2 h 30 min</td><td>5–6 h visitando Loch Ness</td></tr><tr><td>21 agosto</td><td>Fort William → Oban</td><td>circa 71 km diretti</td><td>1 h 10 min</td><td>3–4 h visitando Glencoe</td></tr><tr><td>23 agosto</td><td>Oban → Stirling</td><td>circa 140 km</td><td>2 h 10 min</td><td>3–4 h con soste</td></tr><tr><td>24 agosto</td><td>Stirling → Edimburgo</td><td>circa 58 km</td><td>50–60 min</td><td>1 h–1 h 15 min</td></tr><tr><td>25 agosto</td><td>Leith → Aeroporto di Edimburgo</td><td>circa 17 km</td><td>30–45 min</td><td>prevedere margine per riconsegna auto</td></tr><tr><td></td><td>Totale trasferimenti principali</td><td>circa 1.020 km</td><td></td><td></td></tr></tbody></table></div>
+  </div>
+
+
+<section class="day-card" id="day-13">
+  <div class="day-head">
+    <span class="day-date">13 agosto</span>
+    <h2>Edimburgo storica: Old Town, Fringe e Calton Hill</h2>
+  </div>
+  <div class="day-intro"><p>Questa prima giornata è dedicata alle attrazioni essenziali della Old Town. Poiché il volo arriva alle 13:00, il programma considera il tempo necessario per sbarco, ritiro dell’automobile, trasferimento e sistemazione nell’alloggio. Non è previsto l’ingresso a Edinburgh Castle: ne vedrete la spianata e le prospettive più iconiche.</p></div>
+  <div class="day-block"><h3>Programma indicativo</h3><p>13:00 – Arrivo all’aeroporto di Edimburgo.</p>
+<p>13:00–15:30 – Sbarco, ritiro dell’auto, trasferimento e check-in.</p>
+<p>15:30–16:00 – St Giles’ Cathedral, iniziando da qui perché gli orari di apertura possono essere più limitati rispetto agli spazi esterni.</p>
+<p>16:00–16:45 – Royal Mile e due o tre closes della città medievale.</p>
+<p>16:45–17:15 – Edinburgh Castle Esplanade e panorama, senza visita interna.</p>
+<p>17:15–17:45 – Victoria Street.</p>
+<p>17:45–18:15 – Grassmarket.</p>
+<p>18:15–18:50 – Greyfriars Bobby e Greyfriars Kirkyard.</p>
+<p>19:00–20:00 – Cena nella zona di Grassmarket o Old Town.</p>
+<p>20:00–20:40 – Atmosfera e artisti di strada dell’Edinburgh Festival Fringe.</p>
+<p>20:40–21:30 – Calton Hill, se il cielo è limpido e avete ancora energia.</p></div>
+<div class="day-block"><h3>15:30–16:00 – St Giles’ Cathedral</h3><p>St Giles’ è la principale chiesa storica di Edimburgo e la “Mother Kirk” del presbiterianesimo scozzese. La visita può comprendere la navata, la Thistle Chapel e le vetrate. Se, a causa di un ritardo, la chiesa fosse già chiusa, osservate l’esterno e proseguite senza modificare il resto della giornata.</p></div>
+<div class="day-block"><h3>16:00–16:45 – Royal Mile e closes</h3><p>Percorrete la parte più caratteristica del Royal Mile entrando in due o tre dei vicoli, o closes, che si aprono tra gli edifici. Non occorre visitarli tutti: l’obiettivo è percepire la struttura verticale e stratificata della città medievale, osservando cortili, passaggi e scorci sulla New Town.</p></div>
+<div class="day-block"><h3>16:45–17:15 – Edinburgh Castle Esplanade</h3><p>Raggiungete la grande spianata esterna per osservare il castello e il panorama. Non entrate: nel corso del viaggio visiterete già Dunrobin, Urquhart e Duart Castle. L’esterno del castello di Edimburgo resta comunque una delle immagini fondamentali della città.</p></div>
+<div class="day-block"><h3>17:15–18:15 – Victoria Street e Grassmarket</h3><p>Scendete lungo la curva colorata di Victoria Street, spesso collegata all’immaginario di Harry Potter, e raggiungete Grassmarket. Dalla piazza si apre una delle vedute più spettacolari sulla rocca del castello.</p></div>
+<div class="day-block"><h3>18:15–18:50 – Greyfriars</h3><p>Raggiungete la statua di Greyfriars Bobby e il vicino Greyfriars Kirkyard. Il cimitero è uno dei luoghi più suggestivi della Old Town ed è legato anche alle storie che hanno ispirato alcuni nomi dell’universo di Harry Potter. Mantenete un comportamento rispettoso: si tratta di un luogo di sepoltura ancora attivo.</p></div>
+<div class="day-block"><h3>Dopo cena – Fringe e Calton Hill</h3><p>Il 13 agosto la città sarà nel pieno dell’Edinburgh Festival Fringe. Dopo cena godetevi per qualche tempo artisti e spettacoli di strada. Se il meteo è favorevole, concludete a Calton Hill: la salita è breve e offre la vista più completa su Old Town, New Town, Arthur’s Seat e Firth of Forth. In caso di stanchezza, Calton Hill è la prima attività da eliminare.</p></div>
+<div class="day-block"><h3>Priorità in caso di ritardo</h3><p>Mantenete, in quest’ordine: Royal Mile e St Giles; Castle Esplanade; Victoria Street e Grassmarket; Greyfriars; Fringe; Calton Hill. Se arrivate in centro dopo le 16:30, limitate St Giles all’esterno.</p></div>
+<div class="day-block"><h3>Abbigliamento e spostamenti</h3><p>Indossate scarpe comode per pavé e salite, abbigliamento a strati e giacca impermeabile. Una volta parcheggiata l’automobile, effettuate l’intero itinerario a piedi; in agosto traffico e parcheggi della Old Town sono particolarmente problematici.</p></div>
+</section>
+
+<section class="day-card" id="day-14">
+  <div class="day-head">
+    <span class="day-date">14 agosto</span>
+    <h2>Edimburgo → Aviemore</h2>
+  </div>
+  <div class="day-intro"><p>Per questa seconda giornata farei una combinazione di foresta, cittadina scozzese e primo contatto con i Cairngorms. Il programma resta sostenibile anche per i ragazzi.</p></div>
+  <div class="day-block"><h3>Programma dettagliato</h3><div class="table-wrap"><table><thead><tr><th>Orario</th><th>Attività</th><th>Km/tempo</th></tr></thead><tbody><tr><td>8:00–9:00</td><td>Colazione e check-out</td><td>—</td></tr><tr><td>9:00</td><td>Partenza da Edimburgo</td><td>—</td></tr><tr><td>10:20</td><td>Arrivo a The Hermitage, presso Dunkeld</td><td>circa 95 km – 1 h 20 min</td></tr><tr><td>10:20–11:20</td><td>Passeggiata nella foresta</td><td>—</td></tr><tr><td>11:20</td><td>Partenza per Pitlochry</td><td>circa 22 km – 20 min</td></tr><tr><td>11:40–14:00</td><td>Visita di Pitlochry e pranzo</td><td>—</td></tr><tr><td>14:00</td><td>Partenza per Aviemore</td><td>circa 90 km – 1 h 15/30 min</td></tr><tr><td>15:30–16:00</td><td>Arrivo e sistemazione nell’alloggio</td><td>—</td></tr><tr><td>17:00–19:00</td><td>Loch Morlich</td><td>circa 11 km – 15 min per tratta</td></tr><tr><td>19:30–20:00</td><td>Ritorno ad Aviemore e cena</td><td>—</td></tr></tbody></table></div>
+<p>Chilometri complessivi della giornata: circa 230 km, compreso Loch Morlich.
+Tempo totale effettivo in automobile: circa 3 ore e 30 minuti.</p></div>
+<div class="day-block"><h3>Prima sosta: The Hermitage</h3><p>The Hermitage è una foresta vicino a Dunkeld, comodissima perché si trova praticamente lungo la A9.</p>
+<p>Dal parcheggio farete una passeggiata facile tra alberi altissimi fino a Ossian’s Hall, il punto panoramico sulla cascata Black Linn Falls.</p>
+<ul><li>Durata: 45–60 minuti</li><li>Difficoltà: facile</li><li>Percorso indicativo: circa 2–3 km</li><li>Abbigliamento: scarpe chiuse, perché il sentiero può essere umido</li></ul>
+<p>È una sosta migliore di un semplice autogrill e introduce subito l’atmosfera naturale della Scozia. L’accesso ufficiale si trova uscendo dalla A9 all’indicazione “The Hermitage”; il parcheggio del National Trust è a pagamento. Informazioni sulla zona di The Hermitage</p></div>
+<div class="day-block"><h3>Seconda sosta: Pitlochry</h3><p>Arriverete verso le 11:40. Lascerei l’auto vicino al centro e farei una passeggiata senza programmare attrazioni impegnative:</p>
+<ul><li>Atholl Road, la strada principale</li><li>centro storico e negozietti</li><li>discesa verso il fiume Tummel</li><li>pranzo tra le 12:30 e le 13:45.</li></ul>
+<p>Se volete allungare leggermente la passeggiata, potete raggiungere la zona della Pitlochry Dam, ma eviterei visite troppo lunghe perché avete ancora Aviemore e Loch Morlich. Informazioni turistiche su Pitlochry</p>
+<p>Non inserirei Blair Castle in questa giornata: merita almeno due o tre ore e farebbe saltare tutto il programma pomeridiano.</p></div>
+<div class="day-block"><h3>Arrivo ad Aviemore</h3><p>Partendo da Pitlochry alle 14:00, dovreste arrivare ad Aviemore tra le 15:30 e le 16:00. Dopo il check-in farei:</p>
+<ul><li>breve riposo</li><li>eventuale spesa per colazione, acqua e pranzo del giorno successivo</li><li>partenza verso Loch Morlich intorno alle 17:00.</li></ul></div>
+<div class="day-block"><h3>Tardo pomeriggio a Loch Morlich</h3><p>Da Aviemore il lago dista circa 11 km, percorribili in 15 minuti.</p>
+<p>A quell’ora potrete:</p>
+<ul><li>passeggiare sulla spiaggia</li><li>vedere il lago con le montagne dei Cairngorms sullo sfondo</li><li>camminare brevemente lungo la riva</li><li>lasciare ai ragazzi un po’ di tempo libero.</li></ul>
+<p>Non serve fare un’escursione vera e propria: dopo il viaggio è sufficiente una permanenza di un’ora e mezza. Loch Morlich è una delle località più frequentate del parco e i parcheggi possono riempirsi nelle ore centrali; arrivare nel tardo pomeriggio dovrebbe rendere la visita più semplice. Cairngorms National Park</p></div>
+<div class="day-block"><h3>Piano in caso di pioggia</h3><p>Se piove molto:</p>
+<ul><li>saltate The Hermitage</li><li>fermatevi direttamente a Pitlochry per pranzo</li><li>arrivate ad Aviemore prima</li><li>sostituite Loch Morlich con una passeggiata nel centro di Aviemore e una cena anticipata.</li></ul>
+<p>Il programma principale che sceglierei resta comunque: The Hermitage → Pitlochry → Aviemore → Loch Morlich. È una giornata varia, ma non eccessivamente faticosa.</p></div>
+</section>
+
+<section class="day-card" id="day-15">
+  <div class="day-head">
+    <span class="day-date">15 agosto</span>
+    <h2>Cairngorm Mountain, Loch an Eilein e villaggi dello Speyside</h2>
+  </div>
+  <div class="day-intro"><p>Questa è la versione definitiva della giornata, senza treno e senza ripetere Loch Morlich, già previsto il 14 agosto.</p></div>
+  <div class="day-block"><h3>Programma sintetico</h3><div class="table-wrap"><table><thead><tr><th>Orario</th><th>Tappa</th><th>Distanza</th></tr></thead><tbody><tr><td>8:45</td><td>Partenza da Aviemore</td><td>—</td></tr><tr><td>9:15–11:15</td><td>Cairngorm Mountain e funicolare</td><td>18 km – 25/30 min</td></tr><tr><td>11:15–11:45</td><td>Trasferimento a Loch an Eilein</td><td>circa 18 km – 25/30 min</td></tr><tr><td>11:45–14:15</td><td>Passeggiata e pranzo a Loch an Eilein</td><td>percorso di 5 km</td></tr><tr><td>14:15–14:45</td><td>Loch an Eilein → Boat of Garten</td><td>circa 19 km – 25/30 min</td></tr><tr><td>14:45–15:30</td><td>Boat of Garten</td><td>—</td></tr><tr><td>15:30–15:45</td><td>Boat of Garten → Nethy Bridge</td><td>circa 10 km – 15 min</td></tr><tr><td>15:45–16:15</td><td>Nethy Bridge</td><td>—</td></tr><tr><td>16:15–16:35</td><td>Nethy Bridge → Carrbridge</td><td>circa 15 km – 20 min</td></tr><tr><td>16:35–17:20</td><td>Carrbridge</td><td>—</td></tr><tr><td>17:20–17:40</td><td>Carrbridge → Aviemore</td><td>circa 12 km – 15/20 min</td></tr></tbody></table></div>
+<p>Totale indicativo: circa 90 km e poco meno di due ore complessive di guida, distribuite durante tutta la giornata.</p></div>
+<div class="day-block"><h3>8:45 – Partenza da Aviemore</h3><p>Fate colazione con calma e partite intorno alle 8:45. Portate con voi:</p>
+<ul><li>pranzo al sacco</li><li>acqua</li><li>scarpe impermeabili</li><li>giacca antivento</li><li>felpa o pile, perché in cima può fare molto più freddo</li><li>eventualmente un cambio di calze per i ragazzi.</li></ul>
+<p>Prima di partire controllate la webcam e il Mountain Report: la funicolare funziona in base alle condizioni meteorologiche.</p></div>
+<div class="day-block"><h3>9:15–11:15 – Cairngorm Mountain</h3><p>Da Aviemore seguite la strada panoramica verso Glenmore e Cairngorm Mountain. Il percorso è già piacevole, con viste sulla foresta e sulle montagne.</p>
+<p>Lasciata l’automobile alla stazione inferiore, prendete la Cairngorm Mountain Railway, che sale da 635 a 1.097 metri in circa otto minuti.</p>
+<p>Alla stazione superiore potrete visitare:</p>
+<ul><li>la terrazza panoramica</li><li>l’esposizione immersiva “Cairngorm Story”</li><li>la zona interattiva dedicata all’ambiente montano</li><li>il negozio</li><li>il Ptarmigan Restaurant, utile eventualmente per una bevanda calda.</li></ul>
+<p>In estate i passeggeri della funicolare non possono uscire liberamente sul pianoro montano, ma possono accedere alla terrazza panoramica. Per la visita sono sufficienti circa 90 minuti, oltre ai tempi di salita e discesa.</p>
+<p>Il biglietto anticipato per due adulti e due ragazzi costa attualmente £45. Conviene prenotare una fascia tra le 9:30 e le 10:00. Cairngorm Mountain Railway</p></div>
+<div class="day-block"><h3>11:15–11:45 – Verso Loch an Eilein</h3><p>Dopo la discesa riprendete l’automobile e attraversate la zona di Glenmore e Rothiemurchus in direzione di Loch an Eilein.</p>
+<p>La strada finale è stretta e condivisa con ciclisti e pedoni: bisogna procedere lentamente ed essere pronti a dare la precedenza. Il parcheggio costa attualmente £5 per automobile.</p></div>
+<div class="day-block"><h3>11:45–14:15 – Loch an Eilein</h3><p>Dal parcheggio bastano pochi minuti per raggiungere il lago. Il primo punto panoramico permette già di vedere le rovine del castello medievale sull’isolotto.</p>
+<p>Passeggiata consigliata</p>
+<p>Effettuate il giro completo del lago:</p>
+<ul><li>lunghezza: circa 5 km</li><li>durata effettiva: 1 ora e 30 minuti/1 ora e 45 minuti</li><li>difficoltà: facile</li><li>terreno: sentieri forestali prevalentemente pianeggianti.</li></ul>
+<p>La passeggiata attraversa una bellissima foresta di pini caledoniani. Potreste avvistare scoiattoli rossi e diversi uccelli, anche se naturalmente non è garantito.</p>
+<p>Una possibile scansione è:</p>
+<ul><li>11:45–12:00: fotografie del lago e del castello</li><li>12:00–13:30: giro del lago</li><li>13:30–14:05: pranzo al sacco</li><li>14:05–14:15: rientro all’automobile.</li></ul>
+<p>Il pranzo al sacco è la soluzione migliore, perché consente di mangiare direttamente nel paesaggio più suggestivo della giornata. Non utilizzate barbecue o fornelli, soprattutto dopo il recente incendio. Loch an Eilein</p></div>
+<div class="day-block"><h3>14:15–15:30 – Boat of Garten</h3><p>Raggiungete Boat of Garten, piccolo paese conosciuto come “Osprey Village”.</p>
+<p>Qui potete:</p>
+<ul><li>passeggiare brevemente nel centro</li><li>vedere la stazione vittoriana</li><li>osservare gli eventuali treni storici dalla stazione, senza acquistare il viaggio</li><li>fermarvi per un caffè, un dolce o un gelato</li><li>godervi l’atmosfera tranquilla del villaggio.</li></ul>
+<p>Non serve più di 45 minuti. La stazione sarà probabilmente animata perché proprio il 15 agosto è previsto il raduno di locomotive storiche: potreste quindi vedere qualche convoglio anche senza salirvi.</p>
+<p>Non includo Loch Garten perché il Nature Centre risulta attualmente chiuso per le operazioni connesse all’incendio. La situazione potrà essere ricontrollata poco prima della visita.</p></div>
+<div class="day-block"><h3>15:30–16:15 – Nethy Bridge</h3><p>Proseguite per Nethy Bridge, attraversando un tratto rurale e boscoso molto piacevole.</p>
+<p>Il villaggio è piccolo e non presenta una singola attrazione imperdibile. La sosta serve soprattutto per:</p>
+<ul><li>vedere un centro tradizionale dello Speyside</li><li>fare una breve passeggiata vicino al ponte e al fiume</li><li>spezzare il percorso verso Carrbridge.</li></ul>
+<p>Questa è la tappa più facilmente eliminabile. Se siete stanchi o avete impiegato più tempo a Loch an Eilein, attraversate il paese senza fermarvi e proseguite direttamente.</p></div>
+<div class="day-block"><h3>16:35–17:20 – Carrbridge</h3><p>L’ultima tappa è Carrbridge, dove si trova l’Old Packhorse Bridge.</p>
+<p>Costruito nel 1717, il ponte attraversa un tratto roccioso del fiume Dulnain ed è uno degli scorci più fotografati della zona. Non si attraversa, ma si osserva dal ponte moderno e dai punti panoramici vicini.</p>
+<p>Potete dedicare circa 40–45 minuti a:</p>
+<ul><li>Old Packhorse Bridge</li><li>breve passeggiata lungo il fiume</li><li>centro del paese</li><li>eventuale pausa prima del rientro.</li></ul></div>
+<div class="day-block"><h3>17:20–17:40 – Rientro ad Aviemore</h3><p>Da Carrbridge raggiungerete Aviemore in circa 15–20 minuti. Rientro previsto intorno alle 17:40, con tempo sufficiente per riposare e cenare tranquillamente.</p></div>
+<div class="day-block"><h3>Priorità in caso di ritardo</h3><p>Se la giornata dovesse procedere più lentamente, mantenete questo ordine:</p>
+<ul><li>Cairngorm Mountain</li><li>Loch an Eilein</li><li>Carrbridge</li><li>Boat of Garten</li><li>Nethy Bridge</li></ul>
+<p>Nethy Bridge è quindi la prima sosta da eliminare. Cairngorm Mountain, Loch an Eilein e Carrbridge costituiscono il nucleo davvero importante della giornata.</p></div>
+</section>
+
+<section class="day-card" id="day-16">
+  <div class="day-head">
+    <span class="day-date">16 agosto</span>
+    <h2>Da Aviemore a Bettyhill: Clava Cairns, Dornoch e Dunrobin Castle</h2>
+  </div>
+  <div class="day-intro"><p>La giornata del 16 agosto sarà dedicata al trasferimento da Aviemore a Bettyhill, con tre soste ben distribuite.</p></div>
+  <div class="day-block"><h3>Riepilogo della giornata</h3><div class="table-wrap"><table><thead><tr><th>Orario</th><th>Tappa</th><th>Distanza e percorrenza</th></tr></thead><tbody><tr><td>8:45</td><td>Partenza da Aviemore</td><td>—</td></tr><tr><td>8:45–9:30</td><td>Aviemore → Clava Cairns</td><td>circa 48 km – 40/45 min</td></tr><tr><td>9:30–10:15</td><td>Visita di Clava Cairns</td><td>—</td></tr><tr><td>10:15–11:45</td><td>Clava Cairns → Dornoch</td><td>circa 85 km – 1 h 20/30 min</td></tr><tr><td>11:45–12:25</td><td>Passeggiata a Dornoch</td><td>—</td></tr><tr><td>12:25–12:50</td><td>Dornoch → Dunrobin Castle</td><td>circa 22 km – 20/25 min</td></tr><tr><td>12:50–15:45</td><td>Dunrobin Castle, pranzo e falconeria</td><td>—</td></tr><tr><td>15:45–17:30</td><td>Dunrobin Castle → Bettyhill</td><td>circa 100 km – 1 h 40/45 min</td></tr><tr><td>17:30 circa</td><td>Arrivo e sistemazione a Bettyhill</td><td>—</td></tr></tbody></table></div>
+<p>Totale indicativo: circa 255 km e approssimativamente 4 ore di guida effettiva.</p></div>
+<div class="day-block"><h3>Prima della partenza</h3><p>Fate colazione e cercate di lasciare l’alloggio entro le 8:45. Prima di partire:</p>
+<ul><li>fate rifornimento ad Aviemore</li><li>preparate acqua e snack</li><li>acquistate eventualmente qualcosa per la cena o la colazione successiva</li><li>tenete impermeabili e scarpe di ricambio accessibili, senza sistemarli in fondo ai bagagli.</li></ul>
+<p>Il 16 agosto è domenica e, avvicinandosi alla costa settentrionale, negozi e distributori diventano meno frequenti.</p></div>
+<div class="day-block"><h3>Come vestirsi</h3><p>La soluzione migliore è l’abbigliamento a strati. Nel corso della giornata passerete dall’interno delle Highlands alla costa settentrionale, dove vento e umidità possono far percepire una temperatura più bassa.</p></div>
+<div class="day-block"><h3>Abbigliamento da indossare</h3><p>Per tutti consiglio:</p>
+<ul><li>maglietta traspirante</li><li>felpa o pile leggero</li><li>giacca impermeabile e antivento con cappuccio</li><li>pantaloni comodi, preferibilmente tecnici</li><li>scarpe da trekking leggere o scarpe impermeabili</li><li>calze abbastanza spesse.</li></ul>
+<p>Per vostra figlia porterei anche un piumino leggero comprimibile o un secondo pile. Potrebbe essere utile durante lo spettacolo di falconeria, quando si resta seduti all’aperto vicino al mare.</p></div>
+<div class="day-block"><h3>Da tenere nello zaino o in automobile</h3><ul><li>calze asciutte di ricambio</li><li>una maglia di ricambio per i ragazzi</li><li>cappellino per il sole</li><li>berretto leggero per il vento</li><li>crema solare</li><li>piccolo asciugamano</li><li>sacchetto per riporre eventuali indumenti bagnati.</li></ul>
+<p>Eviterei jeans pesanti, scarpe di tela e ombrelli grandi: il vento può renderli inutilizzabili. Meglio una giacca impermeabile con cappuccio.</p></div>
+<div class="day-block"><h3>8:45–9:30 – Aviemore → Clava Cairns</h3><p>Da Aviemore procedete verso nord sulla A9 e poi seguite le indicazioni per Clava Cairns. Il percorso richiede circa 40–45 minuti.</p>
+<p>Clava Cairns dispone di un piccolo parcheggio gratuito, ma non ci sono bar, negozi o servizi igienici.</p></div>
+<div class="day-block"><h3>9:30–10:15 – Clava Cairns</h3><p>Clava Cairns è un complesso funerario preistorico risalente a circa 4.000 anni fa. È formato da tombe circolari, cerchi di pietre e grandi monoliti.</p>
+<p>Il sito è gratuito e aperto tutto l’anno. Clava Cairns – Historic Environment Scotland</p>
+<p>Dedicate circa 45 minuti a:</p>
+<ul><li>osservare i tre principali cairn</li><li>camminare tra le grandi pietre</li><li>leggere i pannelli informativi</li><li>cercare le incisioni sulle rocce</li><li>scattare fotografie.</li></ul>
+<p>Il luogo ricorda il cerchio immaginario di Craigh na Dun della serie Outlander, anche se le scene non sono state girate qui.</p></div>
+<div class="day-block"><h3>Abbigliamento per Clava Cairns</h3><p>Il terreno è erboso e irregolare e può essere bagnato anche se non sta piovendo. Indossate quindi scarpe impermeabili e tenete già pronta la giacca antipioggia. La visita non richiede vere scarpe da trekking, ma eviterei calzature con suola liscia.</p></div>
+<div class="day-block"><h3>10:15–11:45 – Clava Cairns → Dornoch</h3><p>Riprendete la strada verso nord, attraversando il ponte sul Moray Firth e proseguendo lungo la A9.</p>
+<p>Durante il percorso vedrete:</p>
+<ul><li>Moray Firth</li><li>Black Isle</li><li>Cromarty Firth</li><li>Dornoch Firth</li><li>paesaggi costieri e rurali.</li></ul>
+<p>Il tragitto dura circa un’ora e mezza. Non aggiungerei altre soste, salvo una pausa urgente.</p></div>
+<div class="day-block"><h3>11:45–12:25 – Dornoch</h3><p>Dornoch è una cittadina elegante e raccolta. Parcheggiate vicino al centro e dedicate circa 40 minuti a una passeggiata.</p>
+<p>Potete vedere:</p>
+<ul><li>Dornoch Cathedral</li><li>la piazza centrale</li><li>le case tradizionali in pietra</li><li>piccoli negozi e caffè</li><li>il monumento dedicato a una delle ultime donne accusate di stregoneria in Scozia.</li></ul>
+<p>Essendo domenica, nella cattedrale potrebbe essere in corso una funzione religiosa: in quel caso limitatevi a osservarla dall’esterno oppure attendete che termini.</p>
+<p>Non andrei fino alla spiaggia, perché richiederebbe altro tempo e rischiereste di arrivare tardi a Dunrobin.</p></div>
+<div class="day-block"><h3>Pausa pratica</h3><p>Dornoch è un buon punto per:</p>
+<ul><li>utilizzare i servizi</li><li>prendere un caffè</li><li>acquistare acqua o snack</li><li>verificare il livello del carburante.</li></ul></div>
+<div class="day-block"><h3>12:25–12:50 – Dornoch → Dunrobin Castle</h3><p>Il castello si trova poco a nord di Golspie. Il trasferimento dura circa 20–25 minuti.</p>
+<p>All’arrivo lasciate l’automobile nel parcheggio e dirigetevi subito verso la Tearoom, così potrete pranzare prima della visita.</p></div>
+<div class="day-block"><h3>12:50–15:45 – Dunrobin Castle</h3><p>Dunrobin Castle è uno dei castelli più scenografici della Scozia. Ha torri fiabesche, interni storici e giardini affacciati sul mare.</p>
+<p>Ad agosto è aperto tutti i giorni dalle 10:00 alle 17:30, con ultimo ingresso alle 16:30. Il biglietto familiare per due adulti e fino a tre figli costa attualmente £47. Il prezzo comprende castello, giardini e museo. Orari e prezzi di Dunrobin Castle</p></div>
+<div class="day-block"><h3>Organizzazione della visita</h3><p>12:50–13:20 – Pranzo</p>
+<p>Pranzate nella Tearoom del castello. Sono disponibili generalmente:</p>
+<ul><li>zuppe</li><li>panini</li><li>piatti caldi</li><li>dolci</li><li>bevande.</li></ul>
+<p>Conviene mantenere un pranzo abbastanza veloce per avere il tempo di visitare gli interni prima della falconeria.</p>
+<p>13:20–14:10 – Sale interne</p>
+<p>La visita è autonoma e attraversa le principali stanze del castello:</p>
+<ul><li>saloni di rappresentanza</li><li>biblioteca</li><li>sala da pranzo</li><li>camere storiche</li><li>collezioni e ritratti della famiglia Sutherland.</li></ul>
+<p>Calcolate circa 45–50 minuti.</p>
+<p>14:10–14:25 – Discesa nei giardini</p>
+<p>Raggiungete l’area della falconeria con almeno 15 minuti di anticipo, per trovare una buona posizione.</p>
+<p>14:30–15:00 – Spettacolo di falconeria</p>
+<p>L’esibizione è prevista quotidianamente alle 14:30, condizioni meteorologiche permettendo. Potrete vedere falchi, gufi e altri rapaci volare molto vicino al pubblico.</p>
+<p>È probabilmente la parte del castello che coinvolgerà maggiormente i ragazzi.</p>
+<p>15:00–15:35 – Giardini e museo</p>
+<p>Dopo lo spettacolo:</p>
+<ul><li>passeggiate nei giardini formali</li><li>scattate la fotografia classica del castello dal basso</li><li>visitate brevemente il museo</li><li>risalite verso l’uscita.</li></ul></div>
+<div class="day-block"><h3>Abbigliamento per Dunrobin</h3><p>Lo spettacolo si svolge all’aperto e il castello è affacciato sul mare. Anche con il sole può esserci vento freddo.</p>
+<p>Prima di scendere nei giardini indossate:</p>
+<ul><li>pile o felpa</li><li>giacca antivento</li><li>eventualmente berretto leggero.</li></ul>
+<p>Portate il cappuccio o un impermeabile anche se il cielo sembra sereno. Non utilizzerei l’ombrello durante la falconeria, perché potrebbe disturbare la visuale e diventare scomodo con il vento.</p></div>
+<div class="day-block"><h3>15:45–17:30 – Dunrobin Castle → Bettyhill</h3><p>Lasciato il castello, proseguite verso nord passando per:</p>
+<ul><li>Brora</li><li>Helmsdale</li><li>tratto costiero orientale</li><li>entroterra del Sutherland</li><li>Melvich</li><li>costa settentrionale fino a Bettyhill.</li></ul>
+<p>Dopo Helmsdale la guida diventa più lenta. Potrete incontrare:</p>
+<ul><li>carreggiate strette</li><li>curve</li><li>tratti a singola corsia</li><li>pecore vicino alla strada</li><li>piazzole di incrocio, chiamate passing places.</li></ul>
+<p>Nei tratti a corsia singola utilizzate le piazzole per lasciar passare sia i veicoli provenienti in senso opposto sia quelli più veloci alle vostre spalle. Non parcheggiate mai all’interno dei passing places.</p></div>
+<div class="day-block"><h3>Carburante e provviste</h3><p>Se il serbatoio non è almeno a metà, fate rifornimento a Brora o Helmsdale. Non aspettate di essere vicini a Bettyhill.</p>
+<p>Se non avete già provviste, acquistate prima di lasciare la costa orientale:</p>
+<ul><li>acqua</li><li>prodotti per la colazione</li><li>snack</li><li>qualcosa per un’eventuale cena semplice.</li></ul></div>
+<div class="day-block"><h3>17:30 – Arrivo a Bettyhill</h3><p>Arrivo previsto tra le 17:30 e le 17:45. Sistematevi nell’alloggio e riposate.</p>
+<p>Se il tempo è buono e avete ancora energie, potete fare una breve uscita panoramica nei dintorni, ma senza aggiungere una visita impegnativa. Il giorno successivo sarà dedicato alla costa settentrionale e avrete modo di vedere con calma le spiagge e i paesaggi intorno a Bettyhill.</p></div>
+<div class="day-block"><h3>In caso di ritardo</h3><p>Le priorità della giornata sono:</p>
+<ul><li>Dunrobin Castle e falconeria</li><li>Clava Cairns</li><li>Dornoch</li></ul>
+<p>Se partite tardi o incontrate traffico, accorciate o eliminate la sosta a Dornoch. Cercate invece di arrivare a Dunrobin entro le 13:00, per non perdere lo spettacolo delle 14:30.</p></div>
+</section>
+
+<section class="day-card" id="day-17">
+  <div class="day-head">
+    <span class="day-date">17 agosto</span>
+    <h2>Costa settentrionale: Tongue, Durness, Smoo Cave e Balnakeil Beach</h2>
+  </div>
+  <div class="day-intro"><p>Questa sarà la giornata più spettacolare delle due trascorse a Bettyhill: percorrerete la costa settentrionale fino a Durness, alternando panorami, grotte e spiagge.</p></div>
+  <div class="day-block"><h3>Riepilogo della giornata</h3><div class="table-wrap"><table><thead><tr><th>Orario</th><th>Tappa</th><th>Distanza e percorrenza</th></tr></thead><tbody><tr><td>8:30</td><td>Partenza da Bettyhill</td><td>—</td></tr><tr><td>8:30–9:00</td><td>Bettyhill → Tongue</td><td>circa 23 km – 25/30 min</td></tr><tr><td>9:00–9:35</td><td>Tongue e Kyle of Tongue</td><td>—</td></tr><tr><td>9:35–10:35</td><td>Tongue → Ceannabeinne</td><td>circa 50 km – 55/60 min</td></tr><tr><td>10:35–11:20</td><td>Ceannabeinne Beach e zipline facoltativa</td><td>—</td></tr><tr><td>11:20–11:30</td><td>Ceannabeinne → Smoo Cave</td><td>circa 7 km – 10 min</td></tr><tr><td>11:30–13:00</td><td>Smoo Cave</td><td>—</td></tr><tr><td>13:00–13:10</td><td>Smoo Cave → Durness</td><td>circa 2 km – 5/10 min</td></tr><tr><td>13:10–14:15</td><td>Durness, Sango Bay e pranzo</td><td>—</td></tr><tr><td>14:15–14:25</td><td>Durness → Balnakeil</td><td>circa 4 km – 10 min</td></tr><tr><td>14:25–15:00</td><td>Balnakeil Craft Village e Cocoa Mountain</td><td>—</td></tr><tr><td>15:00–16:30</td><td>Balnakeil Beach</td><td>—</td></tr><tr><td>16:30–18:00</td><td>Balnakeil → Bettyhill</td><td>circa 80 km – 1 h 25/30 min</td></tr></tbody></table></div>
+<p>Totale indicativo: circa 165–170 km e poco più di tre ore di guida.</p></div>
+<div class="day-block"><h3>8:30 – Partenza da Bettyhill</h3><p>Partite entro le 8:30, dopo aver controllato:</p>
+<ul><li>previsioni meteorologiche</li><li>apertura della zipline</li><li>condizioni dei tour interni di Smoo Cave</li><li>livello del carburante.</li></ul>
+<p>Portate il pranzo al sacco o almeno panini e snack: lungo questo tratto della costa i locali non sono numerosi e gli orari possono cambiare.</p></div>
+<div class="day-block"><h3>9:00–9:35 – Tongue e Kyle of Tongue</h3><p>La prima sosta è Tongue, piccolo villaggio affacciato sul Kyle of Tongue.</p>
+<p>Non farei la passeggiata completa fino a Castle Varrich, perché richiederebbe almeno un’ora e renderebbe la giornata troppo lunga. Mi limiterei a:</p>
+<ul><li>breve sosta nel villaggio</li><li>fotografie del Kyle of Tongue</li><li>panorama verso Ben Loyal</li><li>punto di osservazione verso Castle Varrich</li><li>eventuale acquisto di acqua o snack.</li></ul>
+<p>Proseguendo verso Durness attraverserete il paesaggio del Kyle of Tongue, uno dei tratti panoramici più belli della costa settentrionale.</p></div>
+<div class="day-block"><h3>9:35–10:35 – Tongue → Ceannabeinne</h3><p>La A838 diventa una tipica strada delle Highlands, in parte a corsia singola. Il paesaggio alterna:</p>
+<ul><li>brughiere</li><li>laghi</li><li>montagne isolate</li><li>insenature</li><li>spiagge che appaiono improvvisamente tra le colline.</li></ul></div>
+<div class="day-block"><h3>Regole per i passing places</h3><p>Nei tratti a corsia singola:</p>
+<ul><li>utilizzate le piazzole per far passare chi arriva in senso opposto</li><li>lasciate passare anche chi procede più velocemente alle vostre spalle</li><li>non parcheggiate nelle piazzole</li><li>rallentate in prossimità di curve e dossi</li><li>fate attenzione a pecore e cervi.</li></ul>
+<p>Le distanze non sono elevate, ma la velocità media sarà bassa.</p></div>
+<div class="day-block"><h3>10:35–11:20 – Ceannabeinne Beach</h3><p>Ceannabeinne è una spiaggia ampia e selvaggia, poco prima di Durness. Qui si trova la Golden Eagle Zipline, la zipline più settentrionale del Regno Unito, sospesa sopra la spiaggia.</p>
+<p>Raggiunge una velocità dichiarata fino a circa 45 mph, ossia poco più di 70 km/h. Non è necessario prenotare: l’attività funziona soltanto quando vento e condizioni meteorologiche lo permettono. Golden Eagle Zipline</p></div>
+<div class="day-block"><h3>Come organizzare la sosta</h3><ul><li>se la zipline è aperta e interessa ai ragazzi: calcolate circa 40–45 minuti</li><li>se è chiusa o non vogliono provarla: fermatevi 20–30 minuti per vedere la spiaggia e il panorama.</li></ul>
+<p>Non considererei la zipline obbligatoria. Decidete sul posto in base al vento e alla voglia dei ragazzi.</p></div>
+<div class="day-block"><h3>11:30–13:00 – Smoo Cave</h3><p>Smoo Cave è una grande cavità naturale scavata sia dal mare sia da un corso d’acqua sotterraneo. L’ingresso principale e la passerella che conduce alla cascata interna sono visitabili gratuitamente.</p>
+<p>Dal parcheggio si scende attraverso una lunga scalinata. Per raggiungere la camera della cascata sono necessari circa dieci minuti.</p></div>
+<div class="day-block"><h3>Visita gratuita</h3><p>La visita gratuita comprende:</p>
+<ul><li>grande ingresso della grotta</li><li>passerella interna</li><li>camera della cascata</li><li>osservazione dell’insenatura dall’interno</li><li>risalita attraverso il sentiero sul lato opposto.</li></ul>
+<p>Calcolate circa 45–60 minuti.</p></div>
+<div class="day-block"><h3>Tour interno facoltativo</h3><p>Se le condizioni dell’acqua lo permettono, è possibile partecipare a un breve tour guidato con un piccolo tratto in barca.</p>
+<p>Il costo attuale è:</p>
+<ul><li>£15 per gli adulti</li><li>£5 per i minori di 16 anni.</li></ul>
+<p>Vostro figlio di 16 anni pagherebbe quindi come adulto: per tutti e quattro il costo sarebbe £50. Il pagamento è esclusivamente in contanti e non si prenota in anticipo. Smoo Cave Tours</p>
+<p>Il tour può essere sospeso anche all’ultimo momento se la cascata è troppo forte o il livello dell’acqua è alto. Io deciderei sul posto: la parte gratuita è già interessante, quindi non considererei il tour indispensabile.</p></div>
+<div class="day-block"><h3>Abbigliamento per la grotta</h3><p>Indossate:</p>
+<ul><li>scarpe impermeabili con buona aderenza</li><li>giacca impermeabile</li><li>pantaloni che possano sporcarsi</li><li>felpa leggera.</li></ul>
+<p>All’interno può gocciolare acqua e le passerelle possono essere umide. Per il tour guidato vengono forniti i caschi.</p></div>
+<div class="day-block"><h3>13:00–14:15 – Durness e Sango Bay</h3><p>Dopo la grotta raggiungete il centro di Durness e poi il punto panoramico su Sango Bay, una bellissima baia con sabbia chiara, rocce e acqua turchese.</p>
+<p>Organizzerei la sosta così:</p>
+<ul><li>13:10–13:30: punto panoramico su Sango Bay</li><li>13:30–14:00: pranzo al sacco</li><li>14:00–14:15: servizi, piccolo negozio e rifornimento di acqua.</li></ul>
+<p>Se piove, potete cercare un locale nel centro di Durness, ma non farei affidamento esclusivamente sulla disponibilità di tavoli.</p></div>
+<div class="day-block"><h3>14:15–15:00 – Balnakeil Craft Village e Cocoa Mountain</h3><p>Balnakeil Craft Village è un piccolo insediamento artigianale ricavato da vecchi edifici militari. La sua attrazione più conosciuta è Cocoa Mountain.</p>
+<p>Potete fermarvi per:</p>
+<ul><li>cioccolata calda</li><li>praline artigianali</li><li>dolce</li><li>breve visita ai laboratori e alle botteghe presenti.</li></ul>
+<p>Cocoa Mountain Balnakeil dichiara l’apertura quotidiana dalle 9:00 alle 18:00 nel periodo marzo–novembre 2026. Cocoa Mountain Balnakeil</p>
+<p>Una sosta di 30–35 minuti è sufficiente.</p></div>
+<div class="day-block"><h3>15:00–16:30 – Balnakeil Beach</h3><p>Balnakeil Beach è la tappa naturalistica più importante del pomeriggio. È una grande spiaggia bianca, circondata da dune e promontori, spesso quasi deserta.</p>
+<p>Potete:</p>
+<ul><li>camminare lungo la riva</li><li>esplorare la zona delle dune senza calpestare le aree protette</li><li>lasciare ai ragazzi il tempo di giocare</li><li>fare fotografie verso Faraid Head</li><li>mettere i piedi in acqua, se il tempo lo permette.</li></ul>
+<p>Non consiglio di intraprendere il percorso completo verso Faraid Head: richiederebbe diverse ore. Una passeggiata di circa un’ora lungo la spiaggia è sufficiente.</p></div>
+<div class="day-block"><h3>Abbigliamento per Balnakeil</h3><p>Anche con il sole il vento può essere forte. Portate:</p>
+<ul><li>giacca antivento</li><li>pile</li><li>berretto leggero</li><li>scarpe da passeggio oppure scarpe di ricambio</li><li>asciugamano</li><li>calze asciutte.</li></ul>
+<p>Potete mettere in automobile anche costumi e ciabatte, ma considererei l’eventuale bagno soltanto come una possibilità: l’acqua è molto fredda.</p></div>
+<div class="day-block"><h3>16:30–18:00 – Rientro a Bettyhill</h3><p>Ripercorrete la A838 verso Tongue e poi Bettyhill. Il tragitto richiede circa un’ora e mezza senza soste.</p>
+<p>Se la luce è bella, potrete fermarvi brevemente in una piazzola panoramica sul Kyle of Tongue o a Coldbackie, ma soltanto in uno spazio adibito alla sosta.</p>
+<p>Arrivo previsto a Bettyhill intorno alle 18:00.</p></div>
+<div class="day-block"><h3>Abbigliamento complessivo della giornata</h3><p>La combinazione migliore è:</p>
+<ul><li>maglietta traspirante</li><li>pile o felpa</li><li>giacca impermeabile e antivento</li><li>pantaloni tecnici o sportivi</li><li>scarpe impermeabili con suola aderente.</li></ul>
+<p>Nello zaino:</p>
+<ul><li>calze e maglia di ricambio</li><li>asciugamano</li><li>berretto leggero</li><li>crema solare</li><li>repellente per i midges</li><li>sacchetto per indumenti bagnati</li><li>acqua e snack.</li></ul>
+<p>Non fatevi ingannare dal colore dell’acqua: le spiagge sembrano quasi caraibiche, ma vento e temperatura possono essere decisamente freschi.</p></div>
+<div class="day-block"><h3>Priorità in caso di ritardo o maltempo</h3><p>Mantenete questo ordine:</p>
+<ul><li>Smoo Cave</li><li>Balnakeil Beach</li><li>Sango Bay</li><li>Tongue e Kyle of Tongue</li><li>Cocoa Mountain</li><li>Zipline</li></ul>
+<p>La zipline è quindi la prima attività da eliminare; Smoo Cave, Balnakeil e i panorami costieri costituiscono il cuore della giornata</p></div>
+</section>
+
+<section class="day-card" id="day-18">
+  <div class="day-head">
+    <span class="day-date">18 agosto</span>
+    <h2>Bettyhill, Strathnaver, Rogie Falls, Corrieshalloch Gorge e Ullapool</h2>
+  </div>
+  <div class="day-intro"><p>Questa è la versione definitiva della giornata, costruita privilegiando le attrazioni più iconiche. Eliminiamo Falls of Shin e lo Strathnaver Museum: sono interessanti, ma meno importanti rispetto a Ullapool e soprattutto a Corrieshalloch Gorge, una delle gole più spettacolari della Scozia.</p></div>
+  <div class="day-block"><h3>Le priorità</h3><ul><li>Imperdibili: Corrieshalloch Gorge e Ullapool.</li><li>Consigliati: percorso attraverso Strathnaver e Rogie Falls.</li><li>Facoltativa: sosta panoramica prolungata a Loch Naver.</li></ul></div>
+<div class="day-block"><h3>Programma della giornata</h3><div class="table-wrap"><table><thead><tr><th>Orario</th><th>Tappa</th><th>Distanza e percorrenza</th></tr></thead><tbody><tr><td>8:30</td><td>Partenza da Bettyhill</td><td>—</td></tr><tr><td>8:30–11:45</td><td>Bettyhill → Strathnaver → Loch Naver → Rogie Falls</td><td>circa 165–170 km – 2 h 45/3 h di guida, più sosta</td></tr><tr><td>11:45–12:45</td><td>Rogie Falls e pranzo al sacco</td><td>—</td></tr><tr><td>12:45–13:35</td><td>Rogie Falls → Corrieshalloch Gorge</td><td>circa 55 km – 45/50 min</td></tr><tr><td>13:35–14:45</td><td>Corrieshalloch Gorge</td><td>—</td></tr><tr><td>14:45–15:10</td><td>Corrieshalloch Gorge → Ullapool</td><td>circa 20 km – 20/25 min</td></tr><tr><td>15:10–18:30</td><td>Visita e cena anticipata a Ullapool</td><td>—</td></tr><tr><td>18:30–19:00</td><td>Ullapool → Inchbae Lodge</td><td>circa 32 km – 30 min</td></tr></tbody></table></div>
+<p>Totale: circa 275 km e approssimativamente 4 ore e 30 minuti di guida effettiva.</p></div>
+<div class="day-block"><h3>8:30 – Partenza da Bettyhill</h3><p>Partite entro le 8:30. È una giornata lunga, ma con luce fino a sera e due soste naturalistiche ben distribuite.</p>
+<p>Prima di partire:</p>
+<ul><li>controllate il carburante</li><li>preparate panini o qualcosa per il pranzo</li><li>portate acqua e snack</li><li>tenete impermeabili e scarpe adatte ai sentieri a portata di mano</li><li>impostate sul navigatore prima Loch Naver, poi Rogie Falls, per evitare che proponga il ritorno lungo la costa orientale.</li></ul></div>
+<div class="day-block"><h3>8:30–11:45 – Strathnaver e Loch Naver</h3><p>Da Bettyhill seguite la strada interna lungo la valle di Strathnaver. Attraverserete uno dei paesaggi più isolati del Sutherland:</p>
+<ul><li>il fiume Naver</li><li>brughiere</li><li>antichi insediamenti abbandonati</li><li>montagne quasi disabitate</li><li>Loch Naver</li><li>piccoli corsi d’acqua e torbiere.</li></ul></div>
+<div class="day-block"><h3>Sosta a Loch Naver</h3><p>Prevedete una sosta di circa 20 minuti, indicativamente tra le 9:30 e le 10:00, in una piazzola regolare lungo il lago.</p>
+<p>La sosta serve per:</p>
+<ul><li>fotografare Loch Naver</li><li>osservare la valle</li><li>sgranchirvi le gambe</li><li>apprezzare il silenzio e l’isolamento della zona.</li></ul>
+<p>Non inserirei né il museo né l’escursione a Rosal: sottrarrebbero troppo tempo alle tappe principali.</p></div>
+<div class="day-block"><h3>Indicazioni per la guida</h3><p>Buona parte della strada è a corsia singola:</p>
+<ul><li>utilizzate i passing places per incrociare gli altri veicoli</li><li>lasciate passare chi procede più velocemente</li><li>non parcheggiate nelle piazzole</li><li>rallentate prima dei dossi</li><li>fate attenzione a pecore e cervi.</li></ul>
+<p>I tempi del navigatore potrebbero essere troppo ottimistici.</p></div>
+<div class="day-block"><h3>11:45–12:45 – Rogie Falls</h3><p>Rogie Falls è una cascata immersa nella foresta, attraversata da un ponte sospeso sul fiume Black Water.</p>
+<p>Dal parcheggio percorrete il sentiero più breve fino al ponte:</p>
+<ul><li>lunghezza complessiva: circa 1,5–2 km</li><li>durata: 40–50 minuti</li><li>difficoltà: facile</li><li>fondo: forestale, con radici e possibili tratti fangosi.</li></ul>
+<p>Ad agosto potreste vedere i salmoni risalire la cascata, anche se l’avvistamento non è garantito.</p></div>
+<div class="day-block"><h3>Organizzazione della sosta</h3><ul><li>11:45–12:10: passeggiata fino al ponte</li><li>12:10–12:25: cascata, fotografie e ricerca dei salmoni</li><li>12:25–12:45: ritorno e pranzo veloce vicino al parcheggio.</li></ul>
+<p>Se preferite mangiare con più calma, potete consumare i panini prima della partenza e lasciare il sentiero entro le 12:55. Rogie Falls</p></div>
+<div class="day-block"><h3>Se siete in ritardo</h3><p>Rogie Falls è consigliata, ma sacrificabile. Se arrivate dopo le 12:30, riducete la sosta a 30 minuti oppure proseguite direttamente verso Corrieshalloch Gorge.</p></div>
+<div class="day-block"><h3>13:35–14:45 – Corrieshalloch Gorge</h3><p>Questa è la grande attrazione naturalistica della giornata.</p>
+<p>Corrieshalloch è una gola lunga circa un miglio, scavata dalle acque di fusione dei ghiacciai. Le Falls of Measach precipitano per circa 45 metri all’interno della gola.</p>
+<p>Il percorso comprende:</p>
+<ul><li>sentiero in discesa nel bosco</li><li>ponte sospeso vittoriano</li><li>vista verticale sulla cascata</li><li>piattaforma panoramica</li><li>scorci sulla profonda gola ricoperta di vegetazione.</li></ul>
+<p>È considerata una delle gole più spettacolari della Gran Bretagna. Corrieshalloch Gorge</p></div>
+<div class="day-block"><h3>Percorso consigliato</h3><ul><li>13:35–13:50: parcheggio, servizi e preparazione</li><li>13:50–14:10: discesa verso il ponte sospeso</li><li>14:10–14:25: attraversamento e fotografie</li><li>14:25–14:35: piattaforma panoramica</li><li>14:35–14:45: ritorno.</li></ul>
+<p>Il percorso è breve, ma presenta pendenza e gradini. Il ponte è sicuro, anche se può impressionare chi soffre molto di vertigini.</p></div>
+<div class="day-block"><h3>Abbigliamento per la gola</h3><p>Indossate:</p>
+<ul><li>scarpe impermeabili con buona aderenza</li><li>giacca antipioggia</li><li>pantaloni comodi</li><li>pile leggero nello zaino.</li></ul>
+<p>Il terreno può essere umido e scivoloso anche in assenza di pioggia.</p></div>
+<div class="day-block"><h3>15:10–18:30 – Ullapool</h3><p>Ullapool è la tappa principale del pomeriggio: un piccolo porto di case bianche affacciato su Loch Broom e circondato dalle montagne.</p></div>
+<div class="day-block"><h3>15:10–15:50 – Pausa e spuntino</h3><p>All’arrivo potete fermarvi per:</p>
+<ul><li>caffè e dolce</li><li>zuppa</li><li>fish and chips</li><li>spuntino leggero.</li></ul>
+<p>Avendo già mangiato a Rogie Falls, eviterei un pranzo completo, così potrete cenare presto prima di tornare a Inchbae.</p></div>
+<div class="day-block"><h3>15:50–17:20 – Visita di Ullapool</h3><p>Passeggiate lungo:</p>
+<ul><li>Shore Street</li><li>il porto peschereccio</li><li>il molo dei traghetti</li><li>il lungomare</li><li>le case bianche</li><li>i piccoli negozi di artigianato e prodotti locali.</li></ul>
+<p>Il fascino di Ullapool non è legato a un singolo monumento, ma all’insieme del porto, delle montagne e di Loch Broom.</p>
+<p>Dedicate un po’ di tempo anche ai negozi: Ullapool è l’ultimo centro ben fornito prima della notte a Inchbae.</p></div>
+<div class="day-block"><h3>17:20–18:20 – Cena anticipata</h3><p>Consiglio di cenare a Ullapool verso le 17:15–17:30, perché:</p>
+<ul><li>offre più scelta rispetto a Inchbae</li><li>troverete ristoranti, pub e locali di pesce</li><li>non dovrete cercare un ristorante dopo l’arrivo</li><li>nelle Highlands le cucine spesso chiudono presto.</li></ul>
+<p>Prenoterei un tavolo, soprattutto se scegliete un ristorante sul lungomare.</p>
+<p>Dopo cena fate un’ultima passeggiata sul porto e partite entro le 18:30.</p></div>
+<div class="day-block"><h3>Spesa e carburante</h3><p>A Ullapool approfittate per:</p>
+<ul><li>fare rifornimento</li><li>acquistare acqua</li><li>comprare prodotti per la colazione o snack</li><li>prendere qualcosa per il giorno successivo.</li></ul></div>
+<div class="day-block"><h3>18:30–19:00 – Ullapool → Inchbae Lodge</h3><p>Da Ullapool percorrete la A835 verso Garve. Inchbae Lodge si trova direttamente lungo la strada, in posizione isolata vicino al fiume Black Water.</p>
+<p>Arrivo previsto intorno alle 19:00.</p>
+<p>Avendo già cenato a Ullapool, potrete sistemarvi senza preoccuparvi degli orari del ristorante della struttura.</p></div>
+<div class="day-block"><h3>Abbigliamento complessivo</h3><p>Indossate:</p>
+<ul><li>maglietta traspirante</li><li>pile o felpa</li><li>giacca impermeabile e antivento</li><li>pantaloni tecnici o sportivi</li><li>scarpe impermeabili con suola aderente.</li></ul>
+<p>Portate nello zaino:</p>
+<ul><li>calze asciutte</li><li>maglia di ricambio</li><li>berretto leggero</li><li>crema solare</li><li>repellente per i midges</li><li>piccolo asciugamano</li><li>acqua e snack.</li></ul>
+<p>A Ullapool può esserci vento anche con il sole; a Rogie Falls e Corrieshalloch il bosco può essere umido e avere midges. L’abbigliamento a strati rimane la soluzione migliore.</p></div>
+<div class="day-block"><h3>Ordine delle priorità</h3><p>Se accumulate ritardo:</p>
+<ul><li>non eliminate Corrieshalloch Gorge</li><li>non riducete Ullapool sotto le due ore e mezza</li><li>accorciate la sosta a Loch Naver</li><li>eliminate Rogie Falls, se necessario.</li></ul>
+<p>Questa versione comprende finalmente le due tappe davvero imperdibili della zona: Corrieshalloch Gorge e Ullapool.</p></div>
+</section>
+
+<section class="day-card" id="day-19">
+  <div class="day-head">
+    <span class="day-date">19 agosto</span>
+    <h2>Inverness, Loch Ness, Urquhart Castle e Fort Augustus</h2>
+  </div>
+  <div class="day-intro"><p>Il 19 agosto vi sposterete da Inchbae Lodge a Fort William attraversando il Great Glen. Sarà una delle giornate più iconiche dell’intero viaggio: Inverness, Loch Ness, Urquhart Castle e le chiuse del Canale di Caledonia.</p></div>
+  <div class="day-block"><h3>Le priorità</h3><ul><li>Imperdibili: Loch Ness, Urquhart Castle e Fort Augustus.</li><li>Consigliata: visita del centro di Inverness.</li><li>Facoltativa: visita interna dell’Inverness Castle Experience.</li><li>Breve sosta panoramica: Commando Memorial prima di Fort William.</li></ul></div>
+<div class="day-block"><h3>Programma della giornata</h3><div class="table-wrap"><table><thead><tr><th>Orario</th><th>Tappa</th><th>Distanza e percorrenza</th></tr></thead><tbody><tr><td>8:30</td><td>Partenza da Inchbae Lodge</td><td>—</td></tr><tr><td>8:30–9:20</td><td>Inchbae Lodge → Inverness</td><td>circa 50 km – 45/50 min</td></tr><tr><td>9:20–11:20</td><td>Visita di Inverness</td><td>—</td></tr><tr><td>11:20–11:50</td><td>Pranzo anticipato o acquisto di panini</td><td>—</td></tr><tr><td>11:50–12:30</td><td>Inverness → Urquhart Castle</td><td>circa 30 km – 35/40 min</td></tr><tr><td>12:30–14:15</td><td>Urquhart Castle e Loch Ness</td><td>—</td></tr><tr><td>14:15–14:45</td><td>Urquhart Castle → Fort Augustus</td><td>circa 27 km – 25/30 min</td></tr><tr><td>14:45–16:00</td><td>Fort Augustus e Canale di Caledonia</td><td>—</td></tr><tr><td>16:00–16:45</td><td>Fort Augustus → Commando Memorial</td><td>circa 42 km – 40/45 min</td></tr><tr><td>16:45–17:10</td><td>Commando Memorial</td><td>—</td></tr><tr><td>17:10–17:35</td><td>Commando Memorial → Fort William</td><td>circa 18 km – 20/25 min</td></tr><tr><td>17:30 circa</td><td>Arrivo nell’alloggio</td><td>—</td></tr></tbody></table></div>
+<p>Totale: circa 165–170 km e approssimativamente 3 ore di guida effettiva.</p></div>
+<div class="day-block"><h3>8:30 – Partenza da Inchbae Lodge</h3><p>Partite entro le 8:30 dopo la colazione. Non sarà una giornata pesante dal punto di vista della guida, ma Urquhart Castle richiede un ingresso prenotato a un orario preciso.</p>
+<p>Prima di partire:</p>
+<ul><li>fate rifornimento se il serbatoio è basso</li><li>tenete impermeabili e pile accessibili</li><li>portate acqua e snack</li><li>verificate la prenotazione di Urquhart Castle</li><li>controllate eventuali segnalazioni sulla A82.</li></ul></div>
+<div class="day-block"><h3>9:20–11:20 – Inverness</h3><p>Inverness è la capitale delle Highlands, ma il centro è raccolto e può essere visitato a piedi.</p>
+<p>Parcheggiate in un parcheggio centrale e organizzate un percorso circolare.</p></div>
+<div class="day-block"><h3>9:20–9:50 – River Ness</h3><p>Iniziate dal fiume Ness, attraversando uno dei ponti pedonali. Da qui avrete belle vedute:</p>
+<ul><li>sul fiume</li><li>sulle case del centro</li><li>sull’Inverness Castle</li><li>sulla cattedrale.</li></ul>
+<p>Il lungofiume è la parte più piacevole della città.</p></div>
+<div class="day-block"><h3>9:50–10:10 – Inverness Cathedral</h3><p>Osservate la cattedrale di Saint Andrew, in pietra rossa, situata sulla riva del fiume. La visita interna può essere breve, compatibilmente con eventuali celebrazioni.</p></div>
+<div class="day-block"><h3>10:10–10:40 – Inverness Castle</h3><p>Salite verso il castello per osservare:</p>
+<ul><li>l’edificio restaurato</li><li>la statua di Flora MacDonald</li><li>il panorama sul fiume e sulla città</li><li>i giardini esterni.</li></ul>
+<p>Nel 2026 ha aperto il nuovo Inverness Castle Experience, dedicato alla cultura e alle storie delle Highlands. Non è un castello arredato in stile medievale, ma un percorso contemporaneo e immersivo. L’ingresso online parte da £14 e l’esperienza apre alle 10:00. Inverness Castle Experience</p></div>
+<div class="day-block"><h3>Conviene visitarlo internamente?</h3><p>Per questa giornata, io mi limiterei agli esterni. Avete già Dunrobin alle spalle e Urquhart subito dopo: una terza visita interna toglierebbe tempo a Loch Ness.</p>
+<p>Consideratelo soltanto come alternativa in caso di pioggia intensa. In quel caso potreste entrare alle 10:00 e ridurre la passeggiata nel resto della città.</p></div>
+<div class="day-block"><h3>10:40–11:20 – Centro e Victorian Market</h3><p>Scendete verso il centro passando per:</p>
+<ul><li>High Street</li><li>Town House</li><li>Victorian Market</li><li>piccoli negozi</li><li>eventuale statua o riferimento al mostro di Loch Ness.</li></ul>
+<p>Il Victorian Market è utile anche per acquistare qualcosa da mangiare.</p></div>
+<div class="day-block"><h3>11:20–11:50 – Pranzo anticipato</h3><p>Avete due possibilità:</p>
+<ul><li>pranzo veloce a Inverness</li><li>acquisto di panini da consumare successivamente.</li></ul>
+<p>Consiglio un pranzo leggero e anticipato, perché all’interno di Urquhart Castle è presente un caffè, ma nelle ore centrali può essere affollato.</p>
+<p>Partite da Inverness entro le 11:50.</p></div>
+<div class="day-block"><h3>Opzione facoltativa – Connage Highland Dairy</h3><p>In alternativa ai panini in città, una piccola deviazione verso Ardersier (circa 20 minuti a est di Inverness, sulla costa del Moray Firth) porta a <strong>Connage Highland Dairy</strong>, un caseificio biologico a conduzione familiare con circa 150 vacche. Dentro la <em>Cheese Pantry</em> si assaggiano i formaggi prodotti in loco (Dunlop, Gouda, Clava Brie, Crowdie) prima di comprarli, oltre a chutney, salumi di selvaggina e una selezione di formaggi europei. All'esterno funzionano tutti i giorni, dalle 8:00 alle 19:00, dei <strong>distributori automatici refrigerati</strong> con cheddar, brie, yogurt, burro e latte fresco: un modo curioso di fare la spesa per il pranzo al sacco. Il negozio (Cheese Pantry) ha orari più limitati, mercoledì-sabato 10:00-16:00. <a class="popup-link" style="display:inline-block;margin-top:6px;" href="https://maps.app.goo.gl/7HPkUZq12mbfiYbi7" target="_blank" rel="noopener">Vedi su Google Maps →</a></p>
+<p>Segnalato da Gambero Rosso nell'agosto 2026 come uno degli indirizzi più sorprendenti incontrati in Scozia.</p></div>
+<div class="day-block"><h3>11:50–12:30 – La prima vista di Loch Ness</h3><p>Da Inverness seguite la A82 verso Drumnadrochit e Fort William.</p>
+<p>La strada inizia a costeggiare la sponda occidentale del Loch Ness. Il lago è lungo circa 36 km e in alcuni punti raggiunge una profondità superiore ai 200 metri.</p>
+<p>Evitate di fermarvi in piazzole improvvisate: avrete una vista molto più bella e sicura da Urquhart Castle.</p></div>
+<div class="day-block"><h3>12:30–14:15 – Urquhart Castle</h3><p>Urquhart Castle è la visita principale della giornata e il luogo più iconico per osservare Loch Ness. Le rovine sorgono su un promontorio proteso nel lago.</p></div>
+<div class="day-block"><h3>Organizzazione della visita</h3><ul><li>12:30–12:50: Visitor Centre, introduzione e filmato</li><li>12:50–13:15: discesa verso le rovine</li><li>13:15–13:45: Grant Tower</li><li>13:45–14:00: mura, prigione e panorama sul lago</li><li>14:00–14:15: fotografie e ritorno.</li></ul>
+<p>Dalla Grant Tower avrete una delle immagini classiche di Loch Ness, con le rovine in primo piano e il lago sullo sfondo.</p>
+<p>Il sito è aperto in estate dalle 9:30 alle 18:00, con ultimo ingresso un’ora prima della chiusura. I biglietti possono esaurirsi con largo anticipo: prenotate una fascia tra le 12:30 e le 13:00. Urquhart Castle</p></div>
+<div class="day-block"><h3>Avvistamento di Nessie</h3><p>Il Visitor Centre racconta anche le leggende del mostro di Loch Ness. Naturalmente non aspettatevi un’attrazione costruita intorno a Nessie: il valore della visita è soprattutto storico e paesaggistico.</p></div>
+<div class="day-block"><h3>Crociera sul lago</h3><p>Non inserirei la crociera in questa giornata perché richiederebbe almeno altre due ore tra imbarco, navigazione e attesa. Urquhart Castle offre già una vista molto più significativa rispetto a una semplice sosta stradale.</p></div>
+<div class="day-block"><h3>14:15–14:45 – Urquhart Castle → Fort Augustus</h3><p>Continuate sulla A82 lungo Loch Ness. Questo tratto è molto panoramico, ma la strada presenta curve e può avere traffico turistico.</p>
+<p>Arriverete a Fort Augustus, all’estremità meridionale del lago.</p></div>
+<div class="day-block"><h3>14:45–16:00 – Fort Augustus</h3><p>Fort Augustus è un piccolo villaggio costruito nel punto in cui il Canale di Caledonia si unisce al Loch Ness.</p></div>
+<div class="day-block"><h3>Cosa vedere</h3><ul><li>la scalinata delle cinque chiuse</li><li>le imbarcazioni che attraversano il canale</li><li>il ponte girevole</li><li>il punto in cui il canale entra nel Loch Ness</li><li>il piccolo centro</li><li>i negozi dedicati a Nessie e alle Highlands.</li></ul></div>
+<div class="day-block"><h3>Organizzazione della visita</h3><ul><li>14:45–15:15: passeggiata lungo le chiuse</li><li>15:15–15:35: punto panoramico sul Loch Ness</li><li>15:35–15:55: gelato, caffè o merenda</li><li>16:00: partenza.</li></ul>
+<p>Se avrete fortuna, potrete assistere al passaggio di una barca attraverso le chiuse. L’intera procedura richiede tempo, quindi non aspettate necessariamente che l’imbarcazione completi tutta la scalinata.</p>
+<p>Fort Augustus è uno dei luoghi migliori per vedere il funzionamento del Canale di Caledonia. Fort Augustus</p></div>
+<div class="day-block"><h3>16:00–16:45 – Fort Augustus → Commando Memorial</h3><p>Lasciato Loch Ness, la strada segue il Great Glen passando vicino a:</p>
+<ul><li>Loch Oich</li><li>Laggan</li><li>Loch Lochy</li><li>Spean Bridge.</li></ul>
+<p>Il paesaggio inizierà ad aprirsi verso Ben Nevis e le montagne di Lochaber.</p></div>
+<div class="day-block"><h3>16:45–17:10 – Commando Memorial</h3><p>Il Commando Memorial è una breve ma significativa sosta panoramica nei pressi di Spean Bridge.</p>
+<p>Il monumento ricorda i commandos britannici che si addestrarono in questa zona durante la Seconda guerra mondiale. Dal piazzale si apre una delle viste più belle verso:</p>
+<ul><li>Ben Nevis</li><li>Aonach Mòr</li><li>Grey Corries</li><li>Great Glen.</li></ul>
+<p>Sono sufficienti 20–25 minuti. Se il cielo è limpido, questa sosta merita assolutamente.</p></div>
+<div class="day-block"><h3>17:10–17:35 – Arrivo a Fort William</h3><p>Da Spean Bridge raggiungerete Fort William in circa 20–25 minuti.</p>
+<p>Arrivo previsto tra le 17:30 e le 17:45. Dopo il check-in potrete passeggiare lungo High Street e cenare in città.</p>
+<p>Fort William dispone di numerosi ristoranti, pub e take-away, ma in agosto è consigliabile prenotare un tavolo intorno alle 19:30.</p></div>
+<div class="day-block"><h3>Abbigliamento consigliato</h3><p>Non sono previste escursioni impegnative, ma Urquhart Castle e Fort Augustus sono esposti a vento e pioggia.</p>
+<p>Indossate:</p>
+<ul><li>maglietta traspirante</li><li>pile o felpa</li><li>giacca impermeabile e antivento</li><li>pantaloni comodi</li><li>scarpe impermeabili con buona aderenza.</li></ul>
+<p>Nello zaino:</p>
+<ul><li>calze asciutte</li><li>berretto leggero</li><li>crema solare</li><li>piccolo ombrello soltanto per Inverness</li><li>acqua e snack.</li></ul>
+<p>A Urquhart Castle ci sono scale, pietre irregolari e superfici che possono diventare scivolose. Sono preferibili scarpe con suola aderente.</p></div>
+<div class="day-block"><h3>In caso di pioggia</h3><p>Con pioggia moderata il programma rimane fattibile.</p>
+<p>Con pioggia intensa:</p>
+<ul><li>visitate internamente l’Inverness Castle Experience</li><li>mantenete comunque Urquhart Castle, salvo chiusura ufficiale</li><li>riducete Fort Augustus a 30–40 minuti</li><li>eliminate il Commando Memorial se le montagne sono completamente coperte.</li></ul></div>
+<div class="day-block"><h3>Ordine delle priorità</h3><p>Se accumulate ritardo:</p>
+<ul><li>Urquhart Castle e Loch Ness</li><li>Fort Augustus</li><li>Inverness</li><li>Commando Memorial</li><li>Inverness Castle Experience interno</li></ul>
+<p>La prenotazione più importante della giornata è quindi Urquhart Castle tra le 12:30 e le 13:00.</p></div>
+</section>
+
+<section class="day-card" id="day-20">
+  <div class="day-head">
+    <span class="day-date">20 agosto</span>
+    <h2>Glenfinnan Viaduct, Jacobite Steam Train, Loch Shiel e Glen Nevis</h2>
+  </div>
+  <div class="day-intro"><p>Questa sarà una delle giornate più iconiche dell’intero viaggio, dedicata ai paesaggi intorno a Fort William e ai luoghi legati a Harry Potter.</p></div>
+  <div class="day-block"><h3>Le priorità</h3><ul><li>Imperdibili: Glenfinnan Viaduct con il passaggio del Jacobite, Loch Shiel e Glen Nevis.</li><li>Consigliata: passeggiata a Steall Falls.</li><li>Secondaria: Neptune’s Staircase, da mantenere solo se rispettate gli orari.</li><li>Non prevista: viaggio completo sul Jacobite, perché occuperebbe tutta la giornata e costerebbe circa £238 per la famiglia.</li></ul></div>
+<div class="day-block"><h3>Programma della giornata</h3><div class="table-wrap"><table><thead><tr><th>Orario</th><th>Tappa</th><th>Distanza e percorrenza</th></tr></thead><tbody><tr><td>8:45</td><td>Partenza da Fort William</td><td>—</td></tr><tr><td>8:45–9:25</td><td>Fort William → Glenfinnan</td><td>circa 28 km – 35/40 min</td></tr><tr><td>9:25–11:20</td><td>Viadotto e passaggio del Jacobite</td><td>passeggiata di circa 2 km</td></tr><tr><td>11:20–12:30</td><td>Glenfinnan Monument, Loch Shiel e pranzo</td><td>—</td></tr><tr><td>12:30–13:10</td><td>Glenfinnan → Neptune’s Staircase</td><td>circa 25 km – 35/40 min</td></tr><tr><td>13:10–13:45</td><td>Neptune’s Staircase</td><td>—</td></tr><tr><td>13:45–14:20</td><td>Neptune’s Staircase → Upper Glen Nevis</td><td>circa 16 km – 30/35 min</td></tr><tr><td>14:20–16:45</td><td>Escursione a Steall Falls</td><td>circa 3,5 km – 2/2,5 ore</td></tr><tr><td>16:45–17:15</td><td>Glen Nevis e Lower Falls</td><td>—</td></tr><tr><td>17:15–17:45</td><td>Rientro a Fort William</td><td>circa 13 km – 25/30 min</td></tr></tbody></table></div>
+<p>Totale in automobile: circa 85 km e meno di due ore di guida complessiva.</p></div>
+<div class="day-block"><h3>8:45 – Partenza da Fort William</h3><p>Partite entro le 8:45. Il Jacobite lascia Fort William alle 10:15 e dovrebbe attraversare il viadotto intorno alle 10:55–11:00, ma il passaggio può anticipare o ritardare.</p>
+<p>Portate:</p>
+<ul><li>panini o pranzo leggero</li><li>acqua</li><li>giacca impermeabile</li><li>scarpe da trekking</li><li>repellente per i midges.</li></ul></div>
+<div class="day-block"><h3>9:25 – Arrivo a Glenfinnan</h3><p>Il parcheggio principale del National Trust dispone di soli 55 posti e in agosto si riempie rapidamente. È disponibile anche il parcheggio comunitario adiacente. La tariffa del parcheggio National Trust è attualmente £5. Parcheggio di Glenfinnan</p>
+<p>Arrivare prima delle 9:30 vi concede margine per:</p>
+<ul><li>trovare parcheggio</li><li>utilizzare i servizi</li><li>raggiungere il punto panoramico</li><li>scegliere una buona posizione prima dell’arrivo dei gruppi.</li></ul></div>
+<div class="day-block"><h3>9:35–11:20 – Glenfinnan Viaduct e Jacobite</h3><p>Dal parcheggio seguite le indicazioni per il Glenfinnan Viaduct Trail. Per vedere bene il treno consiglio il punto panoramico sulla collina, dal quale si osserva l’intero viadotto con i suoi 21 archi.</p>
+<p>Calcolate circa 25–30 minuti per raggiungere con calma il punto di osservazione.</p></div>
+<div class="day-block"><h3>Orario indicativo</h3><ul><li>9:35–10:05: passeggiata verso il viewpoint</li><li>10:05–10:50: sistemazione, fotografie e attesa</li><li>10:55 circa: passaggio del Jacobite</li><li>11:05–11:20: discesa.</li></ul>
+<p>Il Jacobite parte da Fort William alle 10:15. L’operatore indica un passaggio approssimativo sul viadotto intorno alle 10:58. Orari ufficiali del Jacobite</p>
+<p>L’orario non è garantito al minuto: ritardi, condizioni ferroviarie o eventuali sostituzioni della locomotiva possono modificare il passaggio. Non lasciate quindi il punto panoramico troppo presto.</p></div>
+<div class="day-block"><h3>Collegamento con Harry Potter</h3><p>Il Glenfinnan Viaduct appare nei film di Harry Potter durante il viaggio dell’Hogwarts Express. Anche Loch Shiel è stato utilizzato come ambientazione del lago di Hogwarts.</p>
+<p>Il viewpoint sopra il parcheggio offre un panorama più ampio; il sentiero vicino agli archi permette invece una fotografia più ravvicinata. Per non rischiare di perdere il treno, sceglierei il punto panoramico principale e non cambierei posizione all’ultimo momento. Punti panoramici del viadotto</p></div>
+<div class="day-block"><h3>11:20–12:30 – Glenfinnan Monument e Loch Shiel</h3><p>Dopo il passaggio del treno raggiungete il lato opposto della strada, dove si trovano il monumento e Loch Shiel.</p>
+<p>Il Glenfinnan Monument ricorda l’inizio della rivolta giacobita del 1745, quando Bonnie Prince Charlie radunò qui i sostenitori dei clan scozzesi.</p>
+<p>Dedicate la sosta a:</p>
+<ul><li>panorama su Loch Shiel</li><li>esterno del monumento</li><li>breve tratto lungo la riva</li><li>Visitor Centre</li><li>pranzo o spuntino.</li></ul>
+<p>Non è indispensabile salire all’interno del monumento: lo spazio è stretto e la vista migliore sull’insieme si ottiene dai punti panoramici esterni.</p>
+<p>Potete pranzare al sacco oppure acquistare qualcosa nei caffè del Visitor Centre.</p></div>
+<div class="day-block"><h3>12:30–13:10 – Rientro verso Banavie</h3><p>Ripercorrete la A830 verso Fort William e raggiungete Banavie, dove si trova Neptune’s Staircase.</p></div>
+<div class="day-block"><h3>13:10–13:45 – Neptune’s Staircase</h3><p>Neptune’s Staircase è una sequenza di otto chiuse del Canale di Caledonia, progettato da Thomas Telford. È la più lunga scalinata di chiuse della Gran Bretagna.</p>
+<p>La sosta serve per:</p>
+<ul><li>passeggiare lungo il canale</li><li>vedere le chiuse</li><li>osservare eventuali imbarcazioni</li><li>fotografare Ben Nevis sullo sfondo.</li></ul>
+<p>Sono sufficienti 30–35 minuti. Se avete perso tempo a Glenfinnan, potete eliminare questa tappa: a Fort Augustus avete già visto un’altra importante sequenza di chiuse.</p></div>
+<div class="day-block"><h3>13:45–14:20 – Verso Glen Nevis</h3><p>Attraversate Fort William e imboccate la strada che entra nella valle di Glen Nevis.</p>
+<p>Il percorso diventa progressivamente più stretto e panoramico, con:</p>
+<ul><li>pareti montuose</li><li>torrenti</li><li>cascate</li><li>vedute verso Ben Nevis</li><li>luoghi utilizzati in film come Braveheart e Harry Potter.</li></ul>
+<p>Proseguite fino all’Upper Glen Nevis Car Park, punto di partenza del sentiero per Steall Falls. Il parcheggio è piccolo: in caso fosse pieno dovrete attendere oppure utilizzare uno spazio autorizzato più distante.</p></div>
+<div class="day-block"><h3>14:20–16:45 – Steall Falls e Nevis Gorge</h3><p>Steall Falls, alta circa 120 metri, è una delle cascate più spettacolari della Scozia. Il sentiero attraversa Nevis Gorge e compare anche nei film di Harry Potter.</p></div>
+<div class="day-block"><h3>Caratteristiche del percorso</h3><ul><li>lunghezza complessiva: circa 3,5 km</li><li>durata: 2–2,5 ore con soste</li><li>difficoltà: facile–moderata</li><li>terreno: roccioso, con radici e tratti umidi</li><li>presenza di alcuni passaggi stretti e leggermente esposti.</li></ul></div>
+<div class="day-block"><h3>Organizzazione</h3><ul><li>14:20–15:05: percorso attraverso Nevis Gorge</li><li>15:05–15:35: pianoro e vista su Steall Falls</li><li>15:35–16:30: ritorno</li><li>16:30–16:45: cambio scarpe e pausa.</li></ul>
+<p>Non è necessario attraversare il ponte di cavi vicino alla cascata. Potrete ammirare perfettamente Steall Falls dal pianoro senza utilizzarlo.</p></div>
+<div class="day-block"><h3>Valutazione per voi</h3><p>La passeggiata è molto bella, ma il fondo è irregolare. Considerando i tuoi problemi all’anca, deciderei in base a come ti senti quel giorno:</p>
+<ul><li>se non hai dolore e il terreno è asciutto, procedete con calma</li><li>se hai dolore o ha piovuto molto, percorrete soltanto il primo tratto oppure sostituite l’escursione con le soste panoramiche di Glen Nevis e Lower Falls.</li></ul>
+<p>Non è una passeggiata pianeggiante come Loch an Eilein.</p></div>
+<div class="day-block"><h3>16:45–17:15 – Lower Falls e Glen Nevis</h3><p>Durante il ritorno fermatevi brevemente alle Lower Falls, facilmente raggiungibili dalla strada.</p>
+<p>Dedicate circa 20 minuti a:</p>
+<ul><li>cascata</li><li>ponte</li><li>fiume Nevis</li><li>fotografie della valle.</li></ul>
+<p>Se avete completato tutta l’escursione a Steall Falls e siete stanchi, potete osservare Lower Falls rapidamente senza un’altra passeggiata.</p></div>
+<div class="day-block"><h3>17:15–17:45 – Rientro a Fort William</h3><p>Rientrate nell’alloggio tra le 17:30 e le 17:45. Per la cena prenoterei un ristorante a Fort William intorno alle 19:30.</p></div>
+<div class="day-block"><h3>Abbigliamento consigliato</h3><p>Questa è una delle giornate in cui l’abbigliamento tecnico è più importante.</p>
+<p>Indossate:</p>
+<ul><li>maglietta traspirante</li><li>pile leggero</li><li>giacca impermeabile e antivento</li><li>pantaloni tecnici o sportivi</li><li>scarpe da trekking impermeabili con buona aderenza</li><li>calze da escursionismo.</li></ul>
+<p>Nello zaino:</p>
+<ul><li>calze asciutte</li><li>maglia di ricambio</li><li>berretto leggero</li><li>crema solare</li><li>repellente per i midges</li><li>acqua</li><li>snack energetici</li><li>piccolo asciugamano.</li></ul>
+<p>Eviterei jeans e scarpe da ginnastica in tela: il sentiero di Steall Falls può essere fangoso e scivoloso.</p></div>
+<div class="day-block"><h3>In caso di maltempo</h3><p>Se piove leggermente, Glenfinnan resta visitabile e il treno dovrebbe circolare normalmente.</p>
+<p>Con pioggia forte:</p>
+<ul><li>mantenete Glenfinnan Viaduct e Loch Shiel</li><li>eliminate Steall Falls</li><li>visitate Glen Nevis soltanto in automobile</li><li>aggiungete, se desiderate, il West Highland Museum a Fort William.</li></ul></div>
+<div class="day-block"><h3>Ordine delle priorità</h3><p>Se accumulate ritardo:</p>
+<ul><li>Glenfinnan Viaduct e passaggio del Jacobite</li><li>Loch Shiel e Glenfinnan Monument</li><li>Glen Nevis</li><li>Steall Falls</li><li>Neptune’s Staircase</li></ul>
+<p>La cosa essenziale è arrivare al parcheggio di Glenfinnan entro le 9:30 e raggiungere il punto panoramico con largo anticipo rispetto al passaggio previsto delle 10:58.</p></div>
+</section>
+
+<section class="day-card" id="day-21">
+  <div class="day-head">
+    <span class="day-date">21 agosto</span>
+    <h2>Fort William, Glencoe, Glen Etive, Castle Stalker e Oban</h2>
+  </div>
+  <div class="day-intro"><p>Il 21 agosto lascerete Fort William per raggiungere Oban. La distanza diretta non è elevata, ma la giornata comprende alcuni dei paesaggi più famosi della Scozia.</p></div>
+  <div class="day-block"><h3>Le priorità</h3><ul><li>Imperdibili: Glencoe, Three Sisters, Glen Etive, Castle Stalker e Oban.</li><li>Consigliati: Glencoe Visitor Centre e Dunstaffnage Castle.</li><li>Facoltativi: Meeting of Three Waters e breve sosta nel villaggio di Glencoe.</li></ul></div>
+<div class="day-block"><h3>Programma della giornata</h3><div class="table-wrap"><table><thead><tr><th>Orario</th><th>Tappa</th><th>Distanza e percorrenza</th></tr></thead><tbody><tr><td>8:30</td><td>Partenza da Fort William</td><td>—</td></tr><tr><td>8:30–9:15</td><td>Fort William → Glencoe</td><td>circa 42 km – 40/45 min</td></tr><tr><td>9:15–9:30</td><td>Meeting of Three Waters</td><td>—</td></tr><tr><td>9:35–10:05</td><td>Three Sisters Viewpoint</td><td>—</td></tr><tr><td>10:05–11:05</td><td>Glen Etive e strada di Skyfall</td><td>circa 25 km tra andata e ritorno</td></tr><tr><td>11:05–11:25</td><td>Glen Etive → Glencoe Visitor Centre</td><td>circa 18 km – 20 min</td></tr><tr><td>11:25–12:35</td><td>Visitor Centre e pranzo</td><td>—</td></tr><tr><td>12:35–13:25</td><td>Glencoe → Castle Stalker</td><td>circa 44 km – 45/50 min</td></tr><tr><td>13:25–14:00</td><td>Castle Stalker Viewpoint</td><td>—</td></tr><tr><td>14:00–14:35</td><td>Castle Stalker → Dunstaffnage Castle</td><td>circa 30 km – 30/35 min</td></tr><tr><td>14:35–15:45</td><td>Dunstaffnage Castle</td><td>—</td></tr><tr><td>15:45–16:00</td><td>Dunstaffnage → Oban</td><td>circa 8 km – 15 min</td></tr><tr><td>16:00 circa</td><td>Arrivo e sistemazione a Oban</td><td>—</td></tr><tr><td>16:45–18:15</td><td>Porto e centro di Oban</td><td>—</td></tr><tr><td>18:30–19:45</td><td>Cena</td><td>—</td></tr><tr><td>20:00–20:45</td><td>McCaig’s Tower e panorama serale</td><td>—</td></tr></tbody></table></div>
+<p>Totale indicativo: circa 165 km e approssimativamente 3 ore di guida, compresa la deviazione a Glen Etive.</p></div>
+<div class="day-block"><h3>8:30 – Partenza da Fort William</h3><p>Partite entro le 8:30, seguendo la A82 verso Ballachulish e Glencoe.</p>
+<p>La strada costeggia Loch Linnhe e permette di vedere:</p>
+<ul><li>montagne di Lochaber</li><li>Loch Linnhe</li><li>villaggi costieri</li><li>Ballachulish Bridge</li><li>ingresso occidentale di Glencoe.</li></ul></div>
+<div class="day-block"><h3>9:15–9:30 – Meeting of Three Waters</h3><p>Entrando nella valle incontrerete la cascata conosciuta come Meeting of Three Waters, formata da tre corsi d’acqua che scendono dai versanti montuosi.</p>
+<p>È una sosta fotografica di circa 10–15 minuti. Fermatevi esclusivamente nel parcheggio o nella piazzola autorizzata: non lasciate l’automobile lungo la carreggiata della A82.</p>
+<p>Questa è la prima tappa da eliminare se il parcheggio è pieno.</p></div>
+<div class="day-block"><h3>9:35–10:05 – Three Sisters of Glencoe</h3><p>Le Three Sisters sono tre grandi dorsali montuose appartenenti al massiccio di Bidean nam Bian. Costituiscono l’immagine più celebre di Glencoe.</p>
+<p>Dal parcheggio panoramico potrete osservare:</p>
+<ul><li>Beinn Fhada</li><li>Gearr Aonach</li><li>Aonach Dubh</li><li>valle di Coire Gabhail, conosciuta come Lost Valley</li><li>pareti rocciose di Glencoe.</li></ul>
+<p>Non è prevista l’escursione completa, che richiederebbe molte ore e presenta tratti impegnativi. Dedicate circa 30 minuti al panorama e a un brevissimo tratto iniziale del sentiero.</p></div>
+<div class="day-block"><h3>10:05–11:05 – Glen Etive e strada di Skyfall</h3><p>Proseguite brevemente verso est sulla A82 fino al bivio per Glen Etive, vicino alla montagna Buachaille Etive Mòr.</p>
+<p>La strada di Glen Etive è diventata famosa per alcune scene del film Skyfall. Attraversa una valle stretta e selvaggia, costeggiando il fiume Etive.</p>
+<p>Non è necessario percorrerla fino a Loch Etive, perché l’intero tragitto richiederebbe troppo tempo. Suggerisco di:</p>
+<ul><li>entrare nella valle</li><li>percorrere circa 8–10 km</li><li>fermarvi in una piazzola autorizzata</li><li>osservare il fiume e le montagne</li><li>tornare sulla A82.</li></ul>
+<p>La deviazione richiede circa un’ora complessiva.</p></div>
+<div class="day-block"><h3>Attenzione alla strada</h3><p>La strada è a corsia singola:</p>
+<ul><li>utilizzate i passing places</li><li>non parcheggiate nelle piazzole</li><li>non bloccate gli accessi</li><li>fate attenzione ai cervi</li><li>non scendete sulle rive del fiume in punti scivolosi.</li></ul></div>
+<div class="day-block"><h3>11:25–12:35 – Glencoe Visitor Centre</h3><p>Tornate verso ovest e raggiungete il Visitor Centre del National Trust for Scotland.</p>
+<p>Il centro è aperto in agosto dalle 9:30 alle 17:30. Glencoe Visitor Centre</p>
+<p>La visita può comprendere:</p>
+<ul><li>esposizione sulla formazione geologica della valle</li><li>storia del massacro di Glencoe del 1692</li><li>ricostruzione di una casa tradizionale in torba</li><li>punti panoramici</li><li>negozio</li><li>caffè.</li></ul>
+<p>Organizzazione:</p>
+<ul><li>11:25–12:00: esposizione e casa tradizionale</li><li>12:00–12:30: pranzo al Highland Coo Café</li><li>12:35: partenza.</li></ul>
+<p>Non dedicherei più di un’ora: il valore principale di Glencoe resta il paesaggio esterno.</p></div>
+<div class="day-block"><h3>12:35–13:25 – Glencoe → Castle Stalker</h3><p>Riprendete la strada verso Ballachulish e imboccate la A828 in direzione di Oban.</p>
+<p>Il tragitto attraversa:</p>
+<ul><li>Ballachulish Bridge</li><li>Loch Linnhe</li><li>Appin</li><li>piccoli tratti costieri</li><li>vedute verso le montagne di Morvern.</li></ul></div>
+<div class="day-block"><h3>13:25–14:00 – Castle Stalker</h3><p>Castle Stalker è una torre medievale costruita su un piccolo isolotto di Loch Laich. È uno dei castelli più fotografati della costa occidentale ed è apparso anche nel film Monty Python e il Sacro Graal.</p>
+<p>Il castello è privato e le visite interne sono limitate, su prenotazione, dipendenti dalla marea e dal trasporto in barca. Il 21 agosto non risulta una normale visita disponibile, quindi è corretto ammirarlo dall’esterno. Castle Stalker</p>
+<p>Fermatevi al Castle Stalker View, lungo la A828, che offre la vista rialzata più famosa sul castello.</p>
+<p>Sono sufficienti 30–35 minuti per:</p>
+<ul><li>osservare il castello</li><li>scattare fotografie</li><li>utilizzare eventualmente il caffè</li><li>vedere Loch Laich e le montagne sullo sfondo.</li></ul>
+<p>Non tentate di raggiungere il castello a piedi: sorge su un’isola tidale e l’accesso non è libero.</p></div>
+<div class="day-block"><h3>14:35–15:45 – Dunstaffnage Castle</h3><p>Dunstaffnage Castle si trova su un promontorio roccioso poco prima di Oban. Costruito prima del 1240, è uno dei più antichi castelli in pietra della Scozia.</p>
+<p>Fu una roccaforte dei MacDougall e successivamente dei Campbell. Flora MacDonald vi fu detenuta brevemente dopo aver aiutato Bonnie Prince Charlie.</p>
+<p>La visita comprende:</p>
+<ul><li>mura esterne</li><li>cortile</li><li>camminamenti</li><li>panorama sulla baia</li><li>cappella medievale nel bosco.</li></ul>
+<p>Calcolate circa un’ora. Dunstaffnage Castle</p></div>
+<div class="day-block"><h3>È indispensabile?</h3><p>È una visita consigliata, ma non superiore per importanza a Glencoe, Castle Stalker o Oban. Se siete stanchi o avete accumulato ritardo, potete limitarvi alla cappella e agli esterni oppure proseguire direttamente verso Oban.</p></div>
+<div class="day-block"><h3>16:00 – Arrivo a Oban</h3><p>Raggiungete l’alloggio, lasciate i bagagli e riposate brevemente.</p>
+<p>Oban è conosciuta come la “porta delle isole” perché dal suo porto partono i traghetti verso Mull, Lismore, Colonsay e altre isole delle Ebridi Interne.</p></div>
+<div class="day-block"><h3>16:45–18:15 – Porto e centro di Oban</h3><p>Passeggiate lungo:</p>
+<ul><li>Railway Pier</li><li>terminal dei traghetti</li><li>North Pier</li><li>George Street</li><li>lungomare</li><li>porto peschereccio</li><li>esterno della Oban Distillery.</li></ul>
+<p>Potrete vedere i traghetti della Caledonian MacBrayne, le barche da pesca e le isole oltre la baia.</p>
+<p>Oban è anche uno dei posti migliori per assaggiare:</p>
+<ul><li>fish and chips</li><li>salmone</li><li>haddock</li><li>cozze</li><li>capesante</li><li>langoustine.</li></ul></div>
+<div class="day-block"><h3>18:30–19:45 – Cena a Oban</h3><p>Prenotate un ristorante per le 18:30–19:00, possibilmente sul lungomare.</p>
+<p>Oban dispone di numerosi ristoranti, ma in agosto i locali più conosciuti possono essere pieni. Se preferite una soluzione informale, troverete fish and chips e seafood takeaway vicino al porto.</p></div>
+<div class="day-block"><h3>20:00–20:45 – McCaig’s Tower</h3><p>Concludete la giornata a McCaig’s Tower, il grande monumento circolare che domina Oban dall’alto.</p>
+<p>La struttura fu iniziata nel 1897, ispirandosi al Colosseo, ma rimase incompleta. All’interno si trova un giardino pubblico.</p>
+<p>Da qui si osservano:</p>
+<ul><li>Oban Bay</li><li>isola di Kerrera</li><li>isola di Mull</li><li>traghetti</li><li>montagne di Morvern</li><li>tramonto sulla costa occidentale.</li></ul>
+<p>Viaggi e Avventure nel Mondo segnala proprio i tramonti di Oban tra i ricordi più apprezzati dai viaggiatori. Scozia Express Discovery</p>
+<p>Dal centro si raggiunge tramite una salita ripida e i 144 gradini di Jacob’s Ladder. In alternativa potete salire in automobile: vicino alla torre esiste un piccolo parcheggio. Accesso a McCaig’s Tower</p></div>
+<div class="day-block"><h3>Abbigliamento consigliato</h3><p>Indossate:</p>
+<ul><li>maglietta traspirante</li><li>pile leggero</li><li>giacca impermeabile e antivento</li><li>pantaloni comodi</li><li>scarpe impermeabili con buona aderenza.</li></ul>
+<p>Portate:</p>
+<ul><li>calze asciutte</li><li>repellente per i midges</li><li>berretto leggero</li><li>crema solare</li><li>acqua e snack.</li></ul>
+<p>Glen Etive e Glencoe possono essere freddi e piovosi; Castle Stalker e Oban possono invece essere molto ventosi.</p></div>
+<div class="day-block"><h3>In caso di ritardo</h3><p>Mantenete questo ordine:</p>
+<ul><li>Three Sisters e Glencoe</li><li>Glen Etive</li><li>Castle Stalker</li><li>Oban e McCaig’s Tower</li><li>Glencoe Visitor Centre</li><li>Dunstaffnage Castle</li><li>Meeting of Three Waters</li></ul>
+<p>Dunstaffnage e Meeting of Three Waters sono quindi le prime tappe da eliminare. Non sacrificherei Glencoe, Glen Etive, Castle Stalker o il panorama serale da McCaig’s Tower.</p></div>
+</section>
+
+<section class="day-card" id="day-22">
+  <div class="day-head">
+    <span class="day-date">22 agosto</span>
+    <h2>Escursione completa all’Isola di Mull con automobile</h2>
+  </div>
+  <div class="day-intro"><p>Questa sarà la vostra vera giornata nelle Ebridi. Il programma privilegia le tre attrazioni più rappresentative e realisticamente visitabili in giornata: Duart Castle, i relitti di Salen e Tobermory, aggiungendo una passeggiata nella natura ad Aros Park.</p>
+<p>Ho escluso intenzionalmente Calgary Bay: è bellissima, ma obbligherebbe a molte ore sulle strade a corsia unica e trasformerebbe la giornata in una corsa contro il traghetto.</p></div>
+  <div class="day-block"><h3>Percorso complessivo sull’isola</h3><p>Craignure → Duart Castle → Salen → Tobermory/Aros Park → Craignure</p>
+<ul><li>percorrenza totale sull’isola: circa 100 km</li><li>guida effettiva: circa 2 ore e 15 minuti</li><li>strade prevalentemente panoramiche, con alcuni tratti a corsia unica.</li></ul></div>
+<div class="day-block"><h3>7:45 – Arrivo al terminal di Oban</h3><p>Raggiungete il terminal automobilistico CalMac di Oban entro le 7:45–7:55.</p>
+<p>Il traghetto parte alle 8:35, ma chi viaggia con l’automobile deve essere disponibile per l’imbarco almeno 30 minuti prima. In agosto arriverei con circa 40–45 minuti di anticipo.</p>
+<p>Il biglietto va prenotato quanto prima, scegliendo:</p>
+<ul><li>andata: Oban 8:35 → Craignure 9:35</li><li>ritorno: Craignure 18:35 → Oban 19:35</li><li>automobile + quattro passeggeri.</li></ul>
+<p>Durante la traversata conviene rimanere sul ponte esterno: l’ingresso nel Sound of Mull è molto panoramico e, avvicinandovi all’isola, potrete già distinguere Duart Castle sul promontorio.</p></div>
+<div class="day-block"><h3>Costo del traghetto</h3><ul><li>automobile A/R: £36,40</li><li>tre passeggeri adulti A/R: £29,40</li><li>bambina 10 anni A/R: £4,90</li><li>totale famiglia: £70,70, circa 82–83 euro.</li></ul>
+<p>Prenotazioni e tariffe: CalMac – Oban/Craignure.</p></div>
+<div class="day-block"><h3>9:35 – Arrivo a Craignure</h3></div>
+<div class="day-block"><h3>Craignure → Duart Castle</h3><ul><li>distanza: circa 14 km</li><li>percorrenza: 20 minuti</li><li>arrivo previsto: circa 10:00.</li></ul>
+<p>L’ultimo tratto è molto scenografico. Il castello si trova su uno sperone roccioso affacciato sul mare, in una posizione che da sola merita la deviazione.</p></div>
+<div class="day-block"><h3>10:00–12:00 – Duart Castle</h3><p>Il castello apre alle 10:30. Arrivando leggermente prima potrete:</p>
+<ul><li>passeggiare intorno al promontorio</li><li>fotografare il castello dall’esterno</li><li>osservare il panorama sul Sound of Mull</li><li>utilizzare il tearoom, se già accessibile.</li></ul>
+<p>Dalle 10:30 visitate l’interno del castello, antica sede del Clan Maclean, le stanze storiche e il mastio panoramico. Per una visita completa sono sufficienti circa 75–90 minuti.</p></div>
+<div class="day-block"><h3>Costo indicativo</h3><p>Per voi quattro l’ingresso dovrebbe costare complessivamente circa £44–45:</p>
+<ul><li>adulti: £13</li><li>vostra figlia di 10 anni: £6</li><li>vostro figlio di 16 anni: £12 con tariffa studente, altrimenti £13.</li></ul>
+<p>Nel 2026 il castello è aperto tutti i giorni, da maggio a settembre, dalle 10:30 alle 17:00. Informazioni ufficiali: Duart Castle – orari e Duart Castle – prezzi.</p></div>
+<div class="day-block"><h3>12:00 – Duart Castle → Salen</h3><ul><li>distanza: circa 33 km</li><li>percorrenza: 40–45 minuti</li><li>arrivo previsto: 12:45.</li></ul>
+<p>Attraverserete Craignure e proseguirete lungo la costa orientale, con viste sul Sound of Mull. Ricordate che nei tratti a corsia unica bisogna utilizzare i passing places e lasciare passare chi procede più velocemente; non bisogna mai parcheggiare negli slarghi.</p></div>
+<div class="day-block"><h3>12:45–13:05 – Relitti di Salen</h3><p>Poco prima o poco dopo Salen, a seconda del punto esatto di sosta, si trovano i celebri relitti delle vecchie barche da pesca, ormai consumati dal tempo e adagiati sulla costa.</p>
+<p>Non è una visita lunga, ma è uno dei soggetti fotografici più caratteristici di Mull. Prevederei 15–20 minuti, facendo attenzione a non fermare l’automobile sulla carreggiata o nei passing places.</p></div>
+<div class="day-block"><h3>13:05 – Salen → Tobermory</h3><ul><li>distanza: circa 16 km</li><li>percorrenza: 25 minuti</li><li>arrivo previsto: 13:30.</li></ul></div>
+<div class="day-block"><h3>13:30–15:40 – Tobermory</h3><p>Tobermory è la tappa più iconica della giornata: il celebre porto con la fila di case colorate, barche da pesca e colline boscose alle spalle.</p>
+<p>Parcheggiate preferibilmente nella zona del Ledaig Car Park, all’estremità meridionale del porto.</p></div>
+<div class="day-block"><h3>Pranzo</h3><p>Per non perdere troppo tempo, sceglierei uno dei locali sul porto oppure un pranzo veloce:</p>
+<ul><li>fish and chips</li><li>zuppa del giorno</li><li>panino con salmone o prodotti locali</li><li>bakery o piccolo supermercato per acquistare qualcosa da mangiare all’aperto.</li></ul>
+<p>Ad agosto eviterei di affidarmi a una prenotazione rigida: potrete scegliere sul momento in base all’affollamento, ma sarebbe utile avere con voi acqua e qualche snack di riserva.</p></div>
+<div class="day-block"><h3>Passeggiata nel borgo</h3><p>Dopo pranzo percorrete il lungomare osservando:</p>
+<ul><li>le case colorate di Main Street</li><li>il porto e i pescherecci</li><li>i piccoli negozi di prodotti locali</li><li>la Tobermory Distillery dall’esterno</li><li>i punti panoramici sulle acque del Sound of Mull.</li></ul>
+<p>Dedicate alla zona centrale circa 60–75 minuti, senza inserire musei o visite guidate.</p></div>
+<div class="day-block"><h3>15:40–16:35 – Aros Park</h3><p>Da Tobermory raggiungete in pochi minuti Aros Park, area naturale con boschi, felci, cascate e punti panoramici sulla baia.</p>
+<p>Non è necessario fare il percorso completo. Scegliete una passeggiata di circa 45–50 minuti, concentrandovi su:</p>
+<ul><li>cascata inferiore</li><li>sentiero nel bosco</li><li>vedute su Tobermory e sul Sound of Mull.</li></ul>
+<p>È una sosta gratuita e introduce nella giornata anche una piccola esperienza naturalistica, senza richiedere un’escursione impegnativa. Il parco è descritto ufficialmente da Forestry and Land Scotland.</p>
+<p>In caso di pioggia intensa o terreno molto fangoso, eliminate Aros Park e trattenetevi più a lungo a Tobermory.</p></div>
+<div class="day-block"><h3>16:35 – Partenza per Craignure</h3><ul><li>distanza: circa 35 km</li><li>percorrenza prevista: 50–55 minuti</li><li>arrivo al terminal: circa 17:30.</li></ul>
+<p>Avrete così circa un’ora di margine prima del traghetto delle 18:35. È un margine necessario: sulle strade a corsia unica possono verificarsi rallentamenti per camper, mezzi agricoli o animali.</p>
+<p>Non programmerei altre soste durante il ritorno, salvo una fotografia rapidissima in un punto in cui sia possibile parcheggiare regolarmente.</p></div>
+<div class="day-block"><h3>18:35–19:35 – Traghetto Craignure → Oban</h3><p>Presentatevi nella corsia d’imbarco entro le 18:05. Durante il viaggio di ritorno potrete mangiare qualcosa di leggero e godervi la vista serale su Oban.</p></div>
+<div class="day-block"><h3>19:35 – Serata a Oban</h3><p>Dopo lo sbarco:</p>
+<ul><li>rientro nell’alloggio</li><li>cena semplice a Oban oppure cibo acquistato in precedenza</li><li>niente McCaig’s Tower questa sera, perché la giornata sarà già lunga.</li></ul>
+<p>La McCaig’s Tower è meglio inserirla nel pomeriggio o nella serata del 21 agosto, quando arrivate a Oban.</p></div>
+<div class="day-block"><h3>Costi indicativi della giornata</h3><div class="table-wrap"><table><thead><tr><th>Voce</th><th>Costo famiglia</th></tr></thead><tbody><tr><td>Traghetto con automobile</td><td>£70,70</td></tr><tr><td>Duart Castle</td><td>circa £44–45</td></tr><tr><td>Aros Park e relitti di Salen</td><td>Gratuiti</td></tr><tr><td>Carburante sull’isola</td><td>Modesto</td></tr><tr><td>Pranzo</td><td>In base alla scelta</td></tr><tr><td>Totale, escluso pranzo</td><td>circa £115, pari a circa €133–135</td></tr></tbody></table></div></div>
+<div class="day-block"><h3>Abbigliamento</h3><p>Portate in automobile:</p>
+<ul><li>scarpe impermeabili o da trekking leggero</li><li>giacca impermeabile con cappuccio</li><li>felpa o pile</li><li>pantaloni comodi</li><li>piccolo ombrello soltanto per il paese, non per i sentieri</li><li>repellente per i midges</li><li>binocolo, se lo avete, perché Mull è nota per aquile, cervi, foche e lontre.</li></ul>
+<p>Questa è, secondo me, la soluzione definitiva più equilibrata: vedrete il castello più scenografico, il villaggio più famoso e una porzione autentica del paesaggio naturale di Mull, mantenendo un buon margine per il traghetto di ritorno.</p></div>
+</section>
+
+<section class="day-card" id="day-23">
+  <div class="day-head">
+    <span class="day-date">23 agosto</span>
+    <h2>Da Oban a Stirling attraverso Loch Awe, Inveraray e Loch Lomond</h2>
+  </div>
+  <div class="day-intro"><p>Per questa giornata non sceglierei il percorso diretto. La strada panoramica vi permette di vedere tre luoghi importanti che altrimenti mancherebbero all’itinerario:</p>
+<ul><li>Kilchurn Castle sul Loch Awe</li><li>Inveraray e Loch Fyne</li><li>Luss sul Loch Lomond</li></ul>
+<p>Arriverete a Stirling nel tardo pomeriggio. Il 24 agosto visiterete la città storica e la spianata esterna del castello, senza aggiungere un’altra visita interna a pagamento.</p></div>
+  <div class="day-block"><h3>Percorso complessivo</h3><p>Oban → Kilchurn Castle → Inveraray → Luss/Loch Lomond → Stirling</p>
+<ul><li>distanza complessiva: circa 175 km</li><li>guida effettiva: circa 3 ore e 15 minuti</li><li>durata della giornata con le soste: circa 8 ore.</li></ul></div>
+<div class="day-block"><h3>8:45 – Partenza da Oban</h3><p>Dopo la lunga giornata a Mull, non è necessario partire prestissimo. Suggerisco colazione e partenza da Oban tra le 8:45 e le 9:00.</p>
+<p>Prima di lasciare la città:</p>
+<ul><li>fate rifornimento</li><li>acquistate acqua e qualche snack</li><li>tenete impermeabili e scarpe adatte alle passeggiate facilmente raggiungibili.</li></ul></div>
+<div class="day-block"><h3>9:00–9:45 – Oban → Kilchurn Castle</h3><ul><li>distanza: circa 36 km</li><li>percorrenza: 45 minuti.</li></ul>
+<p>La strada segue il Loch Etive e poi raggiunge il Loch Awe, uno dei paesaggi lacustri più suggestivi di questa parte della Scozia.</p></div>
+<div class="day-block"><h3>9:45–10:20 – Kilchurn Castle e Loch Awe</h3><p>Kilchurn Castle è una rovina del XV secolo collocata su una penisola del Loch Awe, con le montagne sullo sfondo. È una delle immagini più fotografate delle Highlands.</p>
+<p>Il castello è attualmente chiuso internamente per lavori di conservazione, ma può essere osservato dall’esterno e dal punto panoramico meridionale. La situazione è confermata da Historic Environment Scotland.</p>
+<p>Per questa giornata farei la sosta panoramica sulla A819, senza affrontare una visita lunga:</p>
+<ul><li>parcheggio nel piccolo slargo consentito</li><li>breve passeggiata verso la riva</li><li>fotografie del castello con il Loch Awe in primo piano</li><li>durata complessiva: 30–35 minuti.</li></ul>
+<p>Il terreno vicino al lago può essere fangoso: servono scarpe impermeabili. Non lasciate l’automobile nei passing places.</p></div>
+<div class="day-block"><h3>10:20–10:50 – Kilchurn Castle → Inveraray</h3><ul><li>distanza: circa 25 km</li><li>percorrenza: 30 minuti.</li></ul>
+<p>La A819 attraversa una zona montuosa e scende verso il Loch Fyne.</p></div>
+<div class="day-block"><h3>10:50–12:40 – Inveraray</h3><p>Inveraray è un elegante villaggio settecentesco dalle caratteristiche case bianche e nere, costruito sulle rive del Loch Fyne.</p></div>
+<div class="day-block"><h3>Passeggiata consigliata</h3><p>Parcheggiate nel centro e percorrete:</p>
+<ul><li>il lungolago</li><li>il piccolo molo</li><li>le case georgiane del centro</li><li>il caratteristico campanile</li><li>il ponte e il viale da cui si vede Inveraray Castle.</li></ul></div>
+<div class="day-block"><h3>Visitiamo il castello?</h3><p>Io questa volta non entrerei nel castello. Il giorno precedente avrete già visitato Duart Castle e l’ingresso a Inveraray per quattro persone arriverebbe a circa £60. Inoltre, la visita richiederebbe almeno un’ora e mezza.</p>
+<p>Lo osserverei dall’esterno e conserverei tempo e budget per la visita della Stirling storica, dei Kelpies e della Royal Yacht Britannia.</p>
+<p>Il castello è comunque aperto la domenica, perché nel 2026 osserva l’apertura dal giovedì al lunedì. Informazioni: Inveraray Castle.</p></div>
+<div class="day-block"><h3>Pranzo</h3><p>Inveraray è il posto migliore per pranzare. Potete scegliere:</p>
+<ul><li>fish and chips</li><li>zuppa e panino</li><li>bakery o caffetteria</li><li>picnic sul Loch Fyne se il tempo è buono.</li></ul>
+<p>Prevederei circa 45 minuti per il pranzo e altri 45–60 minuti per il borgo.</p></div>
+<div class="day-block"><h3>12:40–13:50 – Inveraray → Luss</h3><ul><li>distanza: circa 61 km</li><li>percorrenza: circa 1 ora e 10 minuti.</li></ul>
+<p>Il percorso attraversa:</p>
+<ul><li>la zona montuosa di Arrochar</li><li>il tratto panoramico di Rest and Be Thankful</li><li>le rive occidentali del Loch Lomond.</li></ul></div>
+<div class="day-block"><h3>13:15 circa – Breve sosta a Rest and Be Thankful</h3><p>Se il punto panoramico è accessibile e c’è spazio nel parcheggio, fermatevi per 10 minuti. È uno dei passi stradali storici più celebri della Scozia occidentale.</p>
+<p>Non prolungherei la sosta: la tappa principale sarà Luss.</p></div>
+<div class="day-block"><h3>13:50–15:30 – Luss e Loch Lomond</h3><p>Luss è uno dei villaggi più caratteristici del Loch Lomond e rappresenta il modo migliore per inserire il lago nell’itinerario senza pagare crociere o escursioni.</p>
+<p>Utilizzate il grande parcheggio a sud del paese, con circa 250 posti, evitando di entrare in automobile nel piccolo centro storico. Informazioni sul borgo: Loch Lomond &amp; The Trossachs National Park.</p></div>
+<div class="day-block"><h3>Passeggiata a Luss</h3><p>Percorso di circa 2–3 km, completamente tranquillo:</p>
+<ul><li>ingresso nel villaggio</li><li>Luss Parish Church e piccolo cimitero storico</li><li>viuzze con cottage in pietra e giardini</li><li>discesa verso la spiaggia</li><li>Luss Pier, con la vista più bella sulle montagne e sulle isole del Loch Lomond</li><li>passeggiata lungo la riva</li><li>ritorno attraverso il paese.</li></ul>
+<p>Durata: circa 1 ora e 15 minuti, comprese fotografie e una breve sosta sul molo.</p>
+<p>Non inserirei una crociera: avete già fatto il traghetto per Mull e il panorama dal molo è sufficiente per apprezzare il lago.</p></div>
+<div class="day-block"><h3>15:30–16:30 – Luss → Stirling</h3><ul><li>distanza: circa 52 km</li><li>percorrenza: 55–60 minuti.</li></ul>
+<p>Il tragitto passa a sud del Loch Lomond e poi attraversa una campagna progressivamente più pianeggiante fino a Stirling.</p></div>
+<div class="day-block"><h3>16:30–17:30 – Arrivo e sistemazione a Stirling</h3><p>Raggiungete l’alloggio, parcheggiate e concedetevi una pausa. Dopo Mull e la giornata di trasferimento, eviterei di entrare subito in un’altra attrazione a pagamento.</p></div>
+<div class="day-block"><h3>17:30–19:00 – Prima passeggiata a Stirling</h3><p>Se l’alloggio non è troppo distante dal centro, fate una passeggiata nell’Old Town:</p>
+<ul><li>King Street</li><li>salita verso il centro storico</li><li>Church of the Holy Rude dall’esterno</li><li>antico cimitero</li><li>Mar’s Wark</li><li>spianata esterna di Stirling Castle</li><li>vedute sulla valle e sul Wallace Monument.</li></ul>
+<p>Questa passeggiata serve anche a orientarvi. Il giorno successivo approfondirete la città storica e raggiungerete la spianata del castello senza visitarne gli interni.</p></div>
+<div class="day-block"><h3>19:00 – Cena</h3><p>A Stirling avrete molta più scelta rispetto alle località delle Highlands:</p>
+<ul><li>pub tradizionali</li><li>ristoranti</li><li>fish and chips</li><li>supermercati e alimentari per una cena nell’alloggio.</li></ul>
+<p>Non sarà necessario cenare prestissimo come in alcune tappe più isolate, ma la domenica controllerei comunque gli orari e prenoterei se scegliete un ristorante preciso.</p></div>
+<div class="day-block"><h3>Abbigliamento</h3><p>Per questa giornata:</p>
+<ul><li>scarpe impermeabili per Kilchurn Castle</li><li>giacca antipioggia e antivento</li><li>felpa o pile in automobile</li><li>abbigliamento a strati</li><li>scarpe comode per Luss e la salita nel centro storico di Stirling.</li></ul></div>
+<div class="day-block"><h3>Valutazione della giornata</h3><p>Questa deviazione è migliore del percorso diretto perché completa l’itinerario con Loch Awe, Loch Fyne e soprattutto Loch Lomond, senza attività costose. Le soste a pagamento sono sostituite da passeggiate e punti panoramici gratuiti.</p>
+<p>Il programma resta equilibrato: 175 km, tre tappe significative e arrivo a Stirling con il tempo necessario per sistemarvi e vedere il centro storico. Il 24 agosto potremo quindi organizzare Stirling Castle e il trasferimento finale verso Edimburgo.</p></div>
+</section>
+
+<section class="day-card" id="day-24">
+  <div class="day-head">
+    <span class="day-date">24 agosto</span>
+    <h2>Stirling storica, Kelpies, Royal Yacht Britannia e Leith</h2>
+  </div>
+  <div class="day-intro"><p>In questa versione eliminiamo l’ingresso a Stirling Castle, ma visitiamo accuratamente la città storica. Manteniamo i Kelpies, le spettacolari teste di cavallo, e raggiungiamo Leith in tempo per la Royal Yacht Britannia.</p></div>
+  <div class="day-block"><h3>Percorso complessivo</h3><p>Stirling Old Town → Old Stirling Bridge → Kelpies → Leith</p>
+<ul><li>distanza complessiva: circa 80 km</li><li>guida effettiva: circa 1 ora e 40 minuti</li><li>attrazioni a pagamento: soltanto Royal Yacht Britannia</li><li>arrivo previsto a Leith: circa 14:15.</li></ul></div>
+<div class="day-block"><h3>8:30 – Check-out</h3><p>Fate colazione, caricate i bagagli in automobile e lasciate l’auto in un parcheggio del centro di Stirling. Non utilizzerei il parcheggio riservato ai visitatori del castello.</p></div>
+<div class="day-block"><h3>9:00–11:00 – Passeggiata nella Stirling storica</h3><p>Stirling è costruita lungo una salita che conduce alla rocca del castello. Il percorso attraversa la parte medievale e permette di capire l’importanza strategica della città senza entrare nell’ennesima fortezza.</p></div>
+<div class="day-block"><h3>9:00 – King Street e centro storico</h3><p>Iniziate da King Street, elegante strada ottocentesca, e salite verso l’Old Town passando per:</p>
+<ul><li>edifici storici del centro</li><li>Mercat Cross</li><li>Tolbooth</li><li>antiche facciate in pietra</li><li>Old Town Jail, osservata dall’esterno.</li></ul></div>
+<div class="day-block"><h3>9:30 – Mar’s Wark</h3><p>Proseguite verso Mar’s Wark, rovine di un magnifico palazzo rinascimentale fatto costruire nel XVI secolo dal conte di Mar.</p>
+<p>La visita è esterna e gratuita. Sono sufficienti circa 10–15 minuti.</p></div>
+<div class="day-block"><h3>9:45 – Church of the Holy Rude</h3><p>La Church of the Holy Rude è uno degli edifici più importanti di Stirling. Qui, nel 1567, fu incoronato re di Scozia Giacomo VI, figlio di Maria Stuarda.</p>
+<p>È considerata una delle poche chiese ancora attive nel Regno Unito, insieme a Westminster Abbey, ad avere ospitato un’incoronazione reale.</p>
+<p>Se la chiesa è aperta, entrate per una breve visita di circa 20 minuti; l’eventuale contributo è molto contenuto. In caso contrario, osservate l’esterno e proseguite verso il cimitero.</p></div>
+<div class="day-block"><h3>10:10 – Old Town Cemetery</h3><p>Il cimitero storico si sviluppa sulla collina tra la chiesa e il castello. È particolarmente scenografico per:</p>
+<ul><li>monumenti vittoriani</li><li>antiche lapidi</li><li>statue</li><li>viste panoramiche sulla valle</li><li>scorci sul Wallace Monument.</li></ul>
+<p>Calcolate circa 20–25 minuti.</p></div>
+<div class="day-block"><h3>10:35 – Spianata di Stirling Castle</h3><p>Raggiungete la grande spianata davanti al castello senza acquistare il biglietto.</p>
+<p>Da qui potrete:</p>
+<ul><li>osservare la fortezza dall’esterno</li><li>fotografare le mura</li><li>vedere il Wallace Monument</li><li>osservare il fiume Forth</li><li>comprendere la posizione di controllo tra Highlands e Lowlands.</li></ul>
+<p>Non entrerete nel complesso: dopo Edinburgh Castle, Dunrobin, Urquhart, Duart e gli altri castelli incontrati lungo il viaggio, la visita interna sarebbe ripetitiva e costerebbe alla famiglia circa £66,50.</p></div>
+<div class="day-block"><h3>10:50–11:10 – Discesa verso il centro</h3><p>Tornate al parcheggio attraversando nuovamente l’Old Town. La passeggiata complessiva sarà di circa 3–4 km, con alcuni tratti in salita e discesa.</p></div>
+<div class="day-block"><h3>11:10–11:20 – Stirling → Old Stirling Bridge</h3><ul><li>distanza: circa 2 km</li><li>percorrenza: 5–10 minuti.</li></ul></div>
+<div class="day-block"><h3>11:20–11:45 – Old Stirling Bridge</h3><p>Il ponte attuale risale al XV–XVI secolo e si trova vicino al luogo in cui, nel 1297, l’esercito scozzese guidato da William Wallace e Andrew de Moray sconfisse quello inglese.</p>
+<p>La battaglia non si svolse esattamente sul ponte oggi esistente, ma su un precedente attraversamento del Forth situato nelle vicinanze.</p>
+<p>Fate una breve passeggiata:</p>
+<ul><li>attraversamento del ponte</li><li>veduta sul fiume</li><li>fotografie con il Wallace Monument sullo sfondo</li><li>spiegazione della posizione strategica del passaggio.</li></ul>
+<p>La sosta è gratuita e sostituisce bene l’ingresso al Wallace Monument.</p></div>
+<div class="day-block"><h3>11:45–12:15 – Stirling → The Kelpies</h3><ul><li>distanza: circa 27 km</li><li>percorrenza: 30 minuti.</li></ul></div>
+<div class="day-block"><h3>12:15–13:10 – The Kelpies</h3><p>I Kelpies sono due teste di cavallo alte circa 30 metri, realizzate dall’artista scozzese Andy Scott. Rappresentano contemporaneamente:</p>
+<ul><li>i cavalli acquatici della mitologia scozzese</li><li>i cavalli da tiro utilizzati lungo i canali</li><li>il passato industriale della Scozia centrale.</li></ul></div>
+<div class="day-block"><h3>Passeggiata</h3><p>Dedicate circa 45–50 minuti a:</p>
+<ul><li>avvicinarvi alle sculture</li><li>passare tra le due teste</li><li>raggiungere il lato del canale</li><li>fotografare i riflessi nell’acqua</li><li>osservare la struttura metallica da vicino.</li></ul>
+<p>Non acquistate il tour interno: la parte veramente iconica è completamente visibile dall’esterno.</p>
+<p>L’ingresso è gratuito; il parcheggio più vicino costa indicativamente £3–4,50 in agosto. Informazioni: The Helix – Kelpies e parcheggi.</p></div>
+<div class="day-block"><h3>Pranzo</h3><p>Per risparmiare tempo, consumate ai Kelpies un pranzo già acquistato:</p>
+<ul><li>panini</li><li>bakery</li><li>insalata</li><li>frutta</li><li>snack.</li></ul>
+<p>In alternativa utilizzate la caffetteria del Visitor Centre, se non è troppo affollata.</p></div>
+<div class="day-block"><h3>13:10–14:15 – Kelpies → Leith</h3><ul><li>distanza: circa 48 km</li><li>percorrenza: 50–65 minuti</li><li>con traffico intenso: fino a 75 minuti.</li></ul>
+<p>Raggiungete direttamente l’alloggio a Leith.</p></div>
+<div class="day-block"><h3>14:15–14:45 – Check-in</h3><p>Scaricate i bagagli e lasciate l’automobile presso l’alloggio. È opportuno concordare preventivamente la possibilità di accedere o depositare i bagagli entro le 14:15–14:30.</p>
+<p>Se l’alloggio non consente il check-in prima delle 15:00, raggiungete direttamente Ocean Terminal e utilizzate il parcheggio multipiano gratuito, lasciando i bagagli completamente nascosti nel bagagliaio.</p></div>
+<div class="day-block"><h3>15:00–17:15 – Royal Yacht Britannia</h3><p>La Royal Yacht Britannia si trova presso Ocean Terminal, nel quartiere di Leith.</p>
+<p>Prenotate l’ingresso delle 15:00 o 15:15. Il 24 agosto l’ultimo ingresso ordinario è alle 16:00 e la struttura chiude alle 18:00.</p>
+<p>Britannia fu la residenza galleggiante della famiglia reale britannica per oltre quarant’anni.</p></div>
+<div class="day-block"><h3>Percorso di visita</h3><p>L’audioguida in italiano è compresa nel biglietto. Visiterete:</p>
+<ul><li>plancia di comando</li><li>appartamenti di Stato</li><li>camera della regina Elisabetta II</li><li>salone reale</li><li>sala da pranzo</li><li>cabine degli altri membri della famiglia reale</li><li>alloggi degli ufficiali</li><li>spazi dell’equipaggio</li><li>lavanderia</li><li>infermeria</li><li>sala macchine</li><li>Rolls-Royce trasportata a bordo durante i viaggi.</li></ul>
+<p>La visita richiede circa due ore. Eviterei una sosta lunga al Royal Deck Tearoom, perché potrete mangiare con maggiore tranquillità a The Shore.</p></div>
+<div class="day-block"><h3>Costo per la famiglia</h3><p>Acquistando online:</p>
+<ul><li>due adulti: 2 × £23</li><li>figlio di 16 anni, tariffa Young Person: £11,50</li><li>figlia di 10 anni: gratuita grazie alla promozione estiva Kids Go Free</li><li>totale: £57,50.</li></ul>
+<p>Informazioni e prenotazioni: Royal Yacht Britannia.</p></div>
+<div class="day-block"><h3>17:15–18:00 – Rientro e pausa</h3><p>Raggiungete l’alloggio e riposatevi brevemente. Da questo momento non utilizzerei più l’automobile fino alla partenza del 25.</p></div>
+<div class="day-block"><h3>18:00–19:30 – Passeggiata nella Leith storica</h3><p>Dedicate la serata al quartiere portuale:</p>
+<ul><li>The Shore</li><li>Water of Leith</li><li>Bernard Street</li><li>Victoria Swing Bridge</li><li>antichi magazzini portuali</li><li>bacini e imbarcazioni</li><li>esterno della nave-hotel Fingal.</li></ul>
+<p>Se il vostro alloggio è più vicino a Newhaven, potete estendere o spostare la passeggiata verso Newhaven Harbour e il piccolo faro.</p></div>
+<div class="day-block"><h3>Dalle 19:30 – Cena a The Shore</h3><p>The Shore offre pub, ristoranti e locali informali. Potete scegliere:</p>
+<ul><li>fish and chips</li><li>hamburger</li><li>pub tradizionale</li><li>cucina asiatica</li><li>pizzeria</li><li>take-away.</li></ul>
+<p>In pieno periodo dei festival conviene prenotare se scegliete un locale specifico. Non è necessario optare per i ristoranti più costosi della zona.</p></div>
+<div class="day-block"><h3>Abbigliamento</h3><ul><li>scarpe comode per le salite di Stirling</li><li>giacca impermeabile</li><li>felpa o pile leggero</li><li>abbigliamento a strati</li><li>giacca antivento per Kelpies e Britannia</li><li>piccolo zaino</li><li>ombrello compatto.</li></ul></div>
+<div class="day-block"><h3>Costi indicativi</h3><div class="table-wrap"><table><thead><tr><th>Voce</th><th>Costo famiglia</th></tr></thead><tbody><tr><td>Stirling Old Town e Old Bridge</td><td>Gratuiti</td></tr><tr><td>Kelpies</td><td>Gratuiti</td></tr><tr><td>Parcheggio Kelpies</td><td>circa £3–4,50</td></tr><tr><td>Royal Yacht Britannia</td><td>£57,50</td></tr><tr><td>Passeggiata a Leith</td><td>Gratuita</td></tr><tr><td>Totale attrazioni</td><td>circa £61–62</td></tr></tbody></table></div>
+<p>Questa versione è più varia e conveniente: visiterete realmente Stirling come città, manterrete i Kelpies e arriverete a Leith in tempo per Britannia, senza aggiungere un altro costoso ingresso a un castello.</p></div>
+</section>
+
+<section class="day-card" id="day-25">
+  <div class="day-head">
+    <span class="day-date">25 agosto</span>
+    <h2>Dean Village, Stockbridge e partenza</h2>
+  </div>
+  <div class="day-intro"><p>Il volo parte alle 16:00. La mattina può essere utilizzata fino alle 11:30–11:45, ma entro mezzogiorno dovrete essere in viaggio verso l’aeroporto. Questa passeggiata completa Edimburgo con una zona diversa dalla Old Town e dalla Leith marittima, senza prenotare un’altra attrazione.</p></div>
+  <div class="day-block"><h3>Programma della mattina</h3><p>7:45–8:30 – Colazione e preparazione dei bagagli.</p>
+<p>8:30–8:45 – Check-out; sistemate tutti i bagagli nel bagagliaio, senza lasciare oggetti visibili.</p>
+<p>8:45–9:10 – Leith → Dean Village, circa 5–6 km e 20–25 minuti secondo il traffico.</p>
+<p>9:10–11:15 – Dean Village, Water of Leith e Stockbridge, con ritorno all’automobile.</p>
+<p>11:15–11:45 – Margine per una breve sosta, recupero dell’auto e preparazione alla partenza.</p>
+<p>11:45–12:30 circa – Trasferimento verso la sede di riconsegna dell’automobile in aeroporto.</p>
+<p>12:30–13:00 – Rifornimento se richiesto, restituzione del veicolo e trasferimento al terminal.</p>
+<p>Entro le 13:00–13:15 – Ingresso in aeroporto per il volo delle 16:00.</p></div>
+<div class="day-block"><h3>9:10–11:15 – Passeggiata Dean Village–Stockbridge</h3><p>Dean Village è un antico insediamento di mugnai lungo il Water of Leith, caratterizzato da edifici in pietra, ponti e scorci sul fiume. Dal cuore del villaggio seguite un tratto del Water of Leith Walkway verso Stockbridge. La passeggiata permette di vedere una parte elegante e residenziale di Edimburgo, molto diversa dalla Old Town e dal porto di Leith.</p></div>
+<div class="day-block"><h3>Percorso consigliato</h3><p>Dean Bridge e panorama sul villaggio;</p>
+<p>Bell’s Brae e Well Court;</p>
+<p>tratto del Water of Leith Walkway;</p>
+<p>St Bernard’s Well dall’esterno;</p>
+<p>Stockbridge e Circus Lane, se il tempo lo consente;</p>
+<p>ritorno all’automobile entro le 11:15.</p></div>
+<div class="day-block"><h3>Indicazioni pratiche</h3><p>Utilizzate un parcheggio regolare e verificate attentamente la segnaletica. Non lasciate valigie o oggetti visibili nell’abitacolo. La passeggiata presenta pavé, gradini e possibili tratti umidi; servono scarpe comode e giacca impermeabile. Se il traffico è intenso o la riconsegna dell’auto richiede più tempo, saltate Stockbridge e limitatevi a Dean Village.</p></div>
+<div class="day-block"><h3>Priorità della mattina</h3><p>La priorità assoluta è arrivare alla riconsegna dell’automobile entro le 12:30–13:00. Dean Village è la visita principale; Stockbridge e Circus Lane sono facoltativi. Non aggiungete musei, Royal Mile o altre attrazioni con ingresso.</p></div>
+</section>
+</main>
+
+<a class="back-top" href="#dayNav" title="Torna alla barra dei giorni">↑</a>
+
+</body>
+</html>

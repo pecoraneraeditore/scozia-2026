@@ -154,6 +154,7 @@ const POIS = [
   { name: "Urquhart Castle", day: 19, date: "19 agosto", lat: 57.3241, lng: -4.4419, desc: "Rovine sul Loch Ness, la vista più iconica del lago dalla Grant Tower." },
   { name: "Fort Augustus", day: 19, date: "19 agosto", lat: 57.1447, lng: -4.6811, desc: "Scalinata di chiuse del Canale di Caledonia dove il canale incontra il Loch Ness." },
   { name: "Commando Memorial", day: 19, date: "19 agosto", lat: 56.9075, lng: -4.9528, desc: "Monumento panoramico vicino Spean Bridge, vista su Ben Nevis e Great Glen." },
+  { name: "Connage Highland Dairy (facoltativo)", day: 19, date: "19 agosto", lat: 57.5582, lng: -4.0359, desc: "Caseificio biologico ad Ardersier (~20 min da Inverness): Cheese Pantry con assaggi e distributori automatici refrigerati di formaggi, yogurt, burro e latte fresco, aperti 8-19 tutti i giorni. Segnalato da Gambero Rosso." },
 
   // 20 agosto - Glenfinnan, Neptune's Staircase, Glen Nevis
   { name: "Glenfinnan Viaduct", day: 20, date: "20 agosto", lat: 56.8697, lng: -5.4342, desc: "Viadotto reso famoso da Harry Potter, ottimo per vedere passare il treno Jacobite." },

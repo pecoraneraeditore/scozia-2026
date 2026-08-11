@@ -15,6 +15,7 @@
     --sand:#f4ede1;
     --accent-stay:#c1440e;
     --accent-poi:#1f7a5c;
+    --accent-search:#6b3fa0;
     --paper:#ffffff;
   }
   *{box-sizing:border-box;}
@@ -68,7 +69,7 @@
   .day-chip:hover{background:#f4ede1;}
   .day-chip input{accent-color:var(--blue);}
 
-  #map{flex:1;height:100%;}
+  #map{flex:1;height:100%;position:relative;}
 
   /* Custom marker icons */
   .marker-icon{
@@ -82,6 +83,41 @@
   .marker-icon span{transform:rotate(45deg);}
   .marker-stay{background:var(--accent-stay);}
   .marker-poi{background:var(--accent-poi);}
+  .marker-search{background:var(--accent-search);}
+
+  /* Campo di ricerca sulla mappa */
+  #searchBox{
+    position:absolute;top:14px;left:14px;z-index:900;
+    display:flex;align-items:center;gap:6px;
+    background:#fff;border-radius:22px;padding:6px 8px 6px 14px;
+    box-shadow:0 2px 10px rgba(0,0,0,.25);
+    max-width:calc(100% - 28px);
+  }
+  #searchForm{display:flex;align-items:center;gap:6px;flex:1;min-width:0;}
+  #searchInput{
+    border:none;outline:none;font:inherit;font-size:.88rem;color:#26343d;
+    width:220px;max-width:100%;background:transparent;
+  }
+  #searchInput::placeholder{color:#a99d84;}
+  #searchSubmit{
+    background:var(--blue);color:#fff;border:none;border-radius:50%;
+    width:30px;height:30px;flex-shrink:0;cursor:pointer;font-size:.9rem;
+    display:flex;align-items:center;justify-content:center;
+  }
+  #searchClear{
+    background:#eee6d5;color:#26343d;border:none;border-radius:50%;
+    width:26px;height:26px;flex-shrink:0;cursor:pointer;font-size:.85rem;
+    display:none;align-items:center;justify-content:center;
+  }
+  #searchStatus{
+    position:absolute;top:52px;left:0;
+    background:#fff;border-radius:10px;padding:7px 12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
+    font-size:.8rem;color:#8a7a5c;display:none;max-width:280px;
+  }
+  @media (max-width:720px){
+    #searchInput{width:150px;}
+  }
 
   .leaflet-popup-content-wrapper{border-radius:10px;}
   .popup-title{font-weight:700;font-size:1rem;margin:0 0 4px;color:var(--blue-dark);}
@@ -224,7 +260,7 @@
     <p>13 – 25 agosto · Edimburgo → Highlands → Isole → ritorno</p>
   </div>
   <div class="header-actions">
-    <a class="btn" href="documenti/Programma_completo_Scozia_2026.pdf" target="_blank" rel="noopener">🗓️ Programma completo</a>
+    <a class="btn" href="programma.html">🗓️ Programma completo</a>
     <button class="btn" id="openDocs">📄 Documenti di viaggio</button>
     <button class="btn" id="openNumbers">📞 Numeri utili</button>
     <button class="btn" id="openGallery">📷 Galleria foto</button>
@@ -246,7 +282,16 @@
       <button class="btn" style="background:#eee6d5;color:#26343d;" id="showAll">Mostra tutto</button>
     </div>
   </aside>
-  <div id="map"></div>
+  <div id="map">
+    <div id="searchBox">
+      <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="Cerca un luogo…" autocomplete="off">
+        <button type="submit" id="searchSubmit" title="Cerca">🔎</button>
+      </form>
+      <button type="button" id="searchClear" title="Rimuovi il segnaposto">✕</button>
+    </div>
+    <div id="searchStatus"></div>
+  </div>
 </div>
 
 <div id="docModal">
@@ -411,6 +456,74 @@
     );
     allMarkers.push({ marker: m, day: p.day, type: 'poi' });
   });
+
+  // Campo di ricerca (come su Google Maps): cerca un luogo con Nominatim/OpenStreetMap,
+  // mostra un segnaposto temporaneo senza toccare gli alloggi e i POI fissi.
+  (function(){
+    const searchIcon = makeIcon('search', '📌');
+    const form = document.getElementById('searchForm');
+    const input = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('searchClear');
+    const statusEl = document.getElementById('searchStatus');
+    let searchMarker = null;
+
+    function showStatus(msg){
+      statusEl.textContent = msg;
+      statusEl.style.display = msg ? 'block' : 'none';
+    }
+
+    function clearSearchMarker(){
+      if (searchMarker){ map.removeLayer(searchMarker); searchMarker = null; }
+      clearBtn.style.display = 'none';
+    }
+
+    clearBtn.addEventListener('click', () => {
+      clearSearchMarker();
+      input.value = '';
+      showStatus('');
+      input.focus();
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const query = input.value.trim();
+      if (!query) return;
+
+      showStatus('Ricerca in corso…');
+
+      try {
+        // viewbox intorno alla Scozia per privilegiare i risultati locali, senza escludere il resto del mondo (bounded=0)
+        const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&viewbox=-8.75,60.9,-0.5,54.5&bounded=0&q=${encodeURIComponent(query)}`;
+        const resp = await fetch(url, { headers: { 'Accept-Language': 'it' } });
+        if (!resp.ok) throw new Error('Richiesta non riuscita');
+        const results = await resp.json();
+
+        if (!results.length){
+          showStatus(`Nessun risultato per “${query}”.`);
+          return;
+        }
+
+        const r = results[0];
+        const lat = parseFloat(r.lat), lng = parseFloat(r.lon);
+
+        clearSearchMarker();
+
+        searchMarker = L.marker([lat, lng], { icon: searchIcon }).addTo(map);
+        searchMarker.bindPopup(
+          `<div class="popup-meta">Risultato ricerca</div>
+           <div class="popup-title">${query}</div>
+           <p class="popup-desc">${r.display_name || ''}</p>
+           ${navButtons(lat, lng)}`
+        ).openPopup();
+
+        map.flyTo([lat, lng], 14);
+        clearBtn.style.display = 'flex';
+        showStatus('');
+      } catch (err) {
+        showStatus('Ricerca non disponibile: controlla la connessione e riprova.');
+      }
+    });
+  })();
 
   // Day filter UI
   const days = [13,14,15,16,17,18,19,20,21,22,23,24,25];
