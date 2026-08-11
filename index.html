@@ -396,7 +396,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="data.js"></script>
 <script>
-  const map = L.map('map', { zoomControl: true }).setView([57.3, -4.6], 6.3);
+  const map = L.map('map', { zoomControl: false }).setView([57.3, -4.6], 6.3);
+  L.control.zoom({ position: 'topright' }).addTo(map);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
