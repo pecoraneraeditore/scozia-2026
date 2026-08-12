@@ -193,6 +193,69 @@ const POIS = [
   { name: "Stockbridge & Circus Lane", day: 25, date: "25 agosto", lat: 55.9583, lng: -3.2064, desc: "Quartiere elegante con la pittoresca Circus Lane, ultima tappa prima dell'aeroporto." }
 ];
 
+// Dove mangiare: caffetterie specialty e locali tipici (pub, trattorie, bakery) lungo il percorso.
+// Selezionati da fonti editoriali (Gambero Rosso, Sprudge, European Coffee Trip, The Skinny, Time Out,
+// Forever Edinburgh, Love Cairngorms, Love from Scotland, North Coast 500, Away from the Ordinary,
+// Woodlands Glencoe, Postcards From Mull, olive magazine, WeRoad, Scotland4you, Highland Perthshire,
+// Independent Stirling), escludendo Tripadvisor/UGC e ristoranti gourmet o stellati.
+const RESTAURANTS = [
+  // 13 agosto - Edimburgo (Old Town / Haymarket / New Town)
+  { name: "Maggie Dickson's", kind: "typical", day: 13, date: "13 agosto", lat: 55.9469, lng: -3.1959, address: "91 Grassmarket, Edinburgh EH1 2HS", website: "https://maggie-dicksons.edan.io/", desc: "Pub storico nel Grassmarket, proprio sul percorso della giornata: haggis, neeps and tatties fatti bene in un ambiente conviviale." },
+  { name: "Hideout Cafe", kind: "coffee", day: 13, date: "13 agosto", lat: 55.9491, lng: -3.1948, address: "5 Upper Bow, Edinburgh EH1 2JN", website: "https://www.hideoutcafe.co.uk/", desc: "Caffetteria specialty proprio dove Victoria Street incontra il Royal Mile: buona pausa caffè durante il giro della Old Town." },
+  { name: "Cairngorm Coffee", kind: "coffee", day: 13, date: "13 agosto", lat: 55.9490, lng: -3.2103, address: "Melville Place, Edinburgh EH3 7PR (West End)", desc: "Una delle torrefazioni migliori di Edimburgo, a pochi passi dall'alloggio di Haymarket: ottimo per colazione/toast prima di iniziare la giornata." },
+  { name: "Artisan Roast", kind: "coffee", day: 13, date: "13 agosto", lat: 55.9585, lng: -3.1875, address: "Broughton Street, Edinburgh EH1 3RJ", desc: "La prima caffetteria specialty aperta in Scozia (2007), con torrefazione propria: atmosfera informale non lontano da Calton Hill." },
+  { name: "The Oxford Bar", kind: "typical", day: 13, date: "13 agosto", lat: 55.9526, lng: -3.2027, address: "8 Young Street, Edinburgh EH2 4JB", desc: "Pub minuscolo e senza fronzoli, quasi solo clientela locale: un classico per una pinta genuina in New Town." },
+  { name: "The Sheep Heid Inn", kind: "typical", day: 13, date: "13 agosto", lat: 55.9421, lng: -3.1580, address: "43-45 The Causeway, Duddingston, Edinburgh EH15 3QA", desc: "Uno dei pub più antichi di Scozia, ai piedi di Arthur's Seat. È fuori dal percorso a piedi del 13 agosto: da valutare solo con uno spostamento in auto/bus dedicato." },
+
+  // 14 agosto - Pitlochry, Dunkeld, Aviemore
+  { name: "Café Calluna", kind: "coffee", day: 14, date: "14 agosto", lat: 56.7010, lng: -3.7280, address: "Atholl Road, Pitlochry", desc: "Caffetteria indipendente nel cuore di Pitlochry: caffè artigianale, zuppe fatte in casa, torte e prodotti locali." },
+  { name: "The Old Mill Inn", kind: "typical", day: 14, date: "14 agosto", lat: 56.6995, lng: -3.7350, address: "Mill Lane, Pitlochry PH16 5BH", desc: "Locale storico sul fiume a Pitlochry: haggis neeps and tatties, steak and ale pie e salmone scozzese, con Angus beef e agnello del Perthshire." },
+  { name: "The Clootie Dumpling", kind: "coffee", day: 14, date: "14 agosto", lat: 56.5665, lng: -3.5870, address: "Atholl Street, Dunkeld", desc: "Coffee shop a Dunkeld dedicato alla tradizione scozzese: dolci fatti in casa, tra cui il celebre clootie dumpling." },
+  { name: "Ryvoan Café", kind: "coffee", day: 14, date: "14 agosto", lat: 57.1935, lng: -3.8280, address: "Aviemore", desc: "Caffetteria luminosa in stile loft con vista sui Cairngorms: caffè di qualità, comoda la sera dell'arrivo ad Aviemore." },
+
+  // 15 agosto - Speyside
+  { name: "Cabin Coffee", kind: "coffee", day: 15, date: "15 agosto", lat: 57.1420, lng: -3.8380, address: "Dalraddy, tra Aviemore e Kincraig", desc: "Baracchino tra i boschi lungo la strada per Loch an Eilein: specialty coffee e dolci fatti in casa, sosta comoda lungo il giro di giornata." },
+  { name: "KJ's Bothy Bakery", kind: "coffee", day: 15, date: "15 agosto", lat: 57.3305, lng: -3.6070, address: "Grantown-on-Spey", desc: "Forno con torrefazione locale (Cairngorm Leaf & Bean): dolci e salati, poco fuori dal giro Boat of Garten/Nethy Bridge/Carrbridge." },
+
+  // 17 agosto - Costa settentrionale
+  { name: "Cereal Bakery", kind: "coffee", day: 17, date: "17 agosto", lat: 58.4685, lng: -4.4155, address: "Tongue", desc: "Panetteria-libreria nell'ex trading post di Tongue: pane a lievitazione naturale e oat latte, atmosfera d'altri tempi lungo la costa nord." },
+
+  // 18 agosto - Ullapool
+  { name: "The Seafood Shack", kind: "typical", day: 18, date: "18 agosto", lat: 57.8951, lng: -5.1580, address: "West Argyle Street, Ullapool IV26 2TY", phone: "07876 142623", website: "https://www.seafoodshack.co.uk/", desc: "Chiosco di pesce pluripremiato: aragosta, gamberi e ostriche portati ogni mattina dai pescatori locali. Verificare la riapertura dopo la ristrutturazione." },
+  { name: "The Arch Inn", kind: "typical", day: 18, date: "18 agosto", lat: 57.8945, lng: -5.1600, address: "Ullapool (South Shore Street)", desc: "Pub tradizionale sul porto: pinta e piatti scozzesi con vista sui traghetti per le Ebridi." },
+
+  // 19 agosto - Inverness e Loch Ness
+  { name: "Birch", kind: "coffee", day: 19, date: "19 agosto", lat: 57.4780, lng: -4.2250, address: "21 High Street, Inverness IV1 1HY", website: "https://birch.coffee/", desc: "Specialty coffee aperto nel 2024, con prodotti locali delle Highlands e delle isole: tra i migliori caffè della città." },
+  { name: "Velocity Café & Bicycle Workshop", kind: "coffee", day: 19, date: "19 agosto", lat: 57.4795, lng: -4.2260, address: "Inverness", desc: "Social enterprise con caffetteria e officina bici: caffè, colazioni e atmosfera comunitaria fuori dai circuiti turistici." },
+  { name: "Johnny Foxes", kind: "typical", day: 19, date: "19 agosto", lat: 57.4772, lng: -4.2255, address: "26 Bank Street, Inverness", website: "https://johnnyfoxes.co.uk/", desc: "Pub dal look informale ma con oltre 25 anni di storia: panini creativi (anche vegetali), birre alla spina e caffè di livello." },
+  { name: "Ness Deli", kind: "coffee", day: 19, date: "19 agosto", lat: 57.3280, lng: -4.4400, address: "The Village Green, Drumnadrochit", website: "https://thenessdeli.com/", desc: "Caffetteria e tavola calda a due passi dal Loch Ness Centre: colazioni, pranzi leggeri, shortbread e flapjack fatti in casa." },
+
+  // 20 agosto - Fort William
+  { name: "The Wildcat", kind: "coffee", day: 20, date: "20 agosto", lat: 56.8200, lng: -5.1050, address: "21 High Street, Fort William", desc: "Locale 100% vegano con caffè specialty in espresso o V60, shortbread vegetali, wrap e zuppe: sosta ideale prima del treno Jacobite a Glenfinnan." },
+  { name: "The Crofter", kind: "typical", day: 20, date: "20 agosto", lat: 56.8205, lng: -5.1045, address: "High Street, Fort William", desc: "Pub tipico scozzese sulla via principale: haggis e cucina locale in un ambiente informale." },
+
+  // 21 agosto - Glencoe e Oban
+  { name: "Clachaig Inn", kind: "typical", day: 21, date: "21 agosto", lat: 56.6780, lng: -5.1000, address: "Glencoe, Argyll PH49 4HX", phone: "+44 1855 811252", website: "https://clachaig.com/", desc: "Storico pub ai piedi delle Tre Sorelle di Glencoe: la Boots Bar è perfetta dopo una camminata, con birre locali e piatti scozzesi." },
+  { name: "Glencoe Farmhouse & Cafe", kind: "coffee", day: 21, date: "21 agosto", lat: 56.6720, lng: -5.1040, address: "Glencoe", desc: "Coffee shop contemporaneo con grani di Inverness Coffee Roasters: buona sosta tra Glen Etive e il Glencoe Visitor Centre." },
+  { name: "Julie's", kind: "coffee", day: 21, date: "21 agosto", lat: 56.4150, lng: -5.4720, address: "Oban (traversa acciottolata vicino al porto)", desc: "Coffee shop raccolto nel centro di Oban: ottimo caffè, prawn sandwich e scones." },
+
+  // 22 agosto - Isola di Mull
+  { name: "The Mishnish", kind: "typical", day: 22, date: "22 agosto", lat: 56.6235, lng: -6.0645, address: "Tobermory, Isle of Mull", desc: "Il pub giallo più fotografato di Tobermory: cimeli marinari, atmosfera calorosa, cucina scozzese tradizionale." },
+  { name: "Macgochans", kind: "typical", day: 22, date: "22 agosto", lat: 56.6232, lng: -6.0640, address: "Tobermory, Isle of Mull", website: "https://www.macgochans-tobermory.co.uk/", desc: "Ex cottage di pescatori affacciato sul porto: pesce locale, musica dal vivo e vista sul Sound of Mull." },
+
+  // 23 agosto - Loch Lomond
+  { name: "The Drovers Inn", kind: "typical", day: 23, date: "23 agosto", lat: 56.3070, lng: -4.7440, address: "Inverarnan, Argyll and Bute G83 7DX", phone: "01301 263108", website: "https://www.droversinn.co.uk/", desc: "Locanda del 1705 sulle rive di Loch Lomond, con animali impagliati e camini accesi: tappa d'atmosfera lungo il rientro verso Stirling." },
+
+  // 24 agosto - Stirling e Leith
+  { name: "HBW Coffee", kind: "coffee", day: 24, date: "24 agosto", lat: 56.1180, lng: -3.9370, address: "Barnton Street, Stirling", desc: "Specialty coffee di riferimento a Stirling, monorigine curate: comoda pausa vicino alla spianata del castello." },
+  { name: "Nicky-Tams Bar & Bothy", kind: "typical", day: 24, date: "24 agosto", lat: 56.1195, lng: -3.9375, address: "Baker Street, Stirling", desc: "Uno dei bar più antichi di Stirling (dal 1718), legno e birre locali: haggis, neeps and tatties in un ambiente tradizionale." },
+  { name: "The King's Wark", kind: "typical", day: 24, date: "24 agosto", lat: 55.9758, lng: -3.1707, address: "36 The Shore, Leith, Edinburgh EH6 6QU", desc: "Pub con radici nel 1400 sulle rive di Leith, a pochi passi dalla Royal Yacht Britannia: prodotti locali, carne, selvaggina e pesce sostenibile." },
+
+  // 25 agosto - Stockbridge
+  { name: "Fortitude Coffee", kind: "coffee", day: 25, date: "25 agosto", lat: 55.9583, lng: -3.2115, address: "Hamilton Place, Stockbridge, Edinburgh", desc: "Torrefazione propria nel cuore di Stockbridge: tappa comoda per l'ultima passeggiata prima dell'aeroporto." },
+  { name: "The Stockbridge Tap", kind: "typical", day: 25, date: "25 agosto", lat: 55.9592, lng: -3.2091, address: "Stockbridge, Edinburgh", desc: "Ale selezionate e menu semplice (pie, sandwich) in un pub quasi esclusivamente frequentato da locali." }
+];
+
 const DOCUMENTS = [
   { label: "Biglietti aerei", file: "documenti/Biglietti_aerei_viaggio_Scozia.pdf" },
   { label: "Assicurazione di viaggio", file: "documenti/Assicurazione_viaggio_Scozia.pdf" },

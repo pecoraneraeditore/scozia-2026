@@ -15,6 +15,7 @@
     --sand:#f4ede1;
     --accent-stay:#c1440e;
     --accent-poi:#1f7a5c;
+    --accent-food:#b8860b;
     --accent-search:#6b3fa0;
     --paper:#ffffff;
   }
@@ -60,6 +61,7 @@
   .dot{width:14px;height:14px;border-radius:50%;display:inline-block;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25);}
   .dot-stay{background:var(--accent-stay);}
   .dot-poi{background:var(--accent-poi);}
+  .dot-food{background:var(--accent-food);}
 
   #dayFilters{display:flex;flex-direction:column;gap:3px;max-height:340px;overflow-y:auto;}
   .day-chip{
@@ -83,6 +85,7 @@
   .marker-icon span{transform:rotate(45deg);}
   .marker-stay{background:var(--accent-stay);}
   .marker-poi{background:var(--accent-poi);}
+  .marker-food{background:var(--accent-food);}
   .marker-search{background:var(--accent-search);}
 
   /* Campo di ricerca sulla mappa */
@@ -274,6 +277,7 @@
     <div id="typeFilters">
       <label class="day-chip"><input type="checkbox" checked data-type="stay"> <span class="dot dot-stay"></span> Alloggio (AirBnB)</label>
       <label class="day-chip"><input type="checkbox" checked data-type="poi"> <span class="dot dot-poi"></span> Cosa vedere</label>
+      <label class="day-chip"><input type="checkbox" checked data-type="food"> <span class="dot dot-food"></span> 🍴 Dove mangiare</label>
     </div>
 
     <h2>Filtra per giorno</h2>
@@ -415,6 +419,7 @@
   }
   const stayIcon = makeIcon('stay', '🏠');
   const poiIcon = makeIcon('poi', '📍');
+  const foodIcon = makeIcon('food', '🍴');
 
   const allMarkers = []; // {marker, day}
 
@@ -456,6 +461,25 @@
        ${navButtons(p.lat, p.lng)}`
     );
     allMarkers.push({ marker: m, day: p.day, type: 'poi' });
+  });
+
+  // Dove mangiare markers (caffetterie specialty e locali tipici)
+  RESTAURANTS.forEach(r => {
+    const m = L.marker([r.lat, r.lng], { icon: foodIcon }).addTo(map);
+    const kindLabel = r.kind === 'coffee' ? 'Caffetteria specialty' : 'Locale tipico';
+    const contactBits = [];
+    if (r.phone) contactBits.push(`<a class="nav-btn" href="tel:${r.phone.replace(/[^+\d]/g,'')}">📞 ${r.phone}</a>`);
+    if (r.website) contactBits.push(`<a class="nav-btn" href="${r.website}" target="_blank" rel="noopener">🌐 Sito web</a>`);
+    const contactHtml = contactBits.length ? `<div class="popup-actions">${contactBits.join('')}</div>` : '';
+    m.bindPopup(
+      `<div class="popup-meta">🍴 ${kindLabel} · ${r.date}</div>
+       <div class="popup-title">${r.name}</div>
+       ${r.address ? `<p class="popup-desc" style="color:#8a7a5c;margin-bottom:4px;">${r.address}</p>` : ''}
+       <p class="popup-desc">${r.desc || ''}</p>
+       ${contactHtml}
+       ${navButtons(r.lat, r.lng)}`
+    );
+    allMarkers.push({ marker: m, day: r.day, type: 'food' });
   });
 
   // Campo di ricerca (come su Google Maps): cerca un luogo con Nominatim/OpenStreetMap,
@@ -540,7 +564,7 @@
 
   // Type filter (Alloggio / Cosa vedere)
   const typeFiltersEl = document.getElementById('typeFilters');
-  const activeTypes = new Set(['stay', 'poi']);
+  const activeTypes = new Set(['stay', 'poi', 'food']);
 
   function applyFilter(){
     allMarkers.forEach(({marker, day, type}) => {
