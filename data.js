@@ -197,6 +197,7 @@ const DOCUMENTS = [
   { label: "Biglietti aerei", file: "documenti/Biglietti_aerei_viaggio_Scozia.pdf" },
   { label: "Assicurazione di viaggio", file: "documenti/Assicurazione_viaggio_Scozia.pdf" },
   { label: "Voucher noleggio auto", file: "documenti/Voucher_noleggio_macchina.pdf" },
+  { label: "Prenotazione parcheggio Ciampino", file: "documenti/Prenotazione_parcheggio_Ciampino.pdf" },
   { label: "ETA - Simone", file: "documenti/ETA_Simone.pdf" },
   { label: "ETA - Giulia", file: "documenti/ETA_Giulia.pdf" },
   { label: "ETA - Niccolo", file: "documenti/ETA_Niccolo.pdf" },
