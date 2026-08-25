@@ -143,11 +143,11 @@
   .popup-nav-label{font-size:.72rem;color:#8a7a5c;text-transform:uppercase;letter-spacing:.04em;margin:8px 0 4px;width:100%;}
 
   /* Modali (Documenti, Numeri utili): sfondo scuro pieno dietro, pannello bianco piatto e opaco sopra */
-  #docModal, #numbersModal, #rulesModal, #galleryModal, #cambioModal{
+  #docModal, #numbersModal, #rulesModal, #galleryModal, #cambioModal, #budgetModal{
     display:none;position:fixed;inset:0;background:#1c2733;z-index:2000;
     align-items:center;justify-content:center;padding:20px;
   }
-  #docModal.open, #numbersModal.open, #rulesModal.open, #galleryModal.open, #cambioModal.open{display:flex;}
+  #docModal.open, #numbersModal.open, #rulesModal.open, #galleryModal.open, #cambioModal.open, #budgetModal.open{display:flex;}
 
   /* Cambio EUR/GBP */
   .conv-card{
@@ -176,6 +176,23 @@
     cursor:pointer;padding:0;margin-left:6px;text-decoration:underline;
   }
   .conv-error{color:var(--accent-stay);}
+
+  /* Budget di viaggio */
+  .budget-gate{display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
+  .budget-gate input[type=password]{
+    border:1px solid #ece2cc;background:#f7f2e7;border-radius:10px;padding:10px 14px;
+    font-size:1rem;font-family:inherit;color:var(--blue-dark);outline:none;width:100%;
+  }
+  .budget-error{color:var(--accent-stay);font-size:.82rem;min-height:1.1em;margin:0;}
+  .budget-pie{width:150px;height:150px;border-radius:50%;margin:4px auto 18px;}
+  .budget-total{text-align:center;font-size:1.05rem;font-weight:700;color:var(--blue-dark);margin:0 0 14px;}
+  .budget-list{display:flex;flex-direction:column;max-height:48vh;overflow-y:auto;}
+  .budget-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #ece2cc;}
+  .budget-row:last-child{border-bottom:none;}
+  .budget-row .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .budget-row .icon{font-size:1.1rem;width:22px;text-align:center;flex-shrink:0;}
+  .budget-row .label{flex:1;font-size:.92rem;}
+  .budget-row .amount{font-weight:700;color:var(--blue-dark);white-space:nowrap;}
   .panel{
     background:#ffffff;border-radius:14px;max-width:440px;width:100%;padding:22px 24px 26px;
     box-shadow:0 12px 40px rgba(0,0,0,.45);max-height:85vh;overflow-y:auto;
@@ -275,6 +292,7 @@
     <button class="btn" id="openNumbers">📞 Numeri utili</button>
     <button class="btn" id="openGallery">📷 Galleria foto</button>
     <button class="btn" id="openCambio">💱 Cambio EUR/GBP</button>
+    <button class="btn" id="openBudget">💶 Budget</button>
   </div>
 </header>
 
@@ -396,6 +414,26 @@
     </div>
 
     <div class="conv-rate" id="cambioRate">Aggiornamento del tasso in corso…</div>
+  </div>
+</div>
+
+<div id="budgetModal">
+  <div class="panel">
+    <button class="close-x" id="closeBudget">&times;</button>
+    <h2>Budget del viaggio</h2>
+    <p class="sub">Riepilogo delle spese, protetto da password.</p>
+
+    <div id="budgetGate" class="budget-gate">
+      <input type="password" id="budgetPassInput" placeholder="Password" autocomplete="off">
+      <button class="btn" id="budgetUnlockBtn" type="button">Sblocca</button>
+      <p class="budget-error" id="budgetError"></p>
+    </div>
+
+    <div id="budgetContent" style="display:none;">
+      <div class="budget-pie" id="budgetPie"></div>
+      <p class="budget-total" id="budgetTotal"></p>
+      <div class="budget-list" id="budgetList"></div>
+    </div>
   </div>
 </div>
 
@@ -798,6 +836,101 @@
     });
     document.getElementById('closeCambio').addEventListener('click', () => cambioModal.classList.remove('open'));
     cambioModal.addEventListener('click', (e) => { if (e.target === cambioModal) cambioModal.classList.remove('open'); });
+  })();
+
+  // Budget del viaggio (protetto da password: la pagina confronta l'hash SHA-256
+  // della password inserita con quello salvato qui sotto, non la password in chiaro.
+  // Non è una vera sicurezza - è solo per non mostrare le cifre a chi apre il link
+  // per sbaglio - chiunque sappia leggere il codice sorgente potrebbe aggirarla).
+  (function(){
+    const BUDGET_PASS_HASH = '881f389a58ac07a05ddcceaf07e1189c0eb92344f2a11b40272c35f90b67f27e';
+    const SESSION_KEY = 'scozia2026_budget_unlocked';
+
+    const budgetModal = document.getElementById('budgetModal');
+    const gateEl = document.getElementById('budgetGate');
+    const contentEl = document.getElementById('budgetContent');
+    const passInput = document.getElementById('budgetPassInput');
+    const unlockBtn = document.getElementById('budgetUnlockBtn');
+    const errorEl = document.getElementById('budgetError');
+    const pieEl = document.getElementById('budgetPie');
+    const totalEl = document.getElementById('budgetTotal');
+    const listEl = document.getElementById('budgetList');
+
+    async function sha256Hex(str){
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    function fmtEuro(n){
+      return n.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+    }
+
+    function renderBudget(){
+      const items = BUDGET.items;
+      const total = items.reduce((s, it) => s + it.amount, 0);
+
+      const gradientParts = [];
+      let acc = 0;
+      items.forEach(it => {
+        const start = acc / total * 360;
+        acc += it.amount;
+        const end = acc / total * 360;
+        gradientParts.push(`${it.color} ${start}deg ${end}deg`);
+      });
+      pieEl.style.background = `conic-gradient(${gradientParts.join(', ')})`;
+
+      totalEl.textContent = `Totale: ${fmtEuro(total)}`;
+
+      listEl.innerHTML = '';
+      items.forEach(it => {
+        const row = document.createElement('div');
+        row.className = 'budget-row';
+        row.innerHTML = `
+          <span class="dot" style="background:${it.color}"></span>
+          <span class="icon">${it.icon}</span>
+          <span class="label">${it.label}</span>
+          <span class="amount">${fmtEuro(it.amount)}</span>
+        `;
+        listEl.appendChild(row);
+      });
+    }
+
+    function unlock(){
+      gateEl.style.display = 'none';
+      contentEl.style.display = '';
+      renderBudget();
+    }
+
+    async function tryUnlock(){
+      const val = passInput.value;
+      if (!val) return;
+      const hash = await sha256Hex(val);
+      if (hash === BUDGET_PASS_HASH) {
+        errorEl.textContent = '';
+        passInput.value = '';
+        sessionStorage.setItem(SESSION_KEY, '1');
+        unlock();
+      } else {
+        errorEl.textContent = 'Password errata, riprova.';
+      }
+    }
+
+    unlockBtn.addEventListener('click', tryUnlock);
+    passInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(); });
+
+    document.getElementById('openBudget').addEventListener('click', () => {
+      budgetModal.classList.add('open');
+      if (sessionStorage.getItem(SESSION_KEY) === '1') {
+        unlock();
+      } else {
+        gateEl.style.display = '';
+        contentEl.style.display = 'none';
+        passInput.value = '';
+        errorEl.textContent = '';
+      }
+    });
+    document.getElementById('closeBudget').addEventListener('click', () => budgetModal.classList.remove('open'));
+    budgetModal.addEventListener('click', (e) => { if (e.target === budgetModal) budgetModal.classList.remove('open'); });
   })();
 </script>
 <script type="module" src="gallery.js"></script>

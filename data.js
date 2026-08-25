@@ -256,6 +256,21 @@ const RESTAURANTS = [
   { name: "The Stockbridge Tap", kind: "typical", day: 25, date: "25 agosto", lat: 55.9592, lng: -3.2091, address: "Stockbridge, Edinburgh", desc: "Ale selezionate e menu semplice (pie, sandwich) in un pub quasi esclusivamente frequentato da locali." }
 ];
 
+// Budget del viaggio (riepilogo spese): visibile sul sito solo dietro password.
+const BUDGET = {
+  items: [
+    { icon: "🛏️", label: "Alloggio",         amount: 3412.73, color: "#c1440e" },
+    { icon: "🍔", label: "Ristoranti e bar",  amount: 1515.76, color: "#b8860b" },
+    { icon: "✈️", label: "Voli",              amount: 1402.60, color: "#1d4e6b" },
+    { icon: "🚕", label: "Trasporti",         amount: 902.59,  color: "#2f8fa3" },
+    { icon: "🛒", label: "Spesa",             amount: 676.04,  color: "#1f7a5c" },
+    { icon: "🎟️", label: "Visite",            amount: 380.13,  color: "#6b3fa0" },
+    { icon: "🛍️", label: "Shopping",          amount: 346.95,  color: "#d16ba5" },
+    { icon: "🐈", label: "Cat sitter",        amount: 124.00,  color: "#8a7a5c" },
+    { icon: "🛂", label: "Visto",             amount: 97.19,   color: "#4a6fa5" }
+  ]
+};
+
 const DOCUMENTS = [
   { label: "Biglietti aerei", file: "documenti/Biglietti_aerei_viaggio_Scozia.pdf" },
   { label: "Assicurazione di viaggio", file: "documenti/Assicurazione_viaggio_Scozia.pdf" },
