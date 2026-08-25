@@ -290,8 +290,8 @@
     <h2>Filtra per giorno</h2>
     <div id="dayFilters"></div>
     <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn" style="background:#eee6d5;color:#26343d;" id="showAll">Mostra tutto</button>
-      <button class="btn" style="background:#eee6d5;color:#26343d;" id="deselectDays">Deseleziona giorni</button>
+      <button class="btn" style="background:#eee6d5;color:#26343d;" id="showAll">Seleziona tutti</button>
+      <button class="btn" style="background:#eee6d5;color:#26343d;" id="deselectDays">Deseleziona tutto</button>
     </div>
   </aside>
   <div id="map">
@@ -602,7 +602,6 @@
 
   document.getElementById('showAll').addEventListener('click', () => {
     document.querySelectorAll('#dayFilters input').forEach(cb => { cb.checked = true; activeDays.add(Number(cb.getAttribute('data-day'))); });
-    document.querySelectorAll('#typeFilters input').forEach(cb => { cb.checked = true; activeTypes.add(cb.getAttribute('data-type')); });
     applyFilter();
   });
 
