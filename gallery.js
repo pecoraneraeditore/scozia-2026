@@ -3,6 +3,7 @@
 // Configura le credenziali in supabase-config.js (vedi le istruzioni lì).
 // ============================================================
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import exifr from 'https://esm.sh/exifr';
 import { supabaseUrl, supabaseAnonKey } from './supabase-config.js';
 
 const BUCKET = 'photos';
@@ -34,6 +35,15 @@ const galleryBody = document.getElementById('galleryBody');
 const lightbox = document.getElementById('lightbox');
 const lightboxContent = document.getElementById('lightboxContent');
 const closeLightboxBtn = document.getElementById('closeLightbox');
+const lightboxCounter = document.getElementById('lightboxCounter');
+const lightboxPrevBtn = document.getElementById('lightboxPrev');
+const lightboxNextBtn = document.getElementById('lightboxNext');
+
+// Se il progetto Supabase non ha ancora la colonna "taken_at" (vedi README per la
+// migrazione SQL), evitiamo di rompere la galleria: proviamo l'ordinamento per data
+// di scatto e, se la colonna non esiste ancora, ripieghiamo su quello per data di
+// caricamento finché non viene fatta la migrazione.
+let takenAtColumnAvailable = true;
 
 openGalleryBtn.addEventListener('click', () => {
   galleryModal.classList.add('open');
@@ -61,6 +71,21 @@ async function sha256(file) {
 
 function safeName(name) {
   return name.replace(/[^a-zA-Z0-9._-]/g, '_');
+}
+
+// Data di scatto della foto: legge l'EXIF (DateTimeOriginal/CreateDate) e, se
+// manca (es. screenshot, foto modificate), usa la data di ultima modifica del
+// file come ripiego, così la foto entra comunque nell'ordine cronologico.
+async function getTakenAt(file) {
+  try {
+    const tags = await exifr.parse(file, ['DateTimeOriginal', 'CreateDate', 'ModifyDate']);
+    const d = tags && (tags.DateTimeOriginal || tags.CreateDate || tags.ModifyDate);
+    if (d instanceof Date && !isNaN(d)) return d.toISOString();
+  } catch (err) {
+    console.warn('EXIF non leggibile per', file.name, err);
+  }
+  if (file.lastModified) return new Date(file.lastModified).toISOString();
+  return null;
 }
 
 async function handleUpload(fileList) {
@@ -103,10 +128,20 @@ async function handleUpload(fileList) {
 
       const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(path);
       const url = pub.publicUrl;
+      const takenAt = await getTakenAt(file);
 
-      const { error: insErr } = await supabase
+      let insErr = (await supabase
         .from(TABLE)
-        .insert({ hash, name: file.name, path, url, size: file.size });
+        .insert({ hash, name: file.name, path, url, size: file.size, taken_at: takenAt })).error;
+
+      if (insErr && /taken_at/i.test(insErr.message || '')) {
+        // La colonna taken_at non esiste ancora sul progetto Supabase: si carica
+        // comunque la foto, la migrazione SQL nel README abilita l'ordinamento giusto.
+        takenAtColumnAvailable = false;
+        insErr = (await supabase
+          .from(TABLE)
+          .insert({ hash, name: file.name, path, url, size: file.size })).error;
+      }
       if (insErr) throw insErr;
 
       uploadStatus.textContent = `"${file.name}" caricata.`;
@@ -123,32 +158,56 @@ inputPhotos.addEventListener('change', (e) => { handleUpload(e.target.files); e.
 
 async function loadPhotos() {
   if (!supabaseReady) return;
-  const { data, error } = await supabase
-    .from(TABLE)
-    .select('*')
-    .order('created_at', { ascending: false });
-  if (error) {
-    console.error(error);
-    gridPhotos.innerHTML = `<p class="gallery-empty">Errore nel caricamento della galleria.</p>`;
-    return;
+
+  let rows = null;
+  if (takenAtColumnAvailable) {
+    const { data, error } = await supabase
+      .from(TABLE)
+      .select('*')
+      .order('taken_at', { ascending: true, nullsFirst: false })
+      .order('created_at', { ascending: true });
+    if (error && /taken_at/i.test(error.message || '')) {
+      takenAtColumnAvailable = false;
+    } else if (error) {
+      console.error(error);
+      gridPhotos.innerHTML = `<p class="gallery-empty">Errore nel caricamento della galleria.</p>`;
+      return;
+    } else {
+      rows = data || [];
+    }
   }
-  renderGrid(data || []);
+  if (rows === null) {
+    const { data, error } = await supabase
+      .from(TABLE)
+      .select('*')
+      .order('created_at', { ascending: true });
+    if (error) {
+      console.error(error);
+      gridPhotos.innerHTML = `<p class="gallery-empty">Errore nel caricamento della galleria.</p>`;
+      return;
+    }
+    rows = data || [];
+  }
+  renderGrid(rows);
 }
 
+let currentRows = [];
+
 function renderGrid(rows) {
+  currentRows = rows;
   gridPhotos.innerHTML = '';
   if (rows.length === 0) {
     gridPhotos.innerHTML = `<p class="gallery-empty">Nessuna foto ancora. Aggiungine una!</p>`;
     return;
   }
-  rows.forEach(row => {
+  rows.forEach((row, idx) => {
     const item = document.createElement('div');
     item.className = 'gallery-item';
     item.innerHTML = `
       <button type="button" class="gallery-thumb-btn"><img src="${row.url}" alt="${row.name || ''}" loading="lazy"></button>
       <button type="button" class="gallery-delete-btn" title="Elimina foto">🗑</button>
     `;
-    item.querySelector('.gallery-thumb-btn').addEventListener('click', () => openLightbox(row));
+    item.querySelector('.gallery-thumb-btn').addEventListener('click', () => openLightboxAt(idx));
     item.querySelector('.gallery-delete-btn').addEventListener('click', (e) => {
       e.stopPropagation();
       confirmAndDelete(row);
@@ -178,19 +237,65 @@ async function confirmAndDelete(row) {
 }
 
 let currentLightboxRow = null;
+let currentIndex = -1;
 
-function openLightbox(row) {
+function renderLightbox() {
+  const row = currentRows[currentIndex];
+  if (!row) return;
   currentLightboxRow = row;
   lightboxContent.innerHTML = `<img src="${row.url}" alt="${row.name || ''}">`;
+  lightboxCounter.textContent = `${currentIndex + 1} / ${currentRows.length}`;
+  const multiple = currentRows.length > 1;
+  lightboxPrevBtn.style.display = multiple ? '' : 'none';
+  lightboxNextBtn.style.display = multiple ? '' : 'none';
+}
+
+function openLightboxAt(idx) {
+  currentIndex = idx;
+  renderLightbox();
   lightbox.classList.add('open');
+}
+function showPrev() {
+  if (currentRows.length === 0) return;
+  currentIndex = (currentIndex - 1 + currentRows.length) % currentRows.length;
+  renderLightbox();
+}
+function showNext() {
+  if (currentRows.length === 0) return;
+  currentIndex = (currentIndex + 1) % currentRows.length;
+  renderLightbox();
 }
 function closeLightbox() {
   lightbox.classList.remove('open');
   lightboxContent.innerHTML = '';
   currentLightboxRow = null;
+  currentIndex = -1;
 }
 closeLightboxBtn.addEventListener('click', closeLightbox);
 lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+lightboxPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+lightboxNextBtn.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'ArrowLeft') showPrev();
+  else if (e.key === 'ArrowRight') showNext();
+  else if (e.key === 'Escape') closeLightbox();
+});
+
+// Scorrimento a slide con lo swipe (telefono/tablet): trascina a sinistra/destra
+// per passare alla foto successiva/precedente, come in una presentazione.
+let touchStartX = null;
+lightbox.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].clientX;
+}, { passive: true });
+lightbox.addEventListener('touchend', (e) => {
+  if (touchStartX === null) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  touchStartX = null;
+  if (Math.abs(dx) < 40) return;
+  if (dx > 0) showPrev(); else showNext();
+}, { passive: true });
 
 const deleteLightboxBtn = document.getElementById('deleteLightboxBtn');
 if (deleteLightboxBtn) {

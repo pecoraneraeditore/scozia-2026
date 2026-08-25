@@ -20,9 +20,11 @@
 //      path text not null,
 //      url text not null,
 //      size bigint,
+//      taken_at timestamptz,
 //      created_at timestamptz not null default now()
 //    );
 //    create index photos_hash_idx on photos (hash);
+//    create index photos_taken_at_idx on photos (taken_at);
 //    alter table photos enable row level security;
 //    create policy "Public read" on photos for select using (true);
 //    create policy "Public insert" on photos for insert with check (true);
