@@ -4,6 +4,7 @@
 // ============================================================
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import exifr from 'https://esm.sh/exifr';
+import JSZip from 'https://esm.sh/jszip@3';
 import { supabaseUrl, supabaseAnonKey } from './supabase-config.js';
 
 const BUCKET = 'photos';
@@ -30,6 +31,8 @@ const closeGalleryBtn = document.getElementById('closeGallery');
 const gridPhotos = document.getElementById('gridPhotos');
 const inputPhotos = document.getElementById('inputPhotos');
 const uploadStatus = document.getElementById('uploadStatus');
+const downloadAllBtn = document.getElementById('downloadAllBtn');
+const downloadStatus = document.getElementById('downloadStatus');
 const notConfiguredEl = document.getElementById('galleryNotConfigured');
 const galleryBody = document.getElementById('galleryBody');
 const lightbox = document.getElementById('lightbox');
@@ -302,4 +305,69 @@ if (deleteLightboxBtn) {
   deleteLightboxBtn.addEventListener('click', () => {
     if (currentLightboxRow) confirmAndDelete(currentLightboxRow);
   });
+}
+
+
+// ------------------------------------------------------------------
+// Scarica tutte le foto in un unico file .zip
+// ------------------------------------------------------------------
+downloadAllBtn?.addEventListener('click', downloadAllPhotos);
+
+async function downloadAllPhotos() {
+  if (!currentRows || currentRows.length === 0) {
+    alert('Nessuna foto da scaricare.');
+    return;
+  }
+
+  downloadAllBtn.disabled = true;
+  const total = currentRows.length;
+  const zip = new JSZip();
+  const usedNames = new Set();
+
+  try {
+    for (let i = 0; i < total; i++) {
+      const row = currentRows[i];
+      downloadStatus.textContent = `Scarico le foto: ${i + 1} di ${total}...`;
+      try {
+        const res = await fetch(row.url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const blob = await res.blob();
+
+        let name = safeName(row.name || row.path || `foto-${i + 1}.jpg`);
+        if (usedNames.has(name)) {
+          const dot = name.lastIndexOf('.');
+          const base = dot > 0 ? name.slice(0, dot) : name;
+          const ext = dot > 0 ? name.slice(dot) : '';
+          let n = 2;
+          while (usedNames.has(`${base}_${n}${ext}`)) n++;
+          name = `${base}_${n}${ext}`;
+        }
+        usedNames.add(name);
+        zip.file(name, blob);
+      } catch (err) {
+        console.error('Errore nello scaricare', row.name, err);
+      }
+    }
+
+    downloadStatus.textContent = 'Preparo il file zip...';
+    const content = await zip.generateAsync({ type: 'blob' });
+    const zipUrl = URL.createObjectURL(content);
+    const a = document.createElement('a');
+    a.href = zipUrl;
+    const today = new Date().toISOString().slice(0, 10);
+    a.download = `foto-scozia-2026-${today}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(zipUrl), 10000);
+
+    downloadStatus.textContent = `Fatto: ${total} foto scaricate.`;
+  } catch (err) {
+    console.error(err);
+    downloadStatus.textContent = '';
+    alert('Errore durante la creazione dello zip. Riprova.');
+  } finally {
+    downloadAllBtn.disabled = false;
+    setTimeout(() => { downloadStatus.textContent = ''; }, 5000);
+  }
 }
