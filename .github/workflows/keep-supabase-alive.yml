@@ -1,0 +1,24 @@
+name: Keep Supabase Alive
+
+# Evita che il progetto Supabase della galleria foto vada in pausa per
+# inattivita: Supabase mette in pausa i progetti gratuiti dopo 7 giorni
+# senza richieste. Questo workflow fa una piccola richiesta ogni 6 giorni,
+# cosi il progetto resta sempre attivo.
+
+on:
+  schedule:
+    - cron: "0 8 */6 * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase (mantieni attivo il progetto)
+        run: |
+          curl -sf -o /dev/null \
+            "https://qduzctmzhyjufkdthivd.supabase.co/rest/v1/photos?select=id&limit=1" \
+            -H "apikey: sb_publishable_n4tSWP6HfOuw_xjLUZ0oww_1TiC-wRP" \
+            -H "Authorization: Bearer sb_publishable_n4tSWP6HfOuw_xjLUZ0oww_1TiC-wRP" \
+          && echo "Ping riuscito: progetto Supabase attivo." \
+          || (echo "Ping fallito: controlla manualmente su supabase.com/dashboard" && exit 1)
